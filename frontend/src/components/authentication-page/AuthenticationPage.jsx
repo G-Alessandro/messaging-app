@@ -5,11 +5,6 @@ import CreateAccount from "./create-account/CreateAccount";
 export default function LoginPage() {
   const [createAccount, setCreateAccount] = useState(false);
 
-  function showCreateAccount(e) {
-    e.preventDefault();
-    setCreateAccount((prev) => !prev);
-  }
-
   return (
     <>
       <div>
@@ -18,9 +13,9 @@ export default function LoginPage() {
             <img src="" alt="" />
             <h2>Messaging App</h2>
           </div>
-          {!createAccount && <Login showCreateAccount={showCreateAccount} />}
+          {!createAccount && <Login setCreateAccount={setCreateAccount} />}
           {createAccount && (
-            <CreateAccount showCreateAccount={showCreateAccount} />
+            <CreateAccount setCreateAccount={setCreateAccount} />
           )}
         </div>
 

@@ -1,12 +1,9 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 
-export default function CreateAccount({ showCreateAccount }) {
+export default function CreateAccount({ setCreateAccount }) {
   const [registrationCompleted, setRegistrationCompleted] = useState(false);
   const [emailError, setEmailError] = useState(false);
   const [confirmPasswordError, setConfirmPasswordError] = useState(false);
-
-  const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -34,7 +31,7 @@ export default function CreateAccount({ showCreateAccount }) {
       console.log("DATA", data);
       if (response.ok && !data.error) {
         setRegistrationCompleted(true);
-        setTimeout(() => navigate("/"), 2000);
+        setTimeout(() => setCreateAccount((prev) => !prev), 2000);
       } else {
         if (data.error) {
           data.error.forEach((error) => {
@@ -62,7 +59,9 @@ export default function CreateAccount({ showCreateAccount }) {
           <h1>Sign Up</h1>
           <div>
             <p>Already have an account?</p>
-            <button onClick={showCreateAccount}>Login.</button>
+            <button onClick={() => setCreateAccount((prev) => !prev)}>
+              Login.
+            </button>
           </div>
           <form onSubmit={handleSubmit}>
             <label htmlFor="first-name">First Name</label>
@@ -70,6 +69,8 @@ export default function CreateAccount({ showCreateAccount }) {
               type="text"
               id="first-name"
               name="first-name"
+              minLength={1}
+              maxLength={30}
               placeholder="Enter your email"
               required
             />
@@ -79,6 +80,8 @@ export default function CreateAccount({ showCreateAccount }) {
               type="text"
               id="last-name"
               name="last-name"
+              minLength={1}
+              maxLength={30}
               placeholder="Enter your email"
               required
             />
@@ -88,6 +91,7 @@ export default function CreateAccount({ showCreateAccount }) {
               type="email"
               id="email"
               name="email"
+              minLength={1}
               placeholder="Enter your email"
               required
             />
@@ -98,6 +102,7 @@ export default function CreateAccount({ showCreateAccount }) {
               type="password"
               id="password"
               name="password"
+              minLength={8}
               placeholder="Enter your password"
               required
             />
@@ -107,6 +112,7 @@ export default function CreateAccount({ showCreateAccount }) {
               type="password"
               id="confirm-password"
               name="confirm-password"
+              minLength={8}
               placeholder="Enter your password"
               required
             />

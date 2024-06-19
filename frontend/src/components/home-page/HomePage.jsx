@@ -17,9 +17,10 @@ export default function HomePage() {
         );
 
         const data = await response.json();
-
+        console.log("HOME PAGE DATA", data);
         if (!data.authenticated) {
-          navigate("/authentication-page");
+          // navigate("/authentication-page");
+          console.log(data)
         }
       } catch (error) {
         console.log("Error checking authentication:", error);
@@ -34,6 +35,7 @@ export default function HomePage() {
     try {
       const response = await fetch("http://localhost:3000/logout", {
         method: "GET",
+        credentials: "include",
         mode: "cors",
       });
 

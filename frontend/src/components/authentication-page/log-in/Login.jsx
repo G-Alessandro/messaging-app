@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-export default function Login({ showCreateAccount }) {
-  const [logInError, setLogInError] = useState(false);
+export default function Login({ setCreateAccount }) {
+  const [logInError, setLogInError] = useState(null);
   const [authenticated, setAuthenticated] = useState(false);
   const navigate = useNavigate();
 
@@ -28,7 +28,7 @@ export default function Login({ showCreateAccount }) {
         setTimeout(() => navigate("/"), 2000);
       } else {
         if (data.error) {
-          setLogInError(true);
+          setLogInError(data.error);
         }
       }
     } catch (error) {
@@ -44,7 +44,7 @@ export default function Login({ showCreateAccount }) {
           <h1>Welcome back</h1>
           <div>
             <p>New to Messaging App?</p>
-            <button onClick={showCreateAccount}>Create an account.</button>
+            <button onClick={() => setCreateAccount((prev) => !prev)}>Create an account.</button>
           </div>
           <form onSubmit={handleSubmit}>
             <label htmlFor="email">Email</label>
@@ -65,7 +65,7 @@ export default function Login({ showCreateAccount }) {
               required
             />
 
-            {logInError && <p>incorrect email or password</p>}
+            {logInError && <p>{logInError}</p>}
 
             <button type="submit">Log in</button>
           </form>
