@@ -53,14 +53,14 @@ exports.sign_up_post = [
 exports.sign_in_post = (req, res, next) => {
   passport.authenticate('local', (err, user, info) => {
     if (err) {
-      return next(err);
+      return res.status(500).json({ error: 'Internal Server Error' });
     }
     if (!user) {
       return res.status(401).json({ error: info.message });
     }
     req.logIn(user, (err) => {
       if (err) {
-        return next(err);
+        return res.status(500).json({ error: 'Login Failed' });
       }
       return res.status(200).json('Authentication successful');
     });
@@ -75,10 +75,16 @@ exports.authentication_check_get = (req, res) => {
 };
 
 exports.logout_get = asyncHandler(async (req, res) => {
-  req.logout((err) => {
-    if (err) {
-      return res.status(500).json({ logoutError: 'Error occurred while logging out.' });
-    }
-    res.status(200).json({ message: 'Logout successful' });
-  });
+  try {
+    const userId = req.user._id;
+    await UserAccount.findByIdAndUpdate(userId, { online: false });
+    req.logout((err) => {
+      if (err) {
+        return res.status(500).json({ logoutError: 'Error occurred while logging out.' });
+      }
+      res.status(200).json({ message: 'Logout successful' });
+    });
+  } catch (error) {
+    res.status(500).json({ logoutError: 'Error occurred while logging out.' });
+  }
 });
