@@ -17,9 +17,8 @@ export default function HomePage() {
         );
 
         const data = await response.json();
-        console.log("HOME PAGE DATA", data);
         if (!data.authenticated) {
-          // navigate("/authentication-page");
+          navigate("/authentication-page");
           console.log(data)
         }
       } catch (error) {

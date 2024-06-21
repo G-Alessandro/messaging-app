@@ -28,7 +28,6 @@ export default function CreateAccount({ setCreateAccount }) {
       });
 
       const data = await response.json();
-      console.log("DATA", data);
       if (response.ok && !data.error) {
         setRegistrationCompleted(true);
         setTimeout(() => setCreateAccount((prev) => !prev), 2000);

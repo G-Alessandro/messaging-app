@@ -19,6 +19,7 @@ export default function Login({ setCreateAccount }) {
           "Content-Type": "application/json",
           mode: "cors",
         },
+        credentials: "include",
         body: JSON.stringify(formData),
       });
 
@@ -44,7 +45,9 @@ export default function Login({ setCreateAccount }) {
           <h1>Welcome back</h1>
           <div>
             <p>New to Messaging App?</p>
-            <button onClick={() => setCreateAccount((prev) => !prev)}>Create an account.</button>
+            <button onClick={() => setCreateAccount((prev) => !prev)}>
+              Create an account.
+            </button>
           </div>
           <form onSubmit={handleSubmit}>
             <label htmlFor="email">Email</label>
