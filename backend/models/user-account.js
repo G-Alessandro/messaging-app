@@ -25,4 +25,4 @@ const UserAccountSchema = new Schema({
   },
 });
 
-module.exports = mongoose.model('UserAccountSchema', UserAccountSchema, 'user-account');
+module.exports = mongoose.model('UserAccount', UserAccountSchema, 'user-account');
