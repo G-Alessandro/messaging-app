@@ -17,8 +17,8 @@ export default function HomePage() {
         setShowGroupChat={setShowGroupChat}
       />
       <div>{showUserProfile && <UserProfile />}</div>
-      <div>{showGeneralChat && <UserProfile />}</div>
-      <div>{showGroupChat && <UserProfile />}</div>
+      <div>{showGeneralChat && <GeneralChat />}</div>
+      <div>{showGroupChat && <GroupChat />}</div>
     </>
   );
 }
