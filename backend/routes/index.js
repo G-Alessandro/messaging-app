@@ -18,4 +18,6 @@ router.get('/general-chat', sidebar_controllers.general_chat_get);
 
 router.post('/add-friend', sidebar_controllers.add_friend_post)
 
+router.delete('/remove-friend', sidebar_controllers.remove_friend_delete)
+
 module.exports = router;

@@ -10,16 +10,14 @@ exports.general_chat_get = asyncHandler(async (req, res) => {
   }
 
   try {
-    const userId = req.user_id;
-
+    const userId = req.user._id;
     const user = await UserAccount.findById(userId, "friends");
 
-    const userFriendsArray = user ? user.friends : [];
     const userFriends = await UserAccount.find({
-      _id: { $in: userFriendsArray },
+      _id: { $in: user.friends },
     });
 
-    const excludedUsers = [userId, ...userFriendsArray];
+    const excludedUsers = [userId, ...user.friends];
     const allUsers = await UserAccount.find(
       { _id: { $nin: excludedUsers } },
       "_id firstName lastName online"
@@ -42,16 +40,32 @@ exports.add_friend_post = asyncHandler(async (req, res) => {
   }
 
   try {
-    const userId = req.user_id;
-    const newFriendId = req.body.friendIdData;
+    const userId = req.user._id;
+    const friendId = req.body.friendId;
     await UserAccount.findByIdAndUpdate(userId, {
-      $addToSet: { friends: newFriendId },
+      $addToSet: { friends: friendId },
     });
     res.status(200).json({ message: "Friend added!" });
   } catch (error) {
     console.error(error);
     return res.status(500).json({
       error: "An error occurred while adding a friend.",
+    });
+  }
+});
+
+exports.remove_friend_delete = asyncHandler(async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const friendId = req.body.friendId;
+    await UserAccount.findByIdAndUpdate(userId, {
+      $pull: { friends: friendId },
+    });
+    res.status(200).json({ message: "Friend removed!" });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      error: "An error occurred while removing the friend.",
     });
   }
 });
