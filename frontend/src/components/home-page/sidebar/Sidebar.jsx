@@ -23,7 +23,6 @@ export default function Sidebar({
         const data = await response.json();
         if (!data.authenticated) {
           navigate("/authentication-page");
-          console.log(data);
         }
       } catch (error) {
         console.log("Error checking authentication:", error);
