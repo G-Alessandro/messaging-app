@@ -20,7 +20,7 @@
     "he": "^1.2.0",
     "http-errors": "~1.6.3",
     "jade": "^0.29.0",
-    "mongoose": "^8.4.1",
+    "mongoose": "^8.4.5",
     "morgan": "~1.9.1",
     "passport": "^0.7.0",
     "passport-local": "^1.0.0"
