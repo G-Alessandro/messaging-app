@@ -54,6 +54,9 @@ exports.add_friend_post = [
       await UserAccount.findByIdAndUpdate(userId, {
         $addToSet: { friends: friendId },
       });
+      await UserAccount.findByIdAndUpdate(friendId, {
+        $addToSet: { friends: userId },
+      });
       res.status(200).json({ message: "Friend added!" });
     } catch (error) {
       console.error(error);
@@ -82,6 +85,9 @@ exports.remove_friend_delete = [
       const friendId = req.body.friendId;
       await UserAccount.findByIdAndUpdate(userId, {
         $pull: { friends: friendId },
+      });
+      await UserAccount.findByIdAndUpdate(friendId, {
+        $pull: { friends: userId },
       });
       res.status(200).json({ message: "Friend removed!" });
     } catch (error) {
