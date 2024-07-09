@@ -19,10 +19,12 @@ router.get("/logout", authentication_controllers.logout_get);
 // Sidebar Controllers
 router.get("/general-chat", sidebar_controllers.general_chat_get);
 
-router.post("/create-group-chat", sidebar_controllers.create_group_chat_post);
-
 router.post("/add-friend", sidebar_controllers.add_friend_post);
 
 router.delete("/remove-friend", sidebar_controllers.remove_friend_delete);
+
+router.get("/group-chat", sidebar_controllers.group_chat_get);
+
+router.post("/create-group-chat", sidebar_controllers.create_group_chat_post);
 
 module.exports = router;

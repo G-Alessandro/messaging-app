@@ -8,7 +8,7 @@ exports.general_chat_get = asyncHandler(async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     const errorsMessages = errors.array().map((error) => error.msg);
-    return res.status(400).json({ errors: errorsMessages });
+    return res.status(400).json({ error: errorsMessages });
   }
 
   try {
@@ -45,7 +45,7 @@ exports.add_friend_post = [
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       const errorsMessages = errors.array().map((error) => error.msg);
-      return res.status(400).json({ errors: errorsMessages });
+      return res.status(400).json({ error: errorsMessages });
     }
 
     try {
@@ -75,7 +75,7 @@ exports.remove_friend_delete = [
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       const errorsMessages = errors.array().map((error) => error.msg);
-      return res.status(400).json({ errors: errorsMessages });
+      return res.status(400).json({ error: errorsMessages });
     }
     try {
       const userId = req.user._id;
@@ -92,6 +92,24 @@ exports.remove_friend_delete = [
     }
   }),
 ];
+
+exports.group_chat_get = asyncHandler(async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    const errorsMessages = errors.array().map((error) => error.msg);
+    return res.status(400).json({ error: errorsMessages });
+  }
+  try {
+    const userId = req.user._id;
+    const groupChat = await UserAccount.findById(userId, "groupChat");
+    res.status(200).json({ groupChat: groupChat });
+  } catch (error) {
+    console.error("An error occurred while fetching the group chat:", error);
+    return res.status(500).json({
+      error: "An error occurred while removing the friend.",
+    });
+  }
+});
 
 exports.create_group_chat_post = [
   body("groupChatName")
@@ -113,7 +131,7 @@ exports.create_group_chat_post = [
   body("groupChatUsers")
     .isArray()
     .isLength({ min: 1 })
-    .withMessage("Group chat users array must contain at least one user")
+    .withMessage("Group chat must contain at least one user")
     .custom((value) => {
       for (let i = 0; i < value.length; i++) {
         if (!mongoose.Types.ObjectId.isValid(value[i])) {
