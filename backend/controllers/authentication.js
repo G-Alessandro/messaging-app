@@ -2,7 +2,7 @@ const asyncHandler = require("express-async-handler");
 const { body, validationResult } = require("express-validator");
 const bcrypt = require("bcryptjs");
 const he = require("he");
-const passport = require("../user-authentication/passport-config");
+const passport = require("../utils/user-authentication/passport-config");
 const UserAccount = require("../models/user-account");
 
 exports.sign_up_post = [
@@ -43,7 +43,7 @@ exports.sign_up_post = [
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       const errorsMessages = errors.array().map((error) => error.msg);
-      res.json({ error: errorsMessages });
+      return res.status(400).json({ error: errorsMessages });
     } else {
       try {
         const userAccount = new UserAccount({
@@ -51,6 +51,10 @@ exports.sign_up_post = [
           lastName: he.decode(req.body.lastName),
           email: req.body.email,
           password: req.body.password,
+          profileImage: {
+            url: process.env.DEFAULT_PROFILE_IMAGE_URL,
+            public_id: process.env.DEFAULT_PROFILE_IMAGE_PUBLIC_ID,
+          },
           friends: [],
           online: false,
         });

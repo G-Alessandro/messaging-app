@@ -26,6 +26,15 @@ const UserAccountSchema = new Schema({
     minLength: 8,
     required: true,
   },
+  profileImage: {
+    url: {
+      type: String,
+    },
+    public_id: {
+      type: String,
+    },
+  },
+  profileInfo: { type: String, maxLength: 200 },
   friends: {
     type: [{ type: Schema.Types.ObjectId, ref: "UserAccount" }],
     default: [],
