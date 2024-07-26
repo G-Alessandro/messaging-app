@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import Sidebar from "../sidebar/Sidebar";
 
 export default function GeneralChat() {
   const [groupChat, setGroupChat] = useState(null);
@@ -27,21 +28,24 @@ export default function GeneralChat() {
   }, []);
 
   return (
-    <div>
-      {error && <p>{error}</p>}
-      {!groupChat && !error && <p>Loading group chat..</p>}
-      {groupChat && !error && (
-        <div>
-          <p>Group Chat</p>
-          {groupChat.groupChat.map((chat) => {
-            return (
-              <button key={chat.groupChatName}>
-                <p>{chat.groupChatName}</p>
-              </button>
-            );
-          })}
-        </div>
-      )}
-    </div>
+    <>
+      <Sidebar />
+      <div>
+        {error && <p>{error}</p>}
+        {!groupChat && !error && <p>Loading group chat..</p>}
+        {groupChat && !error && (
+          <div>
+            <p>Group Chat</p>
+            {groupChat.groupChat.map((chat) => {
+              return (
+                <button key={chat.groupChatName}>
+                  <p>{chat.groupChatName}</p>
+                </button>
+              );
+            })}
+          </div>
+        )}
+      </div>
+    </>
   );
 }

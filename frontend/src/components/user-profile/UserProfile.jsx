@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import Sidebar from "../sidebar/Sidebar";
 import style from "./UserProfile.module.css";
 
 export default function UserProfile() {
@@ -81,74 +82,77 @@ export default function UserProfile() {
   };
 
   return (
-    <div>
-      {error && <p>{error}</p>}
-      {actionResult && <p>{actionResult}</p>}
-      {!userProfileData && !error && <p>Loading...</p>}
-      {userProfileData && (
-        <>
-          {showFileForm && (
-            <form onSubmit={(event) => handleSubmit(event, "image")}>
+    <>
+      <Sidebar />
+      <div>
+        {error && <p>{error}</p>}
+        {actionResult && <p>{actionResult}</p>}
+        {!userProfileData && !error && <p>Loading...</p>}
+        {userProfileData && (
+          <>
+            {showFileForm && (
+              <form onSubmit={(event) => handleSubmit(event, "image")}>
+                <div>
+                  <img
+                    className={style.profileImg}
+                    src={previewUserImage}
+                    alt="Preview of your new profile picture"
+                  />
+                </div>
+                <input
+                  type="file"
+                  name="user-image"
+                  id="user-image"
+                  onChange={handleFileChange}
+                  required
+                />
+                <button type="submit">Save</button>
+                <button onClick={() => setShowFileForm(false)}>Cancel</button>
+              </form>
+            )}
+            <div>
               <div>
                 <img
                   className={style.profileImg}
-                  src={previewUserImage}
-                  alt="Preview of your new profile picture"
+                  src={userProfileData.profileImage.url}
+                  alt={`Profile image of ${userProfileData.firstName} ${userProfileData.lastName}`}
                 />
               </div>
-              <input
-                type="file"
-                name="user-image"
-                id="user-image"
-                onChange={handleFileChange}
-                required
-              />
-              <button type="submit">Save</button>
-              <button onClick={() => setShowFileForm(false)}>Cancel</button>
-            </form>
-          )}
-          <div>
-            <div>
-              <img
-                className={style.profileImg}
-                src={userProfileData.profileImage.url}
-                alt={`Profile image of ${userProfileData.firstName} ${userProfileData.lastName}`}
-              />
+              <button onClick={() => setShowFileForm(true)}>Change img</button>
             </div>
-            <button onClick={() => setShowFileForm(true)}>Change img</button>
-          </div>
 
-          <div>
-            <p>{`${userProfileData.firstName} ${userProfileData.lastName}`}</p>
-            <p>{userProfileData.email}</p>
-          </div>
+            <div>
+              <p>{`${userProfileData.firstName} ${userProfileData.lastName}`}</p>
+              <p>{userProfileData.email}</p>
+            </div>
 
-          <div>
-            <p>Info:</p>
-            {showInfoForm && (
-              <form onSubmit={(event) => handleSubmit(event, "info")}>
-                <input
-                  type="text"
-                  name="user-info"
-                  id="user-info"
-                  maxLength="200"
-                  defaultValue={userProfileData.profileInfo}
-                />
-                <button type="submit">Save</button>
-                <button onClick={() => setShowInfoForm(false)}>Cancel</button>
-              </form>
-            )}
-            {!showInfoForm && (
-              <div>
-                <p>{userProfileData.profileInfo}</p>
-                <button onClick={() => setShowInfoForm(true)}>
-                  Change Info
-                </button>
-              </div>
-            )}
-          </div>
-        </>
-      )}
-    </div>
+            <div>
+              <p>Info:</p>
+              {showInfoForm && (
+                <form onSubmit={(event) => handleSubmit(event, "info")}>
+                  <input
+                    type="text"
+                    name="user-info"
+                    id="user-info"
+                    maxLength="200"
+                    defaultValue={userProfileData.profileInfo}
+                  />
+                  <button type="submit">Save</button>
+                  <button onClick={() => setShowInfoForm(false)}>Cancel</button>
+                </form>
+              )}
+              {!showInfoForm && (
+                <div>
+                  <p>{userProfileData.profileInfo}</p>
+                  <button onClick={() => setShowInfoForm(true)}>
+                    Change Info
+                  </button>
+                </div>
+              )}
+            </div>
+          </>
+        )}
+      </div>
+    </>
   );
 }

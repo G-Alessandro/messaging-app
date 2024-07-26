@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { CreateGroupChat } from "./create-group-chat/CreateGroupChat";
 import { FriendsList } from "./friends-list/FriendsList";
 import { AllUsersList } from "./all-users-list/AllUsersList";
+import Sidebar from "../sidebar/Sidebar";
 
 export default function GeneralChat() {
   const [userFriends, setUserFriends] = useState([]);
@@ -47,40 +48,43 @@ export default function GeneralChat() {
   };
 
   return (
-    <div>
-      {error && <p>{error}</p>}
-      {!allUsers && !error && <p>Loading...</p>}
-      {allUsers && !error && (
-        <>
-          <CreateGroupChat
-            setError={setError}
-            setActionResult={setActionResult}
-            showGroupChatButton={showGroupChatButton}
-            setShowGroupChatButton={setShowGroupChatButton}
-            groupChatUser={groupChatUser}
-          />
-          <FriendsList
-            userFriends={userFriends}
-            setError={setError}
-            actionResult={actionResult}
-            setActionResult={setActionResult}
-            friendStatusChanged={friendStatusChanged}
-            setFriendStatusChanged={setFriendStatusChanged}
-            showGroupChatButton={showGroupChatButton}
-            addUserGroupChat={addUserGroupChat}
-          />
+    <>
+      <Sidebar />
+      <div>
+        {error && <p>{error}</p>}
+        {!allUsers && !error && <p>Loading...</p>}
+        {allUsers && !error && (
+          <>
+            <CreateGroupChat
+              setError={setError}
+              setActionResult={setActionResult}
+              showGroupChatButton={showGroupChatButton}
+              setShowGroupChatButton={setShowGroupChatButton}
+              groupChatUser={groupChatUser}
+            />
+            <FriendsList
+              userFriends={userFriends}
+              setError={setError}
+              actionResult={actionResult}
+              setActionResult={setActionResult}
+              friendStatusChanged={friendStatusChanged}
+              setFriendStatusChanged={setFriendStatusChanged}
+              showGroupChatButton={showGroupChatButton}
+              addUserGroupChat={addUserGroupChat}
+            />
 
-          <AllUsersList
-            allUsers={allUsers}
-            setError={setError}
-            setActionResult={setActionResult}
-            friendStatusChanged={friendStatusChanged}
-            setFriendStatusChanged={setFriendStatusChanged}
-            showGroupChatButton={showGroupChatButton}
-            addUserGroupChat={addUserGroupChat}
-          />
-        </>
-      )}
-    </div>
+            <AllUsersList
+              allUsers={allUsers}
+              setError={setError}
+              setActionResult={setActionResult}
+              friendStatusChanged={friendStatusChanged}
+              setFriendStatusChanged={setFriendStatusChanged}
+              showGroupChatButton={showGroupChatButton}
+              addUserGroupChat={addUserGroupChat}
+            />
+          </>
+        )}
+      </div>
+    </>
   );
 }

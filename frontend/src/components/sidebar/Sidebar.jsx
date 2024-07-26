@@ -1,11 +1,7 @@
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
-export default function Sidebar({
-  setShowUserProfile,
-  setShowGeneralChat,
-  setShowGroupChat,
-}) {
+export default function Sidebar() {
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -32,18 +28,6 @@ export default function Sidebar({
     authenticationCheck();
   }, []);
 
-  const handleClick = (componentToShow) => {
-    const setShowStates = [
-      setShowUserProfile,
-      setShowGeneralChat,
-      setShowGroupChat,
-    ];
-
-    setShowStates.forEach((setState) => {
-      setState(setState === componentToShow);
-    });
-  };
-
   const handleLogout = async (event) => {
     event.preventDefault();
     try {
@@ -64,21 +48,22 @@ export default function Sidebar({
       console.log("Error requesting registration:", error);
     }
   };
+
   return (
     <div>
       <div>
-        <button onClick={() => handleClick(setShowUserProfile)}>
-          <img src="" alt="" />
-          User
-        </button>
-        <button onClick={() => handleClick(setShowGeneralChat)}>
+        <Link to="/">
           <img src="" alt="" />
           General Chat
-        </button>
-        <button onClick={() => handleClick(setShowGroupChat)}>
+        </Link>
+        <Link to="/group-chat">
           <img src="" alt="" />
           Group Chat
-        </button>
+        </Link>
+        <Link to="/user-profile">
+          <img src="" alt="" />
+          User profile
+        </Link>
       </div>
       <button onClick={handleLogout}>
         <img src="" alt="" />
