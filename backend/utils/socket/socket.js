@@ -22,7 +22,9 @@ const socketHandler = (io) => {
       await UserAccount.findByIdAndUpdate(userId, { online: false });
     });
 
-    socket.on("disconnect");
+    socket.on("disconnect", () => {
+      console.log("User disconnected");
+    });
   });
 };
 
