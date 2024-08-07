@@ -3,7 +3,7 @@ import AuthenticationPage from "./components/authentication-page/AuthenticationP
 import GeneralChat from "./components/general-chat/GeneralChat";
 import GroupChat from "./components/group-chat/GroupChat";
 import UserProfile from "./components/user-profile/UserProfile";
-
+// Creare pagina apposita per sign-in e sing-up
 const Router = () => {
   const router = createBrowserRouter([
     {

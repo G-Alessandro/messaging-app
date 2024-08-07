@@ -1,4 +1,4 @@
-export function AllUsersList({
+export default function AllUsersList({
   allUsers,
   setError,
   setActionResult,
@@ -6,6 +6,7 @@ export function AllUsersList({
   setFriendStatusChanged,
   showGroupChatButton,
   addUserGroupChat,
+  setChatUserId,
 }) {
   const addFriend = async (friendId) => {
     try {
@@ -30,13 +31,14 @@ export function AllUsersList({
       setError(err.message);
     }
   };
+
   return (
     <div>
       <p>All Users</p>
       {allUsers &&
         allUsers.map((user) => {
           return (
-            <div key={user._id}>
+            <div key={user._id} onClick={() => setChatUserId([user._id])}>
               <p>
                 {user.firstName} {user.lastName}
               </p>

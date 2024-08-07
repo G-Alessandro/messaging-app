@@ -1,4 +1,4 @@
-export function CreateGroupChat({
+export default function CreateGroupChat({
   setError,
   setActionResult,
   setShowGroupChatButton,
