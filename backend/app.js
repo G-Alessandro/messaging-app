@@ -7,13 +7,18 @@ const mongoose = require("mongoose");
 const passport = require("passport");
 const session = require("express-session");
 const cors = require("cors");
+const http = require("http");
+const { Server } = require("socket.io");
+
+const socketHandler = require("./utils/socket/socket");
+
 require("dotenv").config();
 
 const indexRouter = require("./routes/index");
 
 const mongoDB = process.env.MONGODB_URI;
-
 const allowedOrigin = process.env.ALLOWED_ORIGIN;
+const sessionSecret = process.env.SESSION_SECRET;
 
 const app = express();
 
@@ -29,6 +34,20 @@ app.use(
   })
 );
 
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: allowedOrigin,
+    methods: ["GET", "POST"],
+    credentials: true,
+  },
+});
+socketHandler(io);
+
+server.listen(4000, () => {
+  console.log("Server is running on port 3000");
+});
+
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "jade");
@@ -37,7 +56,7 @@ app.use(logger("dev"));
 app.use(express.json());
 app.use(
   session({
-    secret: process.env.SESSION_SECRET,
+    secret: sessionSecret,
     resave: false,
     saveUninitialized: true,
   })

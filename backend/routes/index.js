@@ -4,6 +4,7 @@ const router = express.Router();
 const authentication_controllers = require("../controllers/authentication");
 const general_chat_controllers = require("../controllers/general-chat");
 const user_profile_controllers = require("../controllers/user-profile");
+const chat_room_controllers = require("../controllers/chat-room");
 
 // Authentication Controllers
 router.post("/sign-in", authentication_controllers.sign_in_post);
@@ -30,6 +31,11 @@ router.post(
   "/create-group-chat",
   general_chat_controllers.create_group_chat_post
 );
+
+// Chat Room controllers
+router.post("/chat-room", chat_room_controllers.chat_room_post);
+
+router.post("/chat-room-image", chat_room_controllers.chat_room_image_post);
 
 // User Profile Controllers
 router.get("/user-profile", user_profile_controllers.user_profile_data_get);

@@ -48,10 +48,6 @@ exports.user_profile_image_post = [
         });
       }
 
-      // const result = await cloudinary.uploader.upload(req.file.path, {
-      //   folder: "messagingApp/userProfileImage",
-      // });
-
       const userId = req.user._id;
       await UserAccount.findByIdAndUpdate(userId, {
         profileImage: {

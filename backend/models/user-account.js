@@ -53,6 +53,14 @@ const UserAccountSchema = new Schema({
           default: [],
         },
         chatId: { type: Schema.Types.ObjectId, ref: "chat" },
+        groupChatImage: {
+          url: {
+            type: String,
+          },
+          public_id: {
+            type: String,
+          },
+        },
       },
     ],
     default: [],

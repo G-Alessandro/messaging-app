@@ -25,7 +25,7 @@ exports.general_chat_get = asyncHandler(async (req, res) => {
       "_id firstName lastName online"
     );
 
-    return res.status(200).json({ userFriends, allUsers });
+    return res.status(200).json({ userId, userFriends, allUsers });
   } catch (error) {
     console.error(error);
     return res.status(500).json({
