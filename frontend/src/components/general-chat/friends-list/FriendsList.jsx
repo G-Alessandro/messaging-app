@@ -7,6 +7,7 @@ export default function FriendsList({
   setFriendStatusChanged,
   showGroupChatButton,
   addUserGroupChat,
+  setChatUserId,
 }) {
   const removeFriend = async (friendId) => {
     try {
@@ -40,7 +41,7 @@ export default function FriendsList({
       {userFriends &&
         userFriends.map((friend) => {
           return (
-            <div key={friend._id}>
+            <div key={friend._id} onClick={() => setChatUserId([user._id])}>
               <p>
                 {friend.firstName} {friend.lastName}
               </p>

@@ -3,6 +3,7 @@ import io from "socket.io-client";
 import Sidebar from "../sidebar/Sidebar";
 import CreateGroupChat from "./create-group-chat/CreateGroupChat";
 import FriendsList from "./friends-list/FriendsList";
+import GroupList from "./group-list/GroupList";
 import AllUsersList from "./all-users-list/AllUsersList";
 import ChatRoom from "./chat-room/ChatRoom";
 
@@ -71,7 +72,7 @@ export default function GeneralChat() {
       return result;
     });
   };
-
+  // Creare barra per selezionare le varie categorie di chat
   return (
     <>
       <Sidebar />
@@ -87,6 +88,7 @@ export default function GeneralChat() {
               setShowGroupChatButton={setShowGroupChatButton}
               groupChatUser={groupChatUser}
             />
+
             <FriendsList
               userFriends={userFriends}
               setError={setError}
@@ -96,7 +98,10 @@ export default function GeneralChat() {
               setFriendStatusChanged={setFriendStatusChanged}
               showGroupChatButton={showGroupChatButton}
               addUserGroupChat={addUserGroupChat}
+              setChatUserId={setChatUserId}
             />
+
+            <GroupList />
 
             <AllUsersList
               allUsers={allUsers}
