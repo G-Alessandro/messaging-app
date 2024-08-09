@@ -1,5 +1,4 @@
-import { useState } from "react";
-import DropdownSvg from "/assets/svg/dropdown.svg";
+import DropdownMenu from "../dropdown-menu/DropdownMenu";
 import style from "./FriendsList.module.css";
 
 export default function FriendsList({
@@ -9,40 +8,10 @@ export default function FriendsList({
   setActionResult,
   friendStatusChanged,
   setFriendStatusChanged,
-  showGroupChatButton,
-  addUserGroupChat,
+  // showGroupChatButton,
+  // addUserGroupChat,
   setChatUserId,
 }) {
-  const [showDropdownMenu, setShowDropdownMenu] = useState(false);
-
-  const removeFriend = async (friendId) => {
-    try {
-      const response = await fetch("http://localhost:3000/remove-friend", {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        mode: "cors",
-        body: JSON.stringify({ friendId }),
-      });
-      const data = await response.json();
-      if (!response.ok) {
-        setActionResult(data.error);
-      } else {
-        setActionResult(data.message);
-        setFriendStatusChanged(!friendStatusChanged);
-        setTimeout(() => setActionResult(null), 2000);
-      }
-    } catch (err) {
-      setError(err.message);
-    }
-  };
-
-  const handleButtonClick = (user) => {
-    addUserGroupChat(user._id);
-    setShowDropdownMenu(false);
-  };
 
   return (
     <div>
@@ -72,29 +41,12 @@ export default function FriendsList({
                 </p>
               </button>
 
-              <button
-                aria-label="show possible actions for this user"
-                onClick={() => setShowDropdownMenu(!showDropdownMenu)}
-              >
-                <img src={DropdownSvg} className={style.dropdownSvg} />
-              </button>
-
-              {showDropdownMenu && (
-                <div>
-                  <button
-                    onClick={() => handleButtonClick(friend)}
-                    style={{
-                      visibility: showGroupChatButton ? "visible" : "hidden",
-                    }}
-                    aria-label="add user to group"
-                  >
-                    Add to group chat
-                  </button>
-                  <button onClick={() => removeFriend(friend._id)}>
-                    Remove from friends list
-                  </button>
-                </div>
-              )}
+              <DropdownMenu component={"FriendsList"}
+                userId={friend._id}
+                setError={setError}
+                setActionResult={setActionResult}
+                friendStatusChanged={friendStatusChanged}
+                setFriendStatusChanged={setFriendStatusChanged}/>
             </div>
           );
         })}

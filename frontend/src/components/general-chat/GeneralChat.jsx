@@ -72,6 +72,7 @@ export default function GeneralChat() {
       return result;
     });
   };
+  
   // Creare barra per selezionare le varie categorie di chat
   return (
     <>
@@ -101,7 +102,7 @@ export default function GeneralChat() {
               setChatUserId={setChatUserId}
             />
 
-            <GroupList />
+            {/* <GroupList /> */}
 
             <AllUsersList
               allUsers={allUsers}
