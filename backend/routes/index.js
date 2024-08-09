@@ -3,6 +3,7 @@ const express = require("express");
 const router = express.Router();
 const authentication_controllers = require("../controllers/authentication");
 const general_chat_controllers = require("../controllers/general-chat");
+const dropdown_menu_controller = require("../controllers/dropdown-menu");
 const user_profile_controllers = require("../controllers/user-profile");
 const chat_room_controllers = require("../controllers/chat-room");
 
@@ -21,16 +22,17 @@ router.get("/logout", authentication_controllers.logout_get);
 // General Chat Controllers
 router.get("/general-chat", general_chat_controllers.general_chat_get);
 
-router.post("/add-friend", general_chat_controllers.add_friend_post);
-
-router.delete("/remove-friend", general_chat_controllers.remove_friend_delete);
-
 router.get("/group-chat", general_chat_controllers.group_chat_get);
 
 router.post(
   "/create-group-chat",
   general_chat_controllers.create_group_chat_post
 );
+
+// Dropdown Menu Controllers
+router.post("/add-friend", dropdown_menu_controller.add_friend_post);
+
+router.delete("/remove-friend", dropdown_menu_controller.remove_friend_delete);
 
 // Chat Room controllers
 router.post("/chat-room", chat_room_controllers.chat_room_post);
