@@ -1,3 +1,7 @@
+import { useState } from "react";
+import DropdownSvg from "/assets/svg/dropdown.svg";
+import style from "./FriendsList.module.css";
+
 export default function FriendsList({
   userFriends,
   setError,
@@ -9,6 +13,8 @@ export default function FriendsList({
   addUserGroupChat,
   setChatUserId,
 }) {
+  const [showDropdownMenu, setShowDropdownMenu] = useState(false);
+
   const removeFriend = async (friendId) => {
     try {
       const response = await fetch("http://localhost:3000/remove-friend", {
@@ -33,32 +39,62 @@ export default function FriendsList({
     }
   };
 
+  const handleButtonClick = (user) => {
+    addUserGroupChat(user._id);
+    setShowDropdownMenu(false);
+  };
+
   return (
     <div>
-      <p>Friends</p>
+      <h2>Friends</h2>
       {actionResult && <p>{actionResult}</p>}
       {!userFriends && <p>No Friends? Make One!</p>}
       {userFriends &&
         userFriends.map((friend) => {
           return (
-            <div key={friend._id} onClick={() => setChatUserId([user._id])}>
-              <p>
-                {friend.firstName} {friend.lastName}
-              </p>
-              <p className={friend.online ? "userOnline" : "userOffline"}>
-                {friend.online ? "Online" : "Offline"}
-              </p>
+            <div key={friend._id}>
               <button
-                onClick={() => addUserGroupChat(friend._id)}
-                style={{
-                  visibility: showGroupChatButton ? "visible" : "hidden",
-                }}
+                onClick={() => setChatUserId([friend._id])}
+                aria-label={`chat with ${friend.firstName} ${friend.lastName}`}
               >
-                Add to group chat
+                <div>
+                  <img
+                    src={friend.profileImage.url}
+                    className={style.friendChatImg}
+                  />
+                </div>
+
+                <h3>
+                  {friend.firstName} {friend.lastName}
+                </h3>
+                <p className={friend.online ? "userOnline" : "userOffline"}>
+                  {friend.online ? "Online" : "Offline"}
+                </p>
               </button>
-              <button onClick={() => removeFriend(friend._id)}>
-                Remove from friends list
+
+              <button
+                aria-label="show possible actions for this user"
+                onClick={() => setShowDropdownMenu(!showDropdownMenu)}
+              >
+                <img src={DropdownSvg} className={style.dropdownSvg} />
               </button>
+
+              {showDropdownMenu && (
+                <div>
+                  <button
+                    onClick={() => handleButtonClick(friend)}
+                    style={{
+                      visibility: showGroupChatButton ? "visible" : "hidden",
+                    }}
+                    aria-label="add user to group"
+                  >
+                    Add to group chat
+                  </button>
+                  <button onClick={() => removeFriend(friend._id)}>
+                    Remove from friends list
+                  </button>
+                </div>
+              )}
             </div>
           );
         })}

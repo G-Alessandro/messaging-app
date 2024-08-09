@@ -46,7 +46,7 @@ export default function AllUsersList({
 
   return (
     <div>
-      <p>All Users</p>
+      <h2>All Users</h2>
       {allUsers &&
         allUsers.map((user) => {
           return (
@@ -61,9 +61,9 @@ export default function AllUsersList({
                     className={style.userChatImg}
                   />
                 </div>
-                <p>
+                <h3>
                   {user.firstName} {user.lastName}
-                </p>
+                </h3>
                 <p className={user.online ? "userOnline" : "userOffline"}>
                   {user.online ? "Online" : "Offline"}
                 </p>
@@ -73,7 +73,7 @@ export default function AllUsersList({
                 aria-label="show possible actions for this user"
                 onClick={() => setShowDropdownMenu(!showDropdownMenu)}
               >
-                <img src={DropdownSvg} className={style.dropdownSvg}/>
+                <img src={DropdownSvg} className={style.dropdownSvg} />
               </button>
 
               {showDropdownMenu && (
@@ -90,7 +90,9 @@ export default function AllUsersList({
                   <button
                     onClick={() => addFriend(user._id)}
                     aria-label="add user to friends"
-                  >Add to friends</button>
+                  >
+                    Add to friends
+                  </button>
                 </div>
               )}
             </div>

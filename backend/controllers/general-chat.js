@@ -22,7 +22,7 @@ exports.general_chat_get = asyncHandler(async (req, res) => {
     const excludedUsers = [userId, ...user.friends];
     const allUsers = await UserAccount.find(
       { _id: { $nin: excludedUsers } },
-      "_id firstName lastName online"
+      "_id firstName lastName profileImage online"
     );
 
     return res.status(200).json({ userId, userFriends, allUsers });
