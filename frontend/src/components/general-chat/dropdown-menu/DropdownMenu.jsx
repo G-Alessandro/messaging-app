@@ -5,6 +5,8 @@ import style from "./DropdownMenu.module.css";
 export default function DropdownMenu({
   component,
   userId,
+  groupId,
+  founder,
   setError,
   setActionResult,
   friendStatusChanged,
@@ -62,25 +64,59 @@ export default function DropdownMenu({
     }
   };
 
+  const deleteGroup = async (groupId, founder) => {
+    try {
+      const response = await fetch("http://localhost:3000/delete-group", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        mode: "cors",
+        body: JSON.stringify({ deletedGroupId: groupId, founder }),
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        setActionResult(data.error);
+      } else {
+        setActionResult(data.message);
+        setFriendStatusChanged(!friendStatusChanged);
+        setTimeout(() => setActionResult(null), 2000);
+      }
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
   const handleDropdownClick = (component) => {
     switch (component) {
-      case "AllUsersList":
-        setButtonActionName("Add to friends");
-        break;
       case "FriendsList":
         setButtonActionName("Remove from friends");
+        break;
+      case "GroupList":
+        setButtonActionName("Leave the group");
+        break;
+      case "GroupListFounder":
+        setButtonActionName("Delete group");
+        break;
+      case "AllUsersList":
+        setButtonActionName("Add to friends");
         break;
     }
     setShowDropdownMenu(!showDropdownMenu);
   };
 
-  const handleButtonClick = (component, userId) => {
+  const handleButtonClick = (component, userId, groupId, founder) => {
     switch (component) {
-      case "AllUsersList":
-        addFriend(userId);
-        break;
       case "FriendsList":
         removeFriend(userId);
+        break;
+      case "GroupList":
+      case "GroupListFounder":
+        deleteGroup(groupId, founder);
+        break;
+      case "AllUsersList":
+        addFriend(userId);
         break;
     }
     setShowDropdownMenu(false);
@@ -96,7 +132,11 @@ export default function DropdownMenu({
       </button>
       {showDropdownMenu && (
         <div>
-          <button onClick={() => handleButtonClick(component, userId)}>
+          <button
+            onClick={() =>
+              handleButtonClick(component, userId, groupId, founder)
+            }
+          >
             {buttonActionName}
           </button>
         </div>

@@ -12,13 +12,14 @@ const socket = io("http://localhost:4000");
 export default function GeneralChat() {
   const [userId, setUserId] = useState(null);
   const [userFriends, setUserFriends] = useState([]);
+  const [groupChat, setGroupChat] = useState([]);
   const [allUsers, setAllUsers] = useState(null);
   const [error, setError] = useState(null);
   const [actionResult, setActionResult] = useState(null);
   const [friendStatusChanged, setFriendStatusChanged] = useState(false);
   const [showGroupChatButton, setShowGroupChatButton] = useState(false);
   const [groupChatUser, setGroupChatUser] = useState([]);
-  const [chatUserId, setChatUserId] = useState([]);
+  const [chatUserId, setChatUserId] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -37,8 +38,9 @@ export default function GeneralChat() {
           setError(data.error);
         } else {
           setUserId(data.userId);
-          setAllUsers(data.allUsers);
           setUserFriends(data.userFriends);
+          setGroupChat(data.groupChat);
+          setAllUsers(data.allUsers);
         }
       } catch (err) {
         setError(err.message);
@@ -72,8 +74,16 @@ export default function GeneralChat() {
       return result;
     });
   };
-  
+
+  const removeUserGroupChat = (id) => {
+    setGroupChatUser((prev) => {
+      const result = prev.filter((arrayId) => arrayId !== id);
+      return result;
+    });
+  };
+
   // Creare barra per selezionare le varie categorie di chat
+
   return (
     <>
       <Sidebar />
@@ -81,12 +91,14 @@ export default function GeneralChat() {
         {error && <p>{error}</p>}
         {!allUsers && !error && <p>Loading...</p>}
         {allUsers && !error && (
-          <>
+          <div>
             <CreateGroupChat
               setError={setError}
               setActionResult={setActionResult}
               showGroupChatButton={showGroupChatButton}
               setShowGroupChatButton={setShowGroupChatButton}
+              friendStatusChanged={friendStatusChanged}
+              setFriendStatusChanged={setFriendStatusChanged}
               groupChatUser={groupChatUser}
             />
 
@@ -99,10 +111,18 @@ export default function GeneralChat() {
               setFriendStatusChanged={setFriendStatusChanged}
               showGroupChatButton={showGroupChatButton}
               addUserGroupChat={addUserGroupChat}
+              removeUserGroupChat={removeUserGroupChat}
               setChatUserId={setChatUserId}
             />
 
-            {/* <GroupList /> */}
+            <GroupList
+              setError={setError}
+              setActionResult={setActionResult}
+              groupChat={groupChat}
+              friendStatusChanged={friendStatusChanged}
+              setFriendStatusChanged={setFriendStatusChanged}
+              setChatUserId={setChatUserId}
+            />
 
             <AllUsersList
               allUsers={allUsers}
@@ -112,14 +132,13 @@ export default function GeneralChat() {
               setFriendStatusChanged={setFriendStatusChanged}
               showGroupChatButton={showGroupChatButton}
               addUserGroupChat={addUserGroupChat}
+              removeUserGroupChat={removeUserGroupChat}
               setChatUserId={setChatUserId}
             />
-          </>
+          </div>
         )}
       </div>
-      {chatUserId.length > 0 && (
-        <ChatRoom socket={socket} chatUserId={chatUserId} />
-      )}
+      {chatUserId && <ChatRoom socket={socket} chatUserId={chatUserId} />}
     </>
   );
 }

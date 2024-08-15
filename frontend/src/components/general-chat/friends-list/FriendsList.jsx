@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import DropdownMenu from "../dropdown-menu/DropdownMenu";
 import style from "./FriendsList.module.css";
 
@@ -8,10 +9,36 @@ export default function FriendsList({
   setActionResult,
   friendStatusChanged,
   setFriendStatusChanged,
-  // showGroupChatButton,
-  // addUserGroupChat,
+  showGroupChatButton,
+  addUserGroupChat,
+  removeUserGroupChat,
   setChatUserId,
 }) {
+  const [userAddedToGroup, setUserAddedToGroup] = useState([]);
+
+  useEffect(() => {
+    if (userFriends) {
+      setUserAddedToGroup(new Array(userFriends.length).fill(false));
+    }
+  }, [userFriends]);
+
+  const handleAddUserToGroup = (id, index) => {
+    if (!userAddedToGroup[index]) {
+      addUserGroupChat(id);
+      setUserAddedToGroup((prev) => {
+        const newState = [...prev];
+        newState[index] = true;
+        return newState;
+      });
+    } else {
+      removeUserGroupChat(id);
+      setUserAddedToGroup((prev) => {
+        const newState = [...prev];
+        newState[index] = false;
+        return newState;
+      });
+    }
+  };
 
   return (
     <div>
@@ -19,7 +46,7 @@ export default function FriendsList({
       {actionResult && <p>{actionResult}</p>}
       {!userFriends && <p>No Friends? Make One!</p>}
       {userFriends &&
-        userFriends.map((friend) => {
+        userFriends.map((friend, index) => {
           return (
             <div key={friend._id}>
               <button
@@ -41,12 +68,20 @@ export default function FriendsList({
                 </p>
               </button>
 
-              <DropdownMenu component={"FriendsList"}
+              <DropdownMenu
+                component={"FriendsList"}
                 userId={friend._id}
                 setError={setError}
                 setActionResult={setActionResult}
                 friendStatusChanged={friendStatusChanged}
-                setFriendStatusChanged={setFriendStatusChanged}/>
+                setFriendStatusChanged={setFriendStatusChanged}
+              />
+
+              {showGroupChatButton && (
+                <button onClick={() => handleAddUserToGroup(friend._id, index)}>
+                  {userAddedToGroup[index] ? "Remove" : "Add"}
+                </button>
+              )}
             </div>
           );
         })}

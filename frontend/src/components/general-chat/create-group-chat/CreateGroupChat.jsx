@@ -1,8 +1,10 @@
 export default function CreateGroupChat({
   setError,
   setActionResult,
-  setShowGroupChatButton,
   showGroupChatButton,
+  setShowGroupChatButton,
+  friendStatusChanged,
+  setFriendStatusChanged,
   groupChatUser,
 }) {
   const createGroupChat = async (event) => {
@@ -35,6 +37,7 @@ export default function CreateGroupChat({
       } else {
         setActionResult(data.message);
         setShowGroupChatButton(false)
+        setFriendStatusChanged(!friendStatusChanged);
         setTimeout(() => setActionResult(null), 2000);
       }
     } catch (err) {

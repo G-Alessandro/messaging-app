@@ -56,10 +56,6 @@ export default function Sidebar() {
           <img src="" alt="" />
           General Chat
         </Link>
-        <Link to="/group-chat">
-          <img src="" alt="" />
-          Group Chat
-        </Link>
         <Link to="/user-profile">
           <img src="" alt="" />
           User profile
