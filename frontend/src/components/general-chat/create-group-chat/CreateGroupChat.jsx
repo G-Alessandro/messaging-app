@@ -1,3 +1,6 @@
+import { useState } from "react";
+import DefaultUserSVG from "/assets/svg/default-user-image.svg";
+import style from "./CreateGroupChat.module.css";
 export default function CreateGroupChat({
   setError,
   setActionResult,
@@ -7,8 +10,11 @@ export default function CreateGroupChat({
   setFriendStatusChanged,
   groupChatUser,
 }) {
+  const [previewGroupImage, setPreviewGroupImage] = useState(null);
+
   const createGroupChat = async (event) => {
     event.preventDefault();
+
     if (groupChatUser.length < 1) {
       setActionResult(
         "You must select at least one person to create a group chat!"
@@ -16,19 +22,23 @@ export default function CreateGroupChat({
       setTimeout(() => setActionResult(null), 2000);
       return;
     }
-    const formData = {
-      groupChatName: event.target["group-chat-name"].value,
-      groupChatUsers: groupChatUser,
-    };
+
+    const imageData = event.target["group-image"].files[0];
+
+    const formData = new FormData();
+    formData.append("groupChatName", event.target["group-chat-name"].value);
+    formData.append("groupChatUsers", JSON.stringify(groupChatUser));
+
+    if (imageData) {
+      formData.append("group-image", event.target["group-image"].files[0]);
+    }
+
     try {
       const response = await fetch("http://localhost:3000/create-group-chat", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
         credentials: "include",
         mode: "cors",
-        body: JSON.stringify(formData),
+        body: formData,
       });
 
       const data = await response.json();
@@ -36,12 +46,20 @@ export default function CreateGroupChat({
         setActionResult(data.error);
       } else {
         setActionResult(data.message);
-        setShowGroupChatButton(false)
+        setShowGroupChatButton(false);
         setFriendStatusChanged(!friendStatusChanged);
         setTimeout(() => setActionResult(null), 2000);
       }
     } catch (err) {
       setError(err.message);
+    }
+  };
+
+  const handleFileChange = (event) => {
+    const image = event.target.files[0];
+    if (image) {
+      const imageUrl = URL.createObjectURL(image);
+      setPreviewGroupImage(imageUrl);
     }
   };
 
@@ -58,6 +76,10 @@ export default function CreateGroupChat({
 
       {showGroupChatButton && (
         <form onSubmit={createGroupChat}>
+          <img
+            src={previewGroupImage ? previewGroupImage : DefaultUserSVG}
+            className={style.groupChatImg}
+          />
           <label htmlFor="group-chat-name">Group Chat Name</label>
           <input
             type="text"
@@ -68,8 +90,17 @@ export default function CreateGroupChat({
             required
           />
 
+          <input
+            type="file"
+            name="group-image"
+            id="group-image"
+            onChange={handleFileChange}
+          />
+
           <button type="submit">Done</button>
-          <button onClick={() => setShowGroupChatButton(false)}>Cancel</button>
+          <button type="button" onClick={() => setShowGroupChatButton(false)}>
+            Cancel
+          </button>
         </form>
       )}
     </>
