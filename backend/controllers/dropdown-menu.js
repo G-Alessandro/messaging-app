@@ -66,3 +66,91 @@ exports.remove_friend_delete = [
     }
   }),
 ];
+
+exports.delete_group_delete = [
+  body("deletedGroupId")
+    .notEmpty()
+    .withMessage("Group Id must be provided")
+    .isMongoId()
+    .withMessage("Invalid user ID"),
+  body("founder")
+    .notEmpty()
+    .withMessage("Founder must be provided")
+    .isBoolean()
+    .withMessage("Founder field must be a boolean value"),
+  asyncHandler(async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      const errorsMessages = errors.array().map((error) => error.msg);
+      return res.status(400).json({ error: errorsMessages });
+    }
+    try {
+      const userId = req.user._id;
+      const groupToDeleteId = req.body.deletedGroupId;
+      const isFounder = req.body.founder;
+      let messageResult;
+
+      const userAccount = await UserAccount.findById(userId);
+
+      const groupToDelete = userAccount.groupChat.find(
+        (group) => group._id.toString() === groupToDeleteId
+      );
+
+      const groupToDeleteName = groupToDelete.groupChatName;
+
+      const groupToDeleteUsersId = groupToDelete.groupChatUsers;
+
+      const groupToDeleteAllUsersId = [...groupToDeleteUsersId, userId];
+
+      if (isFounder) {
+        for (const user of groupToDeleteAllUsersId) {
+          const groupChatUserRemoved = groupToDeleteAllUsersId.filter(
+            (id) => !id.equals(user)
+          );
+          await UserAccount.findByIdAndUpdate(user, {
+            $pull: {
+              groupChat: {
+                groupChatName: groupToDeleteName,
+                groupChatUsers: { $all: groupChatUserRemoved },
+              },
+            },
+          });
+        }
+
+        messageResult = "Group deleted!";
+      } else {
+        for (const user of groupToDeleteUsersId) {
+          const groupChatUserRemoved = groupToDeleteAllUsersId.filter(
+            (id) => !id.equals(user)
+          );
+
+          await UserAccount.findOneAndUpdate(
+            {
+              _id: user,
+              "groupChat.groupChatName": groupToDeleteName,
+              "groupChat.groupChatUsers": { $all: groupChatUserRemoved },
+            },
+            {
+              $pull: {
+                "groupChat.$.groupChatUsers": userId,
+              },
+            }
+          );
+        }
+
+        await UserAccount.findByIdAndUpdate(userId, {
+          $pull: { groupChat: { _id: groupToDeleteId } },
+        });
+
+        messageResult = "You left the group!";
+      }
+
+      res.status(200).json({ message: messageResult });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({
+        error: "An error occurred while deleting the group.",
+      });
+    }
+  }),
+];

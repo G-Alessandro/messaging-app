@@ -22,8 +22,6 @@ router.get("/logout", authentication_controllers.logout_get);
 // General Chat Controllers
 router.get("/general-chat", general_chat_controllers.general_chat_get);
 
-router.get("/group-chat", general_chat_controllers.group_chat_get);
-
 router.post(
   "/create-group-chat",
   general_chat_controllers.create_group_chat_post
@@ -33,6 +31,8 @@ router.post(
 router.post("/add-friend", dropdown_menu_controller.add_friend_post);
 
 router.delete("/remove-friend", dropdown_menu_controller.remove_friend_delete);
+
+router.delete("/delete-group", dropdown_menu_controller.delete_group_delete);
 
 // Chat Room controllers
 router.post("/chat-room", chat_room_controllers.chat_room_post);

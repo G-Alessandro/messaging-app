@@ -42,6 +42,10 @@ const UserAccountSchema = new Schema({
   groupChat: {
     type: [
       {
+        founder: {
+          type: Boolean,
+          default: false,
+        },
         groupChatName: {
           type: String,
           minLength: 1,
@@ -52,7 +56,6 @@ const UserAccountSchema = new Schema({
           type: [{ type: Schema.Types.ObjectId, ref: "UserAccount" }],
           default: [],
         },
-        chatId: { type: Schema.Types.ObjectId, ref: "chat" },
         groupChatImage: {
           url: {
             type: String,

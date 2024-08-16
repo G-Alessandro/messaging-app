@@ -14,7 +14,7 @@ exports.general_chat_get = asyncHandler(async (req, res) => {
   try {
     const userId = req.user._id;
     const user = await UserAccount.findById(userId, "friends");
-
+    const groupChat = await UserAccount.findById(userId, "groupChat");
     const userFriends = await UserAccount.find({
       _id: { $in: user.friends },
     });
@@ -25,32 +25,15 @@ exports.general_chat_get = asyncHandler(async (req, res) => {
       "_id firstName lastName profileImage online"
     );
 
-    return res.status(200).json({ userId, userFriends, allUsers });
+    return res.status(200).json({ userId, userFriends, groupChat, allUsers });
   } catch (error) {
     console.error(error);
     return res.status(500).json({
-      error: "An error occurred while searching for other users.",
+      error: "An error occurred while searching for users.",
     });
   }
 });
 
-exports.group_chat_get = asyncHandler(async (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    const errorsMessages = errors.array().map((error) => error.msg);
-    return res.status(400).json({ error: errorsMessages });
-  }
-  try {
-    const userId = req.user._id;
-    const groupChat = await UserAccount.findById(userId, "groupChat");
-    res.status(200).json({ groupChat: groupChat });
-  } catch (error) {
-    console.error("An error occurred while fetching the group chat:", error);
-    return res.status(500).json({
-      error: "An error occurred while removing the friend.",
-    });
-  }
-});
 
 exports.create_group_chat_post = [
   body("groupChatName")
@@ -96,15 +79,6 @@ exports.create_group_chat_post = [
 
       groupChatUsers.push(userId);
 
-      const newChat = new Chat({
-        usersId: groupChatUsers,
-        messages: [],
-      });
-
-      await newChat.save();
-
-      const newChatId = newChat._id;
-
       for (let i = 0; i < groupChatUsers.length; i++) {
         const usersId = groupChatUsers[i];
         const groupChatUserRemoved = groupChatUsers.filter(
@@ -114,9 +88,13 @@ exports.create_group_chat_post = [
         await UserAccount.findByIdAndUpdate(usersId, {
           $push: {
             groupChat: {
+              founder: usersId === userId ? true : false,
               groupChatName: groupChatName,
               groupChatUsers: groupChatUserRemoved,
-              chatId: newChatId,
+              groupChatImage: {
+                url: process.env.DEFAULT_PROFILE_IMAGE_URL,
+                public_id: process.env.DEFAULT_PROFILE_IMAGE_PUBLIC_ID,
+              },
             },
           },
         });
