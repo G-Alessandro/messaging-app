@@ -1,8 +1,11 @@
 const mongoose = require("mongoose");
 const asyncHandler = require("express-async-handler");
 const { body, validationResult } = require("express-validator");
+const fs = require("fs");
+const cloudinary = require("../utils/cloudinary/cloudinary-config");
+const multer = require("../utils/multer/multer");
+
 const UserAccount = require("../models/user-account");
-const Chat = require("../models/chat");
 
 exports.general_chat_get = asyncHandler(async (req, res) => {
   const errors = validationResult(req);
@@ -34,8 +37,8 @@ exports.general_chat_get = asyncHandler(async (req, res) => {
   }
 });
 
-
 exports.create_group_chat_post = [
+  multer.single("group-image"),
   body("groupChatName")
     .trim()
     .isLength({ min: 1 })
@@ -53,6 +56,13 @@ exports.create_group_chat_post = [
       }
     }),
   body("groupChatUsers")
+    .customSanitizer((value) => {
+      try {
+        return JSON.parse(value);
+      } catch (err) {
+        throw new Error("Invalid format for groupChatUsers");
+      }
+    })
     .isArray()
     .isLength({ min: 1 })
     .withMessage("Group chat must contain at least one user")
@@ -76,6 +86,13 @@ exports.create_group_chat_post = [
     try {
       const userId = req.user._id;
       const { groupChatName, groupChatUsers } = req.body;
+      let newImage;
+
+      if (req.file) {
+        newImage = await cloudinary.uploader.upload(req.file.path, {
+          folder: "messagingApp/userProfileImage",
+        });
+      }
 
       groupChatUsers.push(userId);
 
@@ -92,13 +109,28 @@ exports.create_group_chat_post = [
               groupChatName: groupChatName,
               groupChatUsers: groupChatUserRemoved,
               groupChatImage: {
-                url: process.env.DEFAULT_PROFILE_IMAGE_URL,
-                public_id: process.env.DEFAULT_PROFILE_IMAGE_PUBLIC_ID,
+                url: newImage
+                  ? newImage.secure_url
+                  : process.env.DEFAULT_PROFILE_IMAGE_URL,
+                public_id: newImage
+                  ? newImage.public_id
+                  : process.env.DEFAULT_PROFILE_IMAGE_PUBLIC_ID,
               },
             },
           },
         });
       }
+
+      if (req.file) {
+        fs.unlink(req.file.path, (err) => {
+          if (err) {
+            console.error("Error while deleting the file:", err);
+          } else {
+            console.log("File deleted successfully");
+          }
+        });
+      }
+
       res.status(200).json({ message: "Group chat created!" });
     } catch (error) {
       console.error(error);

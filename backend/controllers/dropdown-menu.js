@@ -1,5 +1,6 @@
 const asyncHandler = require("express-async-handler");
 const { body, validationResult } = require("express-validator");
+const cloudinary = require("../utils/cloudinary/cloudinary-config");
 const UserAccount = require("../models/user-account");
 
 exports.add_friend_post = [
@@ -100,6 +101,8 @@ exports.delete_group_delete = [
 
       const groupToDeleteUsersId = groupToDelete.groupChatUsers;
 
+      const groupToDeleteImagePublicId = groupToDelete.groupChatImage.public_id;
+
       const groupToDeleteAllUsersId = [...groupToDeleteUsersId, userId];
 
       if (isFounder) {
@@ -116,6 +119,8 @@ exports.delete_group_delete = [
             },
           });
         }
+        
+        await cloudinary.uploader.destroy(groupToDeleteImagePublicId);
 
         messageResult = "Group deleted!";
       } else {
@@ -141,7 +146,7 @@ exports.delete_group_delete = [
         await UserAccount.findByIdAndUpdate(userId, {
           $pull: { groupChat: { _id: groupToDeleteId } },
         });
-
+        
         messageResult = "You left the group!";
       }
 
