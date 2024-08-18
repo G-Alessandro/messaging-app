@@ -31,6 +31,7 @@ exports.chat_room_post = [
       const userId = req.user._id;
       const chatUsers = req.body.chatUserId;
       const allChatUsers = [...chatUsers, userId];
+      let chatRoomGroupData;
 
       const userData = await UserAccount.findById(
         userId,
@@ -43,12 +44,16 @@ exports.chat_room_post = [
         )
       );
 
-      if (chatUsers.length > 2) {
-        const groupChatInfo = await UserAccount.findOne({
-          _id: userId,
-          "groupChat.groupChatUsers": { $all: chatUsers },
-        });
-        chatRoomUserData = [...chatRoomUserData, groupChatInfo];
+      if (chatUsers.length > 1) {
+        chatRoomGroupData = await UserAccount.findOne(
+          {
+            _id: userId,
+            'groupChat.groupChatUsers': { $all: chatUsers },
+          },
+          {
+            'groupChat.$': 1,
+          }
+        );
       }
 
       const findChat = async () => {
@@ -71,7 +76,9 @@ exports.chat_room_post = [
 
       const chatData = await findChat();
 
-      return res.status(200).json({ chatData, userData, chatRoomUserData });
+      return res
+        .status(200)
+        .json({ chatData, userData, chatRoomUserData, chatRoomGroupData });
     } catch (error) {
       console.error(error);
       return res.status(500).json({
