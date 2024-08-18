@@ -10,7 +10,7 @@ export default function ChatRoom({ chatUserId, socket }) {
 
   useEffect(() => {
     const fetchData = async () => {
-      const requestData = { chatUserId: chatUserId };
+      const requestData = { chatUserId: chatUserId[0] };
 
       try {
         const response = await fetch("http://localhost:3000/chat-room", {

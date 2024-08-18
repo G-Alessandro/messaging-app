@@ -21,6 +21,12 @@ export default function GeneralChat() {
   const [groupChatUser, setGroupChatUser] = useState([]);
   const [chatUserId, setChatUserId] = useState(null);
 
+  // useEffect(() => {
+  //   console.log("groupChatUser", groupChatUser);
+  //   console.log("chatUserId", chatUserId);
+  //   console.log("groupChat", groupChat);
+  // }, [chatUserId, groupChat, groupChatUser]);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -81,8 +87,6 @@ export default function GeneralChat() {
       return result;
     });
   };
-
-  // Creare barra per selezionare le varie categorie di chat
 
   return (
     <>

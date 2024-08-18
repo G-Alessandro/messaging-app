@@ -9,7 +9,6 @@ export default function GroupList({
   groupChat,
   setChatUserId,
 }) {
-
   return (
     <div>
       <h2>Group Chat</h2>
