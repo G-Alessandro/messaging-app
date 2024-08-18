@@ -7,10 +7,14 @@ export default function ChatRoom({ chatUserId, socket }) {
   const [chatRoomData, setChatRoomData] = useState(null);
   const [userData, setUserData] = useState(null);
   const [chatRoomUserData, setChatRoomUserData] = useState(null);
+  const [chatRoomGroupData, setChatRoomGroupData] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
-      const requestData = { chatUserId: chatUserId[0] };
+      const requestData = {
+        chatUserId:
+          typeof chatUserId[0] !== "string" ? chatUserId[0] : chatUserId,
+      };
 
       try {
         const response = await fetch("http://localhost:3000/chat-room", {
@@ -29,7 +33,7 @@ export default function ChatRoom({ chatUserId, socket }) {
           setChatRoomData(data.chatData);
           setUserData(data.userData);
           setChatRoomUserData(data.chatRoomUserData);
-
+          setChatRoomGroupData(data.chatRoomGroupData);
           socket.emit("join_room", {
             userId: data.userData._id,
             roomId: data.chatData._id,
@@ -60,15 +64,23 @@ export default function ChatRoom({ chatUserId, socket }) {
     <div>
       {!chatRoomUserData && <p>Loading messages</p>}
       <div>
-        {chatRoomUserData && chatRoomUserData.length === 1 && (
+        {chatRoomUserData && (
           <div>
             <div>
               <img
-                src={chatRoomUserData[0].profileImage.url}
+                src={
+                  chatRoomUserData.length > 1
+                    ? chatRoomGroupData.groupChat[0].groupChatImage.url
+                    : chatRoomUserData[0].profileImage.url
+                }
                 className={style.chatUserImg}
               />
             </div>
-            <p>{`${chatRoomUserData[0].firstName} ${chatRoomUserData[0].lastName}`}</p>
+            <p>
+              {chatRoomUserData.length > 1
+                ? chatRoomGroupData.groupChat[0].groupChatName
+                : `${chatRoomUserData[0].firstName} ${chatRoomUserData[0].lastName}`}
+            </p>
           </div>
         )}
       </div>
