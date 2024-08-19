@@ -100,6 +100,25 @@ exports.sign_in_post = [
   },
 ];
 
+exports.demo_account_get = (req, res, next) => {
+  req.body.email = process.env.DEMO_ACCOUNT_EMAIL;
+  req.body.password = process.env.DEMO_ACCOUNT_PASSWORD;
+  passport.authenticate("local", (err, user, info) => {
+    if (err) {
+      return res.status(500).json({ error: "Internal Server Error" });
+    }
+    if (!user) {
+      return res.status(401).json({ error: info.message });
+    }
+    req.logIn(user, (err) => {
+      if (err) {
+        return res.status(500).json({ error: "Login Failed" });
+      }
+      return res.status(200).json("Authentication successful");
+    });
+  })(req, res, next);
+};
+
 exports.authentication_check_get = (req, res) => {
   if (req.isAuthenticated()) {
     return res.status(200).json({ authenticated: true });
