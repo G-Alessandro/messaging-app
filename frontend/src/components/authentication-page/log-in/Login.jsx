@@ -6,21 +6,27 @@ export default function Login({ setCreateAccount }) {
   const [authenticated, setAuthenticated] = useState(false);
   const navigate = useNavigate();
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async (event, type) => {
     event.preventDefault();
-    const formData = {
-      email: event.target.email.value,
-      password: event.target.password.value,
-    };
+    const route = type === "sign-in" ? "sign-in" : "demo-account";
+    const method = type === "sign-in" ? "POST" : "GET";
+    const body =
+      type === "sign-in"
+        ? JSON.stringify({
+            email: event.target.email.value,
+            password: event.target.password.value,
+          })
+        : undefined;
+
     try {
-      const response = await fetch("http://localhost:3000/sign-in", {
-        method: "POST",
+      const response = await fetch(`http://localhost:3000/${route}`, {
+        method: method,
         headers: {
           "Content-Type": "application/json",
-          mode: "cors",
         },
+        mode: "cors",
         credentials: "include",
-        body: JSON.stringify(formData),
+        body: body,
       });
 
       const data = await response.json();
@@ -44,12 +50,12 @@ export default function Login({ setCreateAccount }) {
         <div>
           <h1>Welcome back</h1>
           <div>
-            <p>New to Messaging App?</p>
+            <p>New to QuickChat?</p>
             <button onClick={() => setCreateAccount((prev) => !prev)}>
               Create an account.
             </button>
           </div>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={(event) => handleSubmit(event, "sign-in")}>
             <label htmlFor="email">Email</label>
             <input
               type="text"
@@ -72,7 +78,7 @@ export default function Login({ setCreateAccount }) {
 
             <button type="submit">Log in</button>
           </form>
-          <button>
+          <button onClick={(event) => handleSubmit(event, "demo-account")}>
             <img src="" alt="" />
             Try a demo account
           </button>

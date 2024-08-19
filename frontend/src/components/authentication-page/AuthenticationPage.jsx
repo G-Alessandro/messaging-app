@@ -11,7 +11,7 @@ export default function LoginPage() {
         <div>
           <div>
             <img src="" alt="" />
-            <h2>Messaging App</h2>
+            <h2>QuickChat</h2>
           </div>
           {!createAccount && <Login setCreateAccount={setCreateAccount} />}
           {createAccount && (

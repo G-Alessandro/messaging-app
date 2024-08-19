@@ -9,6 +9,7 @@ export default function UserProfile() {
   const [previewUserImage, setPreviewUserImage] = useState(null);
   const [showFileForm, setShowFileForm] = useState(false);
   const [showInfoForm, setShowInfoForm] = useState(false);
+  const [isDemoAccount, setIsDemoAccount] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -25,6 +26,9 @@ export default function UserProfile() {
         } else {
           setUserProfileData(data.userProfile);
           setPreviewUserImage(data.userProfile.profileImage.url);
+          if (data.userProfile.email === "demoaccountemail83749@gmail.com") {
+            setIsDemoAccount(true);
+          }
         }
       } catch (err) {
         setError(err.message);
@@ -118,12 +122,16 @@ export default function UserProfile() {
                   alt={`Profile image of ${userProfileData.firstName} ${userProfileData.lastName}`}
                 />
               </div>
-              <button onClick={() => setShowFileForm(true)}>Change img</button>
+              {!isDemoAccount && (
+                <button onClick={() => setShowFileForm(true)}>
+                  Change img
+                </button>
+              )}
             </div>
 
             <div>
               <p>{`${userProfileData.firstName} ${userProfileData.lastName}`}</p>
-              <p>{userProfileData.email}</p>
+              {!isDemoAccount && <p>{userProfileData.email}</p>}
             </div>
 
             <div>
@@ -144,9 +152,11 @@ export default function UserProfile() {
               {!showInfoForm && (
                 <div>
                   <p>{userProfileData.profileInfo}</p>
-                  <button onClick={() => setShowInfoForm(true)}>
-                    Change Info
-                  </button>
+                  {!isDemoAccount && (
+                    <button onClick={() => setShowInfoForm(true)}>
+                      Change Info
+                    </button>
+                  )}
                 </div>
               )}
             </div>
