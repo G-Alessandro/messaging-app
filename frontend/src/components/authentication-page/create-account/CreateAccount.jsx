@@ -1,4 +1,6 @@
 import { useState } from "react";
+import Checkmark from "/assets/svg/checkmark.svg";
+import style from "./CreateAccount.module.css";
 
 export default function CreateAccount({ setCreateAccount }) {
   const [registrationCompleted, setRegistrationCompleted] = useState(false);
@@ -46,20 +48,22 @@ export default function CreateAccount({ setCreateAccount }) {
       console.log("Error requesting registration:", error);
     }
   };
+
   return (
     <>
       {registrationCompleted && (
-        <div>
-          <p>Registration was successful</p>
+        <div className={style.registrationSuccessfulContainer}>
+          <h1>Registration was successful</h1>
+          <img src={Checkmark} />
         </div>
       )}
       {!registrationCompleted && (
-        <div>
+        <div className={style.createAccountContainer}>
           <h1>Sign Up</h1>
-          <div>
-            <p>Already have an account?</p>
+          <div className={style.goToLoginButtonContainer}>
+            <h3>Already have an account?</h3>
             <button onClick={() => setCreateAccount((prev) => !prev)}>
-              Login.
+              Login
             </button>
           </div>
           <form onSubmit={handleSubmit}>
@@ -70,7 +74,7 @@ export default function CreateAccount({ setCreateAccount }) {
               name="first-name"
               minLength={1}
               maxLength={30}
-              placeholder="Enter your email"
+              placeholder="Enter your first name"
               required
             />
 
@@ -81,7 +85,7 @@ export default function CreateAccount({ setCreateAccount }) {
               name="last-name"
               minLength={1}
               maxLength={30}
-              placeholder="Enter your email"
+              placeholder="Enter last name"
               required
             />
 
@@ -94,7 +98,9 @@ export default function CreateAccount({ setCreateAccount }) {
               placeholder="Enter your email"
               required
             />
-            {emailError && <p>the email is already in use</p>}
+            {emailError && (
+              <p className={style.emailError}>This email is already in use</p>
+            )}
 
             <label htmlFor="password">Password</label>
             <input
@@ -112,10 +118,12 @@ export default function CreateAccount({ setCreateAccount }) {
               id="confirm-password"
               name="confirm-password"
               minLength={8}
-              placeholder="Enter your password"
+              placeholder="Confirm your password"
               required
             />
-            {confirmPasswordError && <p>passwords must match</p>}
+            {confirmPasswordError && (
+              <p className={style.passwordError}>Passwords must match</p>
+            )}
 
             <button type="submit">Sign up</button>
           </form>

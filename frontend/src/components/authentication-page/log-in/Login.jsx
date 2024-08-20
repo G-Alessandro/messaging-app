@@ -1,5 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import ProfileIcon from "/assets/svg/profile-icon.svg";
+import Checkmark from "/assets/svg/checkmark.svg";
+import style from "./Login.module.css";
 
 export default function Login({ setCreateAccount }) {
   const [logInError, setLogInError] = useState(null);
@@ -45,14 +48,22 @@ export default function Login({ setCreateAccount }) {
 
   return (
     <>
-      {authenticated && <p>Authentication successful</p>}
+      {authenticated && (
+        <div className={style.authenticationSuccessfulContainer}>
+          <h1>Authentication successful</h1>
+          <img src={Checkmark} />
+        </div>
+      )}
       {!authenticated && (
-        <div>
-          <h1>Welcome back</h1>
-          <div>
-            <p>New to QuickChat?</p>
-            <button onClick={() => setCreateAccount((prev) => !prev)}>
-              Create an account.
+        <div className={style.loginContainer}>
+          <h2>Welcome back</h2>
+          <div className={style.createAccountButtonContainer}>
+            <h3>New to QuickChat?</h3>
+            <button
+              onClick={() => setCreateAccount((prev) => !prev)}
+              aria-label="Click to view the fields to fill in to create an account"
+            >
+              Create an account
             </button>
           </div>
           <form onSubmit={(event) => handleSubmit(event, "sign-in")}>
@@ -74,14 +85,21 @@ export default function Login({ setCreateAccount }) {
               required
             />
 
-            {logInError && <p>{logInError}</p>}
+            {logInError && <p className={style.logInError}>{logInError}</p>}
 
-            <button type="submit">Log in</button>
+            <button type="submit" className={style.submitButton}>
+              Log in
+            </button>
+            <button
+              onClick={(event) => handleSubmit(event, "demo-account")}
+              className={style.demoAccountButton}
+            >
+              <div>
+                <img src={ProfileIcon} />
+              </div>
+              Try a demo account
+            </button>
           </form>
-          <button onClick={(event) => handleSubmit(event, "demo-account")}>
-            <img src="" alt="" />
-            Try a demo account
-          </button>
         </div>
       )}
     </>

@@ -1,28 +1,30 @@
 import { useState } from "react";
 import Login from "./log-in/Login";
 import CreateAccount from "./create-account/CreateAccount";
+import AppIcon from "/assets/svg/app-icon.svg";
+import style from "./AuthenticationPage.module.css";
 
 export default function LoginPage() {
   const [createAccount, setCreateAccount] = useState(false);
 
   return (
-    <>
-      <div>
-        <div>
-          <div>
-            <img src="" alt="" />
-            <h2>QuickChat</h2>
-          </div>
-          {!createAccount && <Login setCreateAccount={setCreateAccount} />}
-          {createAccount && (
-            <CreateAccount setCreateAccount={setCreateAccount} />
-          )}
+    <div className={style.authenticationPageContainer}>
+      <div className={style.authenticationContainer}>
+        <div className={style.imageNameContainer}>
+          <img src={AppIcon} className={style.appIconSvg} />
+          <h1>
+            <span className={style.appNameQuick}>Quick</span>
+            <span className={style.appNameChat}>Chat</span>
+          </h1>
         </div>
-
-        <div>
-          <img src="" alt="" />
-        </div>
+        {!createAccount && <Login setCreateAccount={setCreateAccount} />}
+        {createAccount && <CreateAccount setCreateAccount={setCreateAccount} />}
       </div>
-    </>
+
+      <div className={style.authenticationImageContainer}>
+        {/* <img src="" alt="" /> */}
+        <div></div>
+      </div>
+    </div>
   );
 }

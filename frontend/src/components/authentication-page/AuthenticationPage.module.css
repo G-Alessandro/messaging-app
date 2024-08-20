@@ -1,0 +1,62 @@
+.authenticationPageContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+	padding: 20px 50px;
+}
+
+.authenticationContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.imageNameContainer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: -100px;
+}
+
+.appIconSvg {
+  width: 100px;
+  height: 100px;
+}
+
+.appImageNameContainer > h1 {
+  font-size: 45px;
+  font-weight: 900;
+}
+
+.appNameQuick {
+  color: #33cc99;
+}
+
+.appNameChat {
+  color: #ffb89a;
+}
+
+.authenticationImageContainer {
+  margin-top: 30px;
+}
+
+.authenticationImageContainer>div {
+  height: 500px;
+  background-color: blue;
+}
+
+@media (max-width: 500px) {
+  .authenticationPageContainer {
+    display: flex;
+    padding: 0px 0px 10px;
+    justify-content: center
+  }
+
+  .imageNameContainer {
+    gap: 5px;
+    margin-left: -30px;
+  }
+
+  .authenticationImageContainer {
+    display: none;
+  }
+}
