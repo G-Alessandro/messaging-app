@@ -1,5 +1,9 @@
 import { useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import ChatSvg from "/assets/svg/app-icon.svg";
+import ProfileSvg from "/assets/svg/profile-icon.svg";
+import LogoutSvg from "/assets/svg/logout.svg";
+import style from "./Sidebar.module.css";
 
 export default function Sidebar() {
   const navigate = useNavigate();
@@ -50,21 +54,25 @@ export default function Sidebar() {
   };
 
   return (
-    <div>
-      <div>
-        <Link to="/">
-          <img src="" alt="" />
-          General Chat
+    <div className={style.sidebarContainer}>
+      <Link to="/" className={style.qcContainer} aria-label="show all chats">
+        <span className={style.qcQ}>Q</span>
+        <span className={style.qcC}>C</span>
+      </Link>
+      <div className={style.linkContainer}>
+        <Link to="/" aria-label="show all chats">
+          <img src={ChatSvg} />
         </Link>
-        <Link to="/user-profile">
-          <img src="" alt="" />
-          User profile
+        <Link
+          to="/user-profile"
+          aria-label="Show your profile so you can edit it"
+        >
+          <img src={ProfileSvg} />
         </Link>
+        <button onClick={handleLogout} aria-label="Log out of the site">
+          <img src={LogoutSvg} />
+        </button>
       </div>
-      <button onClick={handleLogout}>
-        <img src="" alt="" />
-        Logout
-      </button>
     </div>
   );
 }

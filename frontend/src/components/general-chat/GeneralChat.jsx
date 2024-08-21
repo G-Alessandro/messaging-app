@@ -6,6 +6,7 @@ import FriendsList from "./friends-list/FriendsList";
 import GroupList from "./group-list/GroupList";
 import AllUsersList from "./all-users-list/AllUsersList";
 import ChatRoom from "./chat-room/ChatRoom";
+import style from "./GeneralChat.module.css"
 
 const socket = io("http://localhost:4000");
 
@@ -83,7 +84,7 @@ export default function GeneralChat() {
   };
 
   return (
-    <>
+    <div className={style.generalChatContainer}>
       <Sidebar />
       <div>
         {error && <p>{error}</p>}
@@ -137,6 +138,6 @@ export default function GeneralChat() {
         )}
       </div>
       {chatUserId && <ChatRoom socket={socket} chatUserId={chatUserId} />}
-    </>
+    </div>
   );
 }

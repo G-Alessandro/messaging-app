@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Login from "./log-in/Login";
 import CreateAccount from "./create-account/CreateAccount";
-import AppIcon from "/assets/svg/app-icon.svg";
+import AppSvg from "/assets/svg/app-icon.svg";
 import style from "./AuthenticationPage.module.css";
 
 export default function LoginPage() {
@@ -11,7 +11,7 @@ export default function LoginPage() {
     <div className={style.authenticationPageContainer}>
       <div className={style.authenticationContainer}>
         <div className={style.imageNameContainer}>
-          <img src={AppIcon} className={style.appIconSvg} />
+          <img src={AppSvg} className={style.appIconSvg} />
           <h1>
             <span className={style.appNameQuick}>Quick</span>
             <span className={style.appNameChat}>Chat</span>

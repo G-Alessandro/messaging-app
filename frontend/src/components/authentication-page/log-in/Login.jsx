@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import ProfileIcon from "/assets/svg/profile-icon.svg";
+import ProfileSvg from "/assets/svg/profile-icon.svg";
 import Checkmark from "/assets/svg/checkmark.svg";
 import style from "./Login.module.css";
 
@@ -95,7 +95,7 @@ export default function Login({ setCreateAccount }) {
               className={style.demoAccountButton}
             >
               <div>
-                <img src={ProfileIcon} />
+                <img src={ProfileSvg} />
               </div>
               Try a demo account
             </button>
