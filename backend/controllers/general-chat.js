@@ -17,16 +17,30 @@ exports.general_chat_get = asyncHandler(async (req, res) => {
   try {
     const userId = req.user._id;
     const user = await UserAccount.findById(userId, "friends");
+
     const groupChat = await UserAccount.findById(userId, "groupChat");
+
     const userFriends = await UserAccount.find({
       _id: { $in: user.friends },
-    });
+    })
+      .select("firstName lastName profileImage online")
+      .sort({
+        online: -1,
+        firstName: 1,
+        lastName: 1,
+      });
 
-    const excludedUsers = [userId, ...user.friends];
-    const allUsers = await UserAccount.find(
-      { _id: { $nin: excludedUsers } },
-      "_id firstName lastName profileImage online"
-    );
+    let allUsers = await UserAccount.find(
+      { _id: { $ne: userId } },
+      "firstName lastName profileImage online"
+    ).sort({
+      online: -1,
+      firstName: 1,
+      lastName: 1,
+    });
+    
+    allUsers = [...allUsers, ...groupChat.groupChat];
+
 
     return res.status(200).json({ userId, userFriends, groupChat, allUsers });
   } catch (error) {
