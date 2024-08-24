@@ -1,4 +1,40 @@
+.dropdownContainer {
+  position: relative;
+}
+
+.dropdownContainer > button {
+  width: fit-content;
+  background-color: rgba(255, 255, 255, 0);
+  border: none;
+  cursor: pointer;
+}
+
 .dropdownSvg {
-    width: 80px;
-    height: 80px;
-  }
+  width: 35px;
+  height: 35px;
+  transition: transform 0.2s;
+}
+
+.dropdownSvg:hover {
+  transform: scale(1.2);
+}
+
+.dropdownOptionContainer {
+  position: absolute;
+  right: 0px;
+  background-color: white;
+  box-shadow: 0 2px 5px 0 rgba(11, 20, 26, 0.26),
+    0 2px 10px 0 rgba(11, 20, 26, 0.16);
+}
+
+.dropdownOptionContainer > button {
+  white-space: nowrap;
+  font-size: 17px;
+  padding: 10px 20px;
+  background-color: white;
+  border: none;
+}
+
+.dropdownOptionContainer > button:hover {
+  background-color: rgb(240, 240, 240);
+}

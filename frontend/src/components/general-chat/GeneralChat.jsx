@@ -6,7 +6,7 @@ import FriendsList from "./friends-list/FriendsList";
 import GroupList from "./group-list/GroupList";
 import AllUsersList from "./all-users-list/AllUsersList";
 import ChatRoom from "./chat-room/ChatRoom";
-import style from "./GeneralChat.module.css"
+import style from "./GeneralChat.module.css";
 
 const socket = io("http://localhost:4000");
 
@@ -40,6 +40,7 @@ export default function GeneralChat() {
         } else {
           setUserId(data.userId);
           setUserFriends(data.userFriends);
+          console.log("groupChat",data.allUsers);
           setGroupChat(data.groupChat);
           setAllUsers(data.allUsers);
         }
@@ -101,7 +102,7 @@ export default function GeneralChat() {
               groupChatUser={groupChatUser}
             />
 
-            <FriendsList
+            {/* <FriendsList
               userFriends={userFriends}
               setError={setError}
               actionResult={actionResult}
@@ -121,9 +122,11 @@ export default function GeneralChat() {
               friendStatusChanged={friendStatusChanged}
               setFriendStatusChanged={setFriendStatusChanged}
               setChatUserId={setChatUserId}
-            />
+            /> */}
 
             <AllUsersList
+              userFriends={userFriends}
+              groupChat={groupChat}
               allUsers={allUsers}
               setError={setError}
               setActionResult={setActionResult}

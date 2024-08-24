@@ -1,9 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import DropdownSvg from "/assets/svg/dropdown.svg";
 import style from "./DropdownMenu.module.css";
 
 export default function DropdownMenu({
   component,
+  index,
+  showDropdownMenu,
+  setShowDropdownMenu,
   userId,
   groupId,
   founder,
@@ -12,8 +15,22 @@ export default function DropdownMenu({
   friendStatusChanged,
   setFriendStatusChanged,
 }) {
-  const [showDropdownMenu, setShowDropdownMenu] = useState(false);
   const [buttonActionName, setButtonActionName] = useState(null);
+
+  useEffect(() => {
+    const handleOutsideClick = (event) => {
+      if (!event.target.closest(".dropdownMenu")) {
+        setShowDropdownMenu((prev) => {
+          const newState = prev.map(() => false);
+          return newState;
+        });
+      }
+    };
+    document.addEventListener("click", handleOutsideClick);
+    return () => {
+      document.removeEventListener("click", handleOutsideClick);
+    };
+  }, []);
 
   const addFriend = async (userId) => {
     try {
@@ -103,7 +120,19 @@ export default function DropdownMenu({
         setButtonActionName("Add to friends");
         break;
     }
-    setShowDropdownMenu(!showDropdownMenu);
+
+    if (showDropdownMenu[index]) {
+      setShowDropdownMenu((prev) => {
+        const newState = prev.map(() => false);
+        return newState;
+      });
+    } else {
+      setShowDropdownMenu((prev) => {
+        const newState = prev.map(() => false);
+        newState[index] = true;
+        return newState;
+      });
+    }
   };
 
   const handleButtonClick = (component, userId, groupId, founder) => {
@@ -119,19 +148,23 @@ export default function DropdownMenu({
         addFriend(userId);
         break;
     }
-    setShowDropdownMenu(false);
+    setShowDropdownMenu((prev) => {
+      const newState = prev.map(() => false);
+      return newState;
+    });
   };
 
   return (
-    <div>
+    <div className={style.dropdownContainer}>
       <button
+        className="dropdownMenu"
         aria-label="show possible actions for this user"
         onClick={() => handleDropdownClick(component)}
       >
         <img src={DropdownSvg} className={style.dropdownSvg} />
       </button>
-      {showDropdownMenu && (
-        <div>
+      {showDropdownMenu && showDropdownMenu[index] && (
+        <div className={style.dropdownOptionContainer}>
           <button
             onClick={() =>
               handleButtonClick(component, userId, groupId, founder)
