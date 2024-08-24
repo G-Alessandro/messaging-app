@@ -5,11 +5,16 @@
 }
 
 .qcContainer {
-  font-size: 30px;
+  display: flex;
+  align-items: center;
+  width: 50px;
+  height: 50px;
+  font-size: 35px;
   font-weight: 900;
-  padding-bottom: 5px;
-  border-bottom: 2px solid #949494;
+  border-bottom: 3px solid rgb(197, 197, 197);
   text-decoration: none;
+  padding: 5px;
+  margin: 10px;
   transition: transform 0.2s;
 }
 
@@ -26,14 +31,12 @@
 }
 
 .sidebarContainer {
-  padding: 20px 10px;
   background-color: white;
-  border-right: 1px solid #949494;
+  border-right: 3px solid rgb(197, 197, 197);
 }
 
 .linkContainer {
   margin-top: 40px;
-  gap: 30px;
 }
 
 .linkContainer > a,
@@ -42,15 +45,14 @@
   align-items: center;
   background-color: white;
   text-decoration: none;
-  padding: 5px;
-  border: 2px solid #ffb89a;
-  border-radius: 50%;
-  transition: transform 0.2s;
+  padding: 5px 5px 5px 20px;
+  border-left: 5px solid #ffb89a;
+  background-color: white;
 }
 
 .linkContainer > a:hover,
 .linkContainer > button:hover {
-  transform: scale(1.2);
+  background: linear-gradient(to right, #ffb89a42, rgba(0, 128, 255, 0));
 }
 
 .linkContainer > a > img,
@@ -62,4 +64,6 @@
 .linkContainer > button {
   margin-top: 130px;
   cursor: pointer;
+  border: none;
+  border-left: 5px solid #ffb89a;
 }

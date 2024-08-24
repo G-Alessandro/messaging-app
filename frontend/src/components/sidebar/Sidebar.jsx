@@ -55,6 +55,16 @@ export default function Sidebar() {
     }
   };
 
+  const elementClickedStyle = (element, link) => {
+    const style = {
+      borderLeft: "5px solid #33cc99",
+      background: "linear-gradient(to right, #33cc9942, rgba(0, 128, 255, 0))",
+    };
+    if (element === link) {
+      return style;
+    }
+  };
+
   return (
     <div className={style.sidebarContainer}>
       <Link
@@ -71,8 +81,7 @@ export default function Sidebar() {
           to="/"
           aria-label="show all chats"
           onClick={() => setSelectedElement("chat")}
-          style={
-            selectedElement === "chat" ? { border: "2px solid #33cc99" } : null
+          style={elementClickedStyle(selectedElement,"chat")
           }
         >
           <img src={ChatSvg} />
@@ -81,10 +90,7 @@ export default function Sidebar() {
           to="/user-profile"
           aria-label="Show your profile so you can edit it"
           onClick={() => setSelectedElement("profile")}
-          style={
-            selectedElement === "profile"
-              ? { border: "2px solid #33cc99" }
-              : null
+          style={elementClickedStyle(selectedElement,"profile")
           }
         >
           <img src={ProfileSvg} />
@@ -92,10 +98,7 @@ export default function Sidebar() {
         <button
           onClick={handleLogout}
           aria-label="Log out of the site"
-          style={
-            selectedElement === "logout"
-              ? { border: "2px solid #33cc99" }
-              : null
+          style={elementClickedStyle(selectedElement,"logout")
           }
         >
           <img src={LogoutSvg} />

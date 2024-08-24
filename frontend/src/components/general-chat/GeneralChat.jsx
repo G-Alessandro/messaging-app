@@ -40,7 +40,6 @@ export default function GeneralChat() {
         } else {
           setUserId(data.userId);
           setUserFriends(data.userFriends);
-          console.log("groupChat",data.allUsers);
           setGroupChat(data.groupChat);
           setAllUsers(data.allUsers);
         }
