@@ -71,7 +71,7 @@ export default function CreateGroupChat({
         }}
         onClick={() => setShowGroupChatButton(true)}
       >
-        Create group chat
+        Create group
       </button>
 
       {showGroupChatButton && (

@@ -8,7 +8,6 @@ export default function DropdownMenu({
   showDropdownMenu,
   setShowDropdownMenu,
   userId,
-  groupId,
   founder,
   setError,
   setActionResult,
@@ -81,7 +80,7 @@ export default function DropdownMenu({
     }
   };
 
-  const deleteGroup = async (groupId, founder) => {
+  const deleteGroup = async (userId, founder) => {
     try {
       const response = await fetch("http://localhost:3000/delete-group", {
         method: "DELETE",
@@ -90,7 +89,7 @@ export default function DropdownMenu({
         },
         credentials: "include",
         mode: "cors",
-        body: JSON.stringify({ deletedGroupId: groupId, founder }),
+        body: JSON.stringify({ deletedGroupId: userId, founder }),
       });
       const data = await response.json();
       if (!response.ok) {
@@ -135,14 +134,14 @@ export default function DropdownMenu({
     }
   };
 
-  const handleButtonClick = (component, userId, groupId, founder) => {
+  const handleButtonClick = (component, userId, founder) => {
     switch (component) {
       case "FriendsList":
         removeFriend(userId);
         break;
       case "GroupList":
       case "GroupListFounder":
-        deleteGroup(groupId, founder);
+        deleteGroup(userId, founder);
         break;
       case "AllUsersList":
         addFriend(userId);
@@ -167,7 +166,7 @@ export default function DropdownMenu({
         <div className={style.dropdownOptionContainer}>
           <button
             onClick={() =>
-              handleButtonClick(component, userId, groupId, founder)
+              handleButtonClick(component, userId, founder)
             }
           >
             {buttonActionName}

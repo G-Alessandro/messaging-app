@@ -5,7 +5,7 @@ import style from "./AllUsersList.module.css";
 export default function AllUsersList({
   userFriends,
   groupChat,
-  allUsers,
+  chosenCategory,
   setError,
   setActionResult,
   friendStatusChanged,
@@ -20,13 +20,13 @@ export default function AllUsersList({
   const [showDropdownMenu, setShowDropdownMenu] = useState([]);
 
   useEffect(() => {
-    const fillFalse = new Array(allUsers.length).fill(false);
-    if (allUsers) {
+    const fillFalse = new Array(chosenCategory.length).fill(false);
+    if (chosenCategory) {
       setUserAddedToGroup(fillFalse);
       setUserClicked(fillFalse);
       setShowDropdownMenu(fillFalse);
     }
-  }, [allUsers]);
+  }, [chosenCategory]);
 
   const handleAddUserToGroup = (id, index) => {
     if (!userAddedToGroup[index]) {
@@ -64,7 +64,7 @@ export default function AllUsersList({
       }
     }
     if (groupChat) {
-      const group = groupChat.groupChat.find((group) => group._id === id);
+      const group = groupChat.find((group) => group._id === id);
       if (group) {
         category = group.founder ? "GroupListFounder" : "GroupList";
       }
@@ -74,10 +74,9 @@ export default function AllUsersList({
 
   return (
     <div>
-      <h2>Users</h2>
       <div className={style.usersContainer}>
-        {allUsers &&
-          allUsers.map((user, index) => {
+        {chosenCategory &&
+          chosenCategory.map((user, index) => {
             return (
               <div
                 key={user._id}
@@ -132,6 +131,7 @@ export default function AllUsersList({
                     showDropdownMenu={showDropdownMenu}
                     setShowDropdownMenu={setShowDropdownMenu}
                     userId={user._id}
+                    founder={user.founder}
                     setError={setError}
                     setActionResult={setActionResult}
                     friendStatusChanged={friendStatusChanged}
