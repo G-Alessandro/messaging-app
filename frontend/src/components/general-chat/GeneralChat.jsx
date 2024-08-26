@@ -16,12 +16,11 @@ export default function GeneralChat() {
   const [userFriends, setUserFriends] = useState([]);
   const [groupChat, setGroupChat] = useState([]);
   const [allUsers, setAllUsers] = useState(null);
-
+  const [chosenCategoryName, setChosenCategoryName] = useState("all");
   const [chosenCategory, setChosenCategory] = useState(null);
-
   const [error, setError] = useState(null);
   const [actionResult, setActionResult] = useState(null);
-  const [friendStatusChanged, setFriendStatusChanged] = useState(false);
+  const [statusChanged, setStatusChanged] = useState(false);
   const [showGroupChatButton, setShowGroupChatButton] = useState(false);
   const [groupChatUser, setGroupChatUser] = useState([]);
   const [chatUserId, setChatUserId] = useState(null);
@@ -46,7 +45,17 @@ export default function GeneralChat() {
           setUserFriends(data.userFriends);
           setGroupChat(data.groupChat);
           setAllUsers(data.allUsers);
-          setChosenCategory(data.allUsers);
+          switch (chosenCategoryName) {
+            case "all":
+              setChosenCategory(data.allUsers);
+              break;
+            case "friends":
+              setChosenCategory(data.userFriends);
+              break;
+            case "group":
+              setChosenCategory(data.groupChat);
+              break;
+          }
         }
       } catch (err) {
         setError(err.message);
@@ -54,7 +63,7 @@ export default function GeneralChat() {
     };
 
     fetchData();
-  }, [friendStatusChanged]);
+  }, [statusChanged]);
 
   useEffect(() => {
     if (userId) {
@@ -101,8 +110,8 @@ export default function GeneralChat() {
               setActionResult={setActionResult}
               showGroupChatButton={showGroupChatButton}
               setShowGroupChatButton={setShowGroupChatButton}
-              friendStatusChanged={friendStatusChanged}
-              setFriendStatusChanged={setFriendStatusChanged}
+              statusChanged={statusChanged}
+              setStatusChanged={setStatusChanged}
               groupChatUser={groupChatUser}
             />
 
@@ -111,6 +120,21 @@ export default function GeneralChat() {
               groupChat={groupChat}
               allUsers={allUsers}
               setChosenCategory={setChosenCategory}
+            />
+
+            <AllUsersList
+              userFriends={userFriends}
+              groupChat={groupChat}
+              setChosenCategoryName={setChosenCategoryName}
+              chosenCategory={chosenCategory}              
+              setError={setError}
+              setActionResult={setActionResult}
+              statusChanged={statusChanged}
+              setStatusChanged={setStatusChanged}
+              showGroupChatButton={showGroupChatButton}
+              addUserGroupChat={addUserGroupChat}
+              removeUserGroupChat={removeUserGroupChat}
+              setChatUserId={setChatUserId}
             />
 
             {/* <FriendsList
@@ -134,21 +158,6 @@ export default function GeneralChat() {
               setFriendStatusChanged={setFriendStatusChanged}
               setChatUserId={setChatUserId}
             /> */}
-
-            <AllUsersList
-              userFriends={userFriends}
-              groupChat={groupChat}
-              // allUsers={allUsers}
-              chosenCategory={chosenCategory}
-              setError={setError}
-              setActionResult={setActionResult}
-              friendStatusChanged={friendStatusChanged}
-              setFriendStatusChanged={setFriendStatusChanged}
-              showGroupChatButton={showGroupChatButton}
-              addUserGroupChat={addUserGroupChat}
-              removeUserGroupChat={removeUserGroupChat}
-              setChatUserId={setChatUserId}
-            />
           </div>
         )}
       </div>

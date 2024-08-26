@@ -20,9 +20,9 @@ export default function CategoryTopBar({
   };
 
   const handleCategorySet = (state, category) => {
-    setChosenCategory(state);
-    setSelectedElement(category);
-  };
+    setChosenCategory(state)
+    setSelectedElement(category)
+  }
 
   return (
     <div className={style.categoryTopBarContainer}>
@@ -33,13 +33,13 @@ export default function CategoryTopBar({
         All
       </button>
       <button
-        onClick={() => handleCategorySet(userFriends, "friends")}
+        onClick={() => handleCategorySet(userFriends,"friends")}
         style={handleElementClicked(selectedElement, "friends")}
       >
         Friends
       </button>
       <button
-        onClick={() => handleCategorySet(groupChat, "group")}
+        onClick={() => handleCategorySet(groupChat,"group")}
         style={handleElementClicked(selectedElement, "group")}
       >
         Group

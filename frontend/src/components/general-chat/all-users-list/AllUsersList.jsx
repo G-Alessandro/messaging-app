@@ -5,11 +5,12 @@ import style from "./AllUsersList.module.css";
 export default function AllUsersList({
   userFriends,
   groupChat,
+  setChosenCategoryName,
   chosenCategory,
   setError,
   setActionResult,
-  friendStatusChanged,
-  setFriendStatusChanged,
+  statusChanged,
+  setStatusChanged,
   showGroupChatButton,
   addUserGroupChat,
   removeUserGroupChat,
@@ -130,12 +131,15 @@ export default function AllUsersList({
                     index={index}
                     showDropdownMenu={showDropdownMenu}
                     setShowDropdownMenu={setShowDropdownMenu}
+                    userFriends={userFriends}
+                    groupChat={groupChat}
                     userId={user._id}
                     founder={user.founder}
+                    setChosenCategoryName={setChosenCategoryName}
                     setError={setError}
                     setActionResult={setActionResult}
-                    friendStatusChanged={friendStatusChanged}
-                    setFriendStatusChanged={setFriendStatusChanged}
+                    statusChanged={statusChanged}
+                    setStatusChanged={setStatusChanged}
                   />
                   {!user.groupChatImage && (
                     <h3

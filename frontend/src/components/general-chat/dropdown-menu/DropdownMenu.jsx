@@ -9,10 +9,11 @@ export default function DropdownMenu({
   setShowDropdownMenu,
   userId,
   founder,
+  setChosenCategoryName,
   setError,
   setActionResult,
-  friendStatusChanged,
-  setFriendStatusChanged,
+  statusChanged,
+  setStatusChanged,
 }) {
   const [buttonActionName, setButtonActionName] = useState(null);
 
@@ -47,7 +48,7 @@ export default function DropdownMenu({
         setActionResult(data.error);
       } else {
         setActionResult(data.message);
-        setFriendStatusChanged(!friendStatusChanged);
+        setStatusChanged(!statusChanged);
         setShowDropdownMenu(false);
         setTimeout(() => setActionResult(null), 2000);
       }
@@ -72,7 +73,8 @@ export default function DropdownMenu({
         setActionResult(data.error);
       } else {
         setActionResult(data.message);
-        setFriendStatusChanged(!friendStatusChanged);
+        setChosenCategoryName("friends");
+        setStatusChanged(!statusChanged);
         setTimeout(() => setActionResult(null), 2000);
       }
     } catch (err) {
@@ -96,7 +98,8 @@ export default function DropdownMenu({
         setActionResult(data.error);
       } else {
         setActionResult(data.message);
-        setFriendStatusChanged(!friendStatusChanged);
+        setChosenCategoryName("group");
+        setStatusChanged(!statusChanged);
         setTimeout(() => setActionResult(null), 2000);
       }
     } catch (err) {
@@ -164,11 +167,7 @@ export default function DropdownMenu({
       </button>
       {showDropdownMenu && showDropdownMenu[index] && (
         <div className={style.dropdownOptionContainer}>
-          <button
-            onClick={() =>
-              handleButtonClick(component, userId, founder)
-            }
-          >
+          <button onClick={() => handleButtonClick(component, userId, founder)}>
             {buttonActionName}
           </button>
         </div>
