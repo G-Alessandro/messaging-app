@@ -18,7 +18,7 @@ exports.general_chat_get = asyncHandler(async (req, res) => {
     const userId = req.user._id;
     const user = await UserAccount.findById(userId, "friends");
 
-    const groupChat = await UserAccount.findById(userId, "groupChat");
+    let groupChat = await UserAccount.findById(userId, "groupChat");
 
     const userFriends = await UserAccount.find({
       _id: { $in: user.friends },
@@ -38,9 +38,9 @@ exports.general_chat_get = asyncHandler(async (req, res) => {
       firstName: 1,
       lastName: 1,
     });
-    
-    allUsers = [...allUsers, ...groupChat.groupChat];
 
+    groupChat = groupChat.groupChat;
+    allUsers = [...allUsers, ...groupChat];
 
     return res.status(200).json({ userId, userFriends, groupChat, allUsers });
   } catch (error) {
