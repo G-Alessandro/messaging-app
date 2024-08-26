@@ -1,13 +1,13 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import AuthenticationPage from "./components/authentication-page/AuthenticationPage.jsx";
-import GeneralChat from "./components/general-chat/GeneralChat";
+import HomePage from "./components/general-chat/HomePage";
 import UserProfile from "./components/user-profile/UserProfile";
 
 const Router = () => {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <GeneralChat />,
+      element: <HomePage />,
     },
     {
       path: "user-profile",

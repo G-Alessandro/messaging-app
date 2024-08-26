@@ -3,11 +3,9 @@ import io from "socket.io-client";
 import Sidebar from "../sidebar/Sidebar";
 import CreateGroupChat from "./create-group-chat/CreateGroupChat";
 import CategoryTopBar from "./category-top-bar/CategoryTopBar";
-import FriendsList from "./friends-list/FriendsList";
-import GroupList from "./group-list/GroupList";
-import AllUsersList from "./all-users-list/AllUsersList";
+import UsersList from "./all-users-list/AllUsersList";
 import ChatRoom from "./chat-room/ChatRoom";
-import style from "./GeneralChat.module.css";
+import style from "./HomePage.module.css";
 
 const socket = io("http://localhost:4000");
 
@@ -122,11 +120,11 @@ export default function GeneralChat() {
               setChosenCategory={setChosenCategory}
             />
 
-            <AllUsersList
+            <UsersList
               userFriends={userFriends}
               groupChat={groupChat}
               setChosenCategoryName={setChosenCategoryName}
-              chosenCategory={chosenCategory}              
+              chosenCategory={chosenCategory}
               setError={setError}
               setActionResult={setActionResult}
               statusChanged={statusChanged}
@@ -137,27 +135,6 @@ export default function GeneralChat() {
               setChatUserId={setChatUserId}
             />
 
-            {/* <FriendsList
-              userFriends={userFriends}
-              setError={setError}
-              actionResult={actionResult}
-              setActionResult={setActionResult}
-              friendStatusChanged={friendStatusChanged}
-              setFriendStatusChanged={setFriendStatusChanged}
-              showGroupChatButton={showGroupChatButton}
-              addUserGroupChat={addUserGroupChat}
-              removeUserGroupChat={removeUserGroupChat}
-              setChatUserId={setChatUserId}
-            />
-
-            <GroupList
-              setError={setError}
-              setActionResult={setActionResult}
-              groupChat={groupChat}
-              friendStatusChanged={friendStatusChanged}
-              setFriendStatusChanged={setFriendStatusChanged}
-              setChatUserId={setChatUserId}
-            /> */}
           </div>
         )}
       </div>
