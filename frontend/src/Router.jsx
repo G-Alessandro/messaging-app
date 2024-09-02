@@ -1,6 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import AuthenticationPage from "./components/authentication-page/AuthenticationPage.jsx";
-import HomePage from "./components/general-chat/HomePage";
+import HomePage from "./components/home-page/HomePage.jsx";
 import UserProfile from "./components/user-profile/UserProfile";
 
 const Router = () => {

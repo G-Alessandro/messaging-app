@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
 import io from "socket.io-client";
 import Sidebar from "../sidebar/Sidebar";
-import CreateGroupChat from "./create-group-chat/CreateGroupChat";
 import CategoryTopBar from "./category-top-bar/CategoryTopBar";
-import UsersList from "./all-users-list/AllUsersList";
+import UsersList from "./users-list/UsersList";
 import ChatRoom from "./chat-room/ChatRoom";
 import style from "./HomePage.module.css";
 
@@ -96,14 +95,20 @@ export default function GeneralChat() {
   };
 
   return (
-    <div className={style.generalChatContainer}>
+    <div className={style.homePageContainer}>
       <Sidebar />
       <div>
         {error && <p>{error}</p>}
         {!allUsers && !error && <p>Loading...</p>}
         {allUsers && !error && (
-          <div>
-            <CreateGroupChat
+          <div className={style.container}>
+
+            <CategoryTopBar
+              userFriends={userFriends}
+              groupChat={groupChat}
+              allUsers={allUsers}
+              setChosenCategoryName={setChosenCategoryName}
+              setChosenCategory={setChosenCategory}
               setError={setError}
               setActionResult={setActionResult}
               showGroupChatButton={showGroupChatButton}
@@ -113,16 +118,10 @@ export default function GeneralChat() {
               groupChatUser={groupChatUser}
             />
 
-            <CategoryTopBar
-              userFriends={userFriends}
-              groupChat={groupChat}
-              allUsers={allUsers}
-              setChosenCategory={setChosenCategory}
-            />
-
             <UsersList
               userFriends={userFriends}
               groupChat={groupChat}
+              chosenCategoryName={chosenCategoryName}
               setChosenCategoryName={setChosenCategoryName}
               chosenCategory={chosenCategory}
               setError={setError}
@@ -134,7 +133,6 @@ export default function GeneralChat() {
               removeUserGroupChat={removeUserGroupChat}
               setChatUserId={setChatUserId}
             />
-
           </div>
         )}
       </div>

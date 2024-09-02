@@ -1,8 +1,9 @@
 .usersContainer {
-  height: 500px;
+  height: 80%;
   display: flex;
   flex-direction: column;
-  overflow-y: scroll;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 ::-webkit-scrollbar {
@@ -22,7 +23,16 @@
   background: #2bac81;
 }
 
+.noUsersContainer {
+  width: 380px;
+  text-align: center;
+  font-size: 20px;
+  font-weight: 500;
+  margin-top: 20px;
+}
+
 .userContainer {
+  width: 360px;
   display: flex;
   flex-direction: row;
   border-bottom: 1px solid rgb(240, 240, 240);
@@ -37,40 +47,56 @@
   display: flex;
   flex: 1;
   gap: 20px;
-  padding: 10px 60px 10px 10px;
+  padding: 10px 0px 10px 10px;
   background-color: rgba(255, 255, 255, 0);
   border: none;
   cursor: pointer;
 }
 
 .userChatImg {
-  width: 40px;
-  height: 40px;
+  width: 55px;
+  height: 55px;
   background-color: white;
   border-radius: 50%;
-  padding: 5px;
-
-  /* border: 1px solid #33cc99; */
-  /* box-shadow: "0 0 3px 1px #33cc99"; */
-
-  /* border: 2px solid rgb(197, 197, 197); */
-  /* box-shadow: 0 0 3px 1px rgb(197, 197, 197); */
 }
 
-.userButton > h2 {
+.userNameStatusContainer {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-around;
+}
+
+.userNameStatusContainer > h2 {
+  font-size: 16px;
   font-weight: 500;
+}
+
+.userStatus {
+  font-size: 14px;
 }
 
 .dropdownMenuAndUserStatusContainer {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  justify-content: space-around;
+  justify-content: space-between;
   padding-right: 10px;
 }
 
-.userStatus {
-  /* color: rgb(197, 197, 197); */
-  /* color: #33cc99; */
-  font-size: 14px;
+.addRemoveToGroupBtn {
+  background-color: rgba(255, 255, 255, 0);
+  border: none;
+  cursor: pointer;
+}
+
+.addRemoveToGroupBtn > img {
+  width: 25px;
+  height: 25px;
+  transition: transform 0.2s;
+}
+
+.addRemoveToGroupBtn > img:hover {
+  transform: scale(1.2);
 }

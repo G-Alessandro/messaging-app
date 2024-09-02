@@ -1,0 +1,27 @@
+.categoryTopBarContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 20px 0px 0px 10px;
+  margin-bottom: 10px;
+}
+
+.categoryBtnContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 20px;
+}
+
+.categoryBtnContainer > button {
+  font-size: 15px;
+  padding: 8px 20px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.categoryBtnContainer > button:hover {
+  color: #078646;
+  background-color: #33cc9942;
+}

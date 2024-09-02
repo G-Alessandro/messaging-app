@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import DropdownSvg from "/assets/svg/dropdown.svg";
+import DropdownSvg from "/assets/svg/dropdown-01.svg";
 import style from "./DropdownMenu.module.css";
 
 export default function DropdownMenu({
@@ -7,6 +7,7 @@ export default function DropdownMenu({
   index,
   showDropdownMenu,
   setShowDropdownMenu,
+  chosenCategoryName,
   userId,
   founder,
   setChosenCategoryName,
@@ -98,7 +99,7 @@ export default function DropdownMenu({
         setActionResult(data.error);
       } else {
         setActionResult(data.message);
-        setChosenCategoryName("group");
+        setChosenCategoryName(chosenCategoryName);
         setStatusChanged(!statusChanged);
         setTimeout(() => setActionResult(null), 2000);
       }
