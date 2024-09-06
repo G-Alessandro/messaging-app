@@ -120,7 +120,7 @@ export default function CreateGroupChat({
 
             <label
               htmlFor="group-image"
-              className={style.inputFileLabel}
+              className={style.groupInputFileLabel}
               aria-label="change group image"
             >
               <img src={CameraSvg} />
@@ -130,6 +130,7 @@ export default function CreateGroupChat({
               type="file"
               name="group-image"
               id="group-image"
+              className={style.groupInputFile}
               onChange={handleFileChange}
             />
           </div>

@@ -67,14 +67,14 @@
   border: 3px solid rgb(69, 218, 255);
 }
 
-input[type="file"] {
+.groupInputFile {
   opacity: 0;
   width: 0.1px;
   height: 0.1px;
   position: absolute;
 }
 
-.inputFileLabel > img {
+.groupInputFileLabel > img {
   position: absolute;
   top: 38px;
   left: 48px;
@@ -88,7 +88,7 @@ input[type="file"] {
   transition: transform 0.2s;
 }
 
-.inputFileLabel > img:hover {
+.groupInputFileLabel > img:hover {
   transform: scale(1.2);
 }
 

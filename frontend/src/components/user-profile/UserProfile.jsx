@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import Sidebar from "../sidebar/Sidebar";
+import CameraSvg from "/assets/svg/camera.svg";
+import EditSvg from "/assets/svg/edit.svg";
 import style from "./UserProfile.module.css";
 
 export default function UserProfile() {
@@ -44,6 +46,7 @@ export default function UserProfile() {
       const imageUrl = URL.createObjectURL(image);
       setPreviewUserImage(imageUrl);
     }
+    event.target.value = "";
   };
 
   const handleSubmit = async (event, type) => {
@@ -86,83 +89,118 @@ export default function UserProfile() {
   };
 
   return (
-    <>
+    <div className={style.userProfileContainer}>
       <Sidebar />
-      <div>
-        {error && <p>{error}</p>}
-        {actionResult && <p>{actionResult}</p>}
-        {!userProfileData && !error && <p>Loading...</p>}
+      <div className={style.userProfileDataContainer}>
+        {error && <h2 className={style.error}>{error}</h2>}
+        {actionResult && <h2 className={style.actionResult}>{actionResult}</h2>}
+        {!userProfileData && !error && <h2 className={style.loadingScreen}>Loading...</h2>}
         {userProfileData && (
-          <>
-            {showFileForm && (
-              <form onSubmit={(event) => handleSubmit(event, "image")}>
-                <div>
-                  <img
-                    className={style.profileImg}
-                    src={previewUserImage}
-                    alt="Preview of your new profile picture"
-                  />
-                </div>
-                <input
-                  type="file"
-                  name="user-image"
-                  id="user-image"
-                  onChange={handleFileChange}
-                  required
-                />
-                <button type="submit">Save</button>
-                <button onClick={() => setShowFileForm(false)}>Cancel</button>
-              </form>
-            )}
-            <div>
-              <div>
+          <div className={style.userProfileFormDataContainer}>
+            <form
+              onSubmit={(event) => handleSubmit(event, "image")}
+              className={style.userProfileImageForm}
+            >
+              <div className={style.userProfileImage}>
                 <img
                   className={style.profileImg}
-                  src={userProfileData.profileImage.url}
-                  alt={`Profile image of ${userProfileData.firstName} ${userProfileData.lastName}`}
+                  src={
+                    previewUserImage !== null
+                      ? previewUserImage
+                      : userProfileData.profileImage.url
+                  }
+                  alt={"your profile picture"}
                 />
+                <label
+                  htmlFor="user-image"
+                  className={style.groupInputFileLabel}
+                  aria-label="change your profile picture"
+                  onClick={() => setShowFileForm(true)}
+                >
+                  <img src={CameraSvg} />
+                </label>
               </div>
-              {!isDemoAccount && (
-                <button onClick={() => setShowFileForm(true)}>
-                  Change img
-                </button>
-              )}
-            </div>
 
-            <div>
-              <p>{`${userProfileData.firstName} ${userProfileData.lastName}`}</p>
-              {!isDemoAccount && <p>{userProfileData.email}</p>}
-            </div>
+              <input
+                type="file"
+                name="user-image"
+                id="user-image"
+                onChange={handleFileChange}
+                required
+              />
 
-            <div>
-              <p>Info:</p>
+              {showFileForm &&
+                previewUserImage !== userProfileData.profileImage.url && (
+                  <div className={style.userProfileImageBtnContainer}>
+                    <button
+                      onClick={() => setShowFileForm(false)}
+                      className={style.infoCancelBtn}
+                    >
+                      Cancel
+                    </button>
+                    <button type="submit" className={style.infoSaveBtn}>
+                      Save
+                    </button>
+                  </div>
+                )}
+            </form>
+
+            <h2>{`${
+              userProfileData.firstName.charAt(0).toUpperCase() +
+              userProfileData.firstName.slice(1)
+            } ${
+              userProfileData.lastName.charAt(0).toUpperCase() +
+              userProfileData.lastName.slice(1)
+            }`}</h2>
+            {!isDemoAccount && <h3>{userProfileData.email}</h3>}
+
+            <div className={style.infoContainer}>
+              <h3>Info</h3>
               {showInfoForm && (
                 <form onSubmit={(event) => handleSubmit(event, "info")}>
                   <input
                     type="text"
+                    className={style.infoInputBtn}
                     name="user-info"
                     id="user-info"
                     maxLength="200"
                     defaultValue={userProfileData.profileInfo}
                   />
-                  <button type="submit">Save</button>
-                  <button onClick={() => setShowInfoForm(false)}>Cancel</button>
+
+                  <div className={style.infoFormBtnContainer}>
+                    <button
+                      className={style.infoCancelBtn}
+                      onClick={() => setShowInfoForm(false)}
+                    >
+                      Cancel
+                    </button>
+
+                    <button type="submit" className={style.infoSaveBtn}>
+                      Save
+                    </button>
+                  </div>
                 </form>
               )}
+
               {!showInfoForm && (
-                <div>
-                  <p>{userProfileData.profileInfo}</p>
+                <div className={style.infoBtnContainer}>
+                  <div>
+                    <p>{userProfileData.profileInfo}</p>
+                  </div>
                   {!isDemoAccount && (
-                    <button onClick={() => setShowInfoForm(true)}>
-                      Change Info
+                    <button
+                      className={style.editInfoBtn}
+                      onClick={() => setShowInfoForm(true)}
+                    >
+                      <img src={EditSvg} />
                     </button>
                   )}
                 </div>
               )}
             </div>
-          </>
+          </div>
         )}
       </div>
-    </>
+    </div>
   );
 }
