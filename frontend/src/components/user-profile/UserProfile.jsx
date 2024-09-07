@@ -90,11 +90,13 @@ export default function UserProfile() {
 
   return (
     <div className={style.userProfileContainer}>
-      <Sidebar />
+      <Sidebar selectedPage={"profile"} />
       <div className={style.userProfileDataContainer}>
         {error && <h2 className={style.error}>{error}</h2>}
         {actionResult && <h2 className={style.actionResult}>{actionResult}</h2>}
-        {!userProfileData && !error && <h2 className={style.loadingScreen}>Loading...</h2>}
+        {!userProfileData && !error && (
+          <h2 className={style.loadingScreen}>Loading...</h2>
+        )}
         {userProfileData && (
           <div className={style.userProfileFormDataContainer}>
             <form

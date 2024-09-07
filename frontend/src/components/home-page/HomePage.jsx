@@ -96,13 +96,12 @@ export default function GeneralChat() {
 
   return (
     <div className={style.homePageContainer}>
-      <Sidebar />
+      <Sidebar selectedPage={"chat"} />
       <div>
         {error && <p>{error}</p>}
         {!allUsers && !error && <p>Loading...</p>}
         {allUsers && !error && (
           <div className={style.container}>
-
             <CategoryTopBar
               userFriends={userFriends}
               groupChat={groupChat}

@@ -5,11 +5,12 @@ import ProfileSvg from "/assets/svg/profile-icon.svg";
 import LogoutSvg from "/assets/svg/logout.svg";
 import style from "./Sidebar.module.css";
 
-export default function Sidebar() {
+export default function Sidebar({ selectedPage }) {
   const [selectedElement, setSelectedElement] = useState("chat");
   const navigate = useNavigate();
 
   useEffect(() => {
+    setSelectedElement(selectedPage);
     const authenticationCheck = async () => {
       try {
         const response = await fetch(
@@ -66,13 +67,8 @@ export default function Sidebar() {
   };
 
   return (
-    <div className={style.sidebarContainer}>
-      <Link
-        to="/"
-        className={style.qcContainer}
-        aria-label="show all chats"
-        onClick={() => setSelectedElement("chat")}
-      >
+    <nav aria-label="Main navigation" className={style.sidebarContainer}>
+      <Link to="/" className={style.qcContainer} aria-label="show all chats">
         <span className={style.qcQ}>Q</span>
         <span className={style.qcC}>C</span>
       </Link>
@@ -80,30 +76,25 @@ export default function Sidebar() {
         <Link
           to="/"
           aria-label="show all chats"
-          onClick={() => setSelectedElement("chat")}
-          style={elementClickedStyle(selectedElement,"chat")
-          }
+          style={elementClickedStyle(selectedElement, "chat")}
         >
           <img src={ChatSvg} />
         </Link>
         <Link
           to="/user-profile"
           aria-label="Show your profile so you can edit it"
-          onClick={() => setSelectedElement("profile")}
-          style={elementClickedStyle(selectedElement,"profile")
-          }
+          style={elementClickedStyle(selectedElement, "profile")}
         >
           <img src={ProfileSvg} />
         </Link>
         <button
           onClick={handleLogout}
           aria-label="Log out of the site"
-          style={elementClickedStyle(selectedElement,"logout")
-          }
+          style={elementClickedStyle(selectedElement, "logout")}
         >
           <img src={LogoutSvg} />
         </button>
       </div>
-    </div>
+    </nav>
   );
 }
