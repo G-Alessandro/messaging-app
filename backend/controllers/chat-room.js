@@ -9,13 +9,10 @@ const Chat = require("../models/chat");
 
 exports.chat_room_post = [
   body("chatUserId")
-    .isArray()
-    .isLength({ min: 1 })
+    .isString()
     .custom((value) => {
-      for (let i = 0; i < value.length; i++) {
-        if (!mongoose.Types.ObjectId.isValid(value[i])) {
-          throw new Error("Invalid user ID");
-        }
+      if (!mongoose.Types.ObjectId.isValid(value)) {
+        throw new Error("Invalid user ID");
       }
       return true;
     }),
@@ -29,32 +26,32 @@ exports.chat_room_post = [
 
     try {
       const userId = req.user._id;
-      const chatUsers = req.body.chatUserId;
+      const chatUserId = req.body.chatUserId;
+      let chatUsers = [];
       const allChatUsers = [...chatUsers, userId];
       let chatRoomGroupData;
 
       const userData = await UserAccount.findById(
         userId,
-        "_id firstName lastName"
+        "_id firstName lastName profileImage groupChat"
       );
+
+      const groupChat = userData.groupChat.find((group) =>
+        group._id.equals(chatUserId)
+      );
+
+      if (groupChat) {
+        chatUsers = groupChat.groupChatUsers;
+        chatRoomGroupData = groupChat;
+      } else {
+        chatUsers = [chatUserId];
+      }
 
       let chatRoomUserData = await Promise.all(
         chatUsers.map((userId) =>
           UserAccount.findById(userId, "firstName lastName profileImage")
         )
       );
-
-      if (chatUsers.length > 1) {
-        chatRoomGroupData = await UserAccount.findOne(
-          {
-            _id: userId,
-            'groupChat.groupChatUsers': { $all: chatUsers },
-          },
-          {
-            'groupChat.$': 1,
-          }
-        );
-      }
 
       const findChat = async () => {
         const chat = await Chat.findOne({

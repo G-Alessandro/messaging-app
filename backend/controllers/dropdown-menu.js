@@ -119,7 +119,7 @@ exports.delete_group_delete = [
             },
           });
         }
-        
+
         await cloudinary.uploader.destroy(groupToDeleteImagePublicId);
 
         messageResult = "Group deleted!";
@@ -146,7 +146,7 @@ exports.delete_group_delete = [
         await UserAccount.findByIdAndUpdate(userId, {
           $pull: { groupChat: { _id: groupToDeleteId } },
         });
-        
+
         messageResult = "You left the group!";
       }
 
