@@ -25,10 +25,10 @@ exports.chat_room_post = [
     }
 
     try {
-      const userId = req.user._id;
+      const userId = req.user._id.toString();
       const chatUserId = req.body.chatUserId;
       let chatUsers = [];
-      const allChatUsers = [...chatUsers, userId];
+      let allChatUsers = [];
       let chatRoomGroupData;
 
       const userData = await UserAccount.findById(
@@ -46,6 +46,7 @@ exports.chat_room_post = [
       } else {
         chatUsers = [chatUserId];
       }
+      allChatUsers = [...chatUsers, userId];
 
       let chatRoomUserData = await Promise.all(
         chatUsers.map((userId) =>
