@@ -12,8 +12,7 @@ export default function ChatRoom({ chatUserId, socket }) {
   useEffect(() => {
     const fetchData = async () => {
       const requestData = {
-        chatUserId:
-          typeof chatUserId[0] !== "string" ? chatUserId[0] : chatUserId,
+        chatUserId: chatUserId,
       };
 
       try {
@@ -34,6 +33,10 @@ export default function ChatRoom({ chatUserId, socket }) {
           setUserData(data.userData);
           setChatRoomUserData(data.chatRoomUserData);
           setChatRoomGroupData(data.chatRoomGroupData);
+
+          console.log("chatRoomUserData", data.chatRoomUserData);
+          console.log("chatRoomGroupData", data.chatRoomGroupData);
+
           socket.emit("join_room", {
             userId: data.userData._id,
             roomId: data.chatData._id,
@@ -69,18 +72,18 @@ export default function ChatRoom({ chatUserId, socket }) {
             <div>
               <img
                 src={
-                  chatRoomUserData.length > 1
-                    ? chatRoomGroupData.groupChat[0].groupChatImage.url
-                    : chatRoomUserData[0].profileImage.url
+                  chatRoomGroupData === undefined
+                    ? chatRoomUserData[0].profileImage.url
+                    : chatRoomGroupData.groupChatImage.url
                 }
                 className={style.chatUserImg}
               />
             </div>
-            <p>
-              {chatRoomUserData.length > 1
-                ? chatRoomGroupData.groupChat[0].groupChatName
-                : `${chatRoomUserData[0].firstName} ${chatRoomUserData[0].lastName}`}
-            </p>
+            <h3>
+              {chatRoomGroupData === undefined
+                ? `${chatRoomUserData[0].firstName} ${chatRoomUserData[0].lastName}`
+                : chatRoomGroupData.groupChatName}
+            </h3>
           </div>
         )}
       </div>

@@ -5,7 +5,7 @@ import ProfileSvg from "/assets/svg/profile-icon.svg";
 import LogoutSvg from "/assets/svg/logout.svg";
 import style from "./Sidebar.module.css";
 
-export default function Sidebar({ selectedPage }) {
+export default function Sidebar({ selectedPage, setSocket }) {
   const [selectedElement, setSelectedElement] = useState("chat");
   const navigate = useNavigate();
 
@@ -47,6 +47,7 @@ export default function Sidebar({ selectedPage }) {
       const data = await response.json();
 
       if (response.ok) {
+        setSocket(null);
         setTimeout(() => navigate("/authentication-page"), 2000);
       } else {
         console.error("Logout error:", data);

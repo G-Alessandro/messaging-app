@@ -7,7 +7,6 @@ export default function InputBar({ setError, userData, socket, chatRoomData }) {
 
   const handleImageSubmit = async (event) => {
     event.preventDefault();
-
     try {
       let image;
 
@@ -42,6 +41,8 @@ export default function InputBar({ setError, userData, socket, chatRoomData }) {
           image,
         };
         socket.emit("send_message", { roomId: chatRoomData._id, message });
+        const fileInput = document.getElementById("message-image");
+        fileInput.value = "";
         setMessageInput("");
         setPreviewUserImage(null);
       }
@@ -58,11 +59,17 @@ export default function InputBar({ setError, userData, socket, chatRoomData }) {
     }
   };
 
+  const handleCancelPreview = () => {
+    setPreviewUserImage(null);
+    const fileInput = document.getElementById("message-image");
+    fileInput.value = "";
+  };
+
   return (
     <div>
       {previewUserImage && (
         <div>
-          <button onClick={() => setPreviewUserImage(null)}>X</button>
+          <button onClick={() => handleCancelPreview()}>X</button>
           <div>
             <img className={style.chatRoomImg} src={previewUserImage} />
           </div>

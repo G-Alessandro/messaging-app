@@ -50,8 +50,8 @@ export default function AllUsersList({
     }
   };
 
-  const handleUserClick = ([id], index) => {
-    setChatUserId([id]);
+  const handleUserClick = (id, index) => {
+    setChatUserId(id);
     setUserClicked((prev) => {
       const newState = prev.map(() => false);
       newState[index] = true;
@@ -100,7 +100,7 @@ export default function AllUsersList({
             >
               <button
                 className={style.userButton}
-                onClick={() => handleUserClick([user._id], index)}
+                onClick={() => handleUserClick(user._id, index)}
                 aria-label={
                   user.groupChatName
                     ? `chat with ${user.firstName} ${user.lastName}`

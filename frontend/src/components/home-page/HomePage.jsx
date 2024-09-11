@@ -6,8 +6,6 @@ import UsersList from "./users-list/UsersList";
 import ChatRoom from "./chat-room/ChatRoom";
 import style from "./HomePage.module.css";
 
-const socket = io("http://localhost:4000");
-
 export default function GeneralChat() {
   const [userId, setUserId] = useState(null);
   const [userFriends, setUserFriends] = useState([]);
@@ -21,6 +19,7 @@ export default function GeneralChat() {
   const [showGroupChatButton, setShowGroupChatButton] = useState(false);
   const [groupChatUser, setGroupChatUser] = useState([]);
   const [chatUserId, setChatUserId] = useState(null);
+  const [socket, setSocket] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -64,10 +63,13 @@ export default function GeneralChat() {
 
   useEffect(() => {
     if (userId) {
-      socket.emit("user_connected", { userId });
+      const newSocket = io("http://localhost:4000");
+      setSocket(newSocket);
+
+      newSocket.emit("user_connected", { userId });
 
       const handleDisconnect = () => {
-        socket.emit("user_disconnected", { userId });
+        newSocket.emit("user_disconnected", { userId });
       };
 
       window.addEventListener("beforeunload", handleDisconnect);
@@ -75,7 +77,7 @@ export default function GeneralChat() {
       return () => {
         handleDisconnect();
         window.removeEventListener("beforeunload", handleDisconnect);
-        socket.disconnect();
+        newSocket.disconnect();
       };
     }
   }, [userId]);
@@ -96,7 +98,7 @@ export default function GeneralChat() {
 
   return (
     <div className={style.homePageContainer}>
-      <Sidebar selectedPage={"chat"} />
+      <Sidebar selectedPage={"chat"} setSocket={setSocket} />
       <div>
         {error && <p>{error}</p>}
         {!allUsers && !error && <p>Loading...</p>}
