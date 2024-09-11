@@ -56,7 +56,7 @@ exports.chat_room_post = [
 
       const findChat = async () => {
         const chat = await Chat.findOne({
-          usersId: { $all: allChatUsers },
+          usersId: { $all: allChatUsers, $size: allChatUsers.length },
         });
 
         if (!chat) {
