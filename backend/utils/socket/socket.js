@@ -4,6 +4,7 @@ const Chat = require("../../models/chat");
 const socketHandler = (io) => {
   io.on("connection", (socket) => {
     socket.on("user_connected", async ({ userId }) => {
+      console.log("User connected");
       await UserAccount.findByIdAndUpdate(userId, { online: true });
     });
 
