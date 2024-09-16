@@ -4,6 +4,12 @@
   flex-direction: column;
 }
 
+.sidebarContainer {
+  height: 100vh;
+  background-color: white;
+  border-right: 3px solid rgb(197, 197, 197);
+}
+
 .qcContainer {
   display: flex;
   align-items: center;
@@ -28,11 +34,6 @@
 
 .qcC {
   color: #ffb89a;
-}
-
-.sidebarContainer {
-  background-color: white;
-  border-right: 3px solid rgb(197, 197, 197);
 }
 
 .linkContainer {

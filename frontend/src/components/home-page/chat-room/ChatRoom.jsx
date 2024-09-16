@@ -8,6 +8,7 @@ export default function ChatRoom({ chatUserId, socket }) {
   const [userData, setUserData] = useState(null);
   const [chatRoomUserData, setChatRoomUserData] = useState(null);
   const [chatRoomGroupData, setChatRoomGroupData] = useState(null);
+  const [messagesDate, setMessagesDate] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -34,6 +35,8 @@ export default function ChatRoom({ chatUserId, socket }) {
           setChatRoomUserData(data.chatRoomUserData);
           setChatRoomGroupData(data.chatRoomGroupData);
 
+          console.log("userData", data.userData);
+          console.log("chatData", data.chatData);
           console.log("chatRoomUserData", data.chatRoomUserData);
           console.log("chatRoomGroupData", data.chatRoomGroupData);
 
@@ -63,45 +66,160 @@ export default function ChatRoom({ chatUserId, socket }) {
     };
   }, [chatUserId]);
 
-  return (
-    <div>
-      {!chatRoomUserData && <p>Loading messages</p>}
-      <div>
-        {chatRoomUserData && (
-          <div>
-            <div>
-              <img
-                src={
-                  chatRoomGroupData === undefined
-                    ? chatRoomUserData[0].profileImage.url
-                    : chatRoomGroupData.groupChatImage.url
-                }
-                className={style.chatUserImg}
-              />
-            </div>
-            <h3>
-              {chatRoomGroupData === undefined
-                ? `${chatRoomUserData[0].firstName} ${chatRoomUserData[0].lastName}`
-                : chatRoomGroupData.groupChatName}
-            </h3>
-          </div>
-        )}
-      </div>
+  const handleMessageTimestamp = (timestamp, category) => {
+    const getDayNameIfRecent = (timestamp) => {
+      const daysOfWeek = [
+        "SUNDAY",
+        "MONDAY",
+        "TUESDAY",
+        "WEDNESDAY",
+        "THURSDAY",
+        "FRIDAY",
+        "SATURDAY",
+      ];
+      const givenDate = new Date(timestamp);
+      const currentDate = new Date();
 
-      <div>
+      const isSameDay =
+        givenDate.getFullYear() === currentDate.getFullYear() &&
+        givenDate.getMonth() === currentDate.getMonth() &&
+        givenDate.getDate() === currentDate.getDate();
+
+      if (isSameDay) {
+        return "TODAY";
+      }
+
+      const diffInTime = currentDate.getTime() - givenDate.getTime();
+      const diffInDays = Math.floor(diffInTime / (1000 * 60 * 60 * 24));
+
+      if (diffInDays >= 0 && diffInDays <= 6) {
+        return daysOfWeek[givenDate.getDay()];
+      }
+      return null;
+    };
+
+    let result;
+
+    switch (category) {
+      case "date":
+        if (getDayNameIfRecent(timestamp)) {
+          result = getDayNameIfRecent(timestamp);
+        } else {
+          result = new Date(timestamp).toLocaleDateString("en-GB", {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+          });
+        }
+        break;
+      case "hours":
+        result = new Date(timestamp).toLocaleTimeString("en-GB", {
+          hour: "2-digit",
+          minute: "2-digit",
+        });
+        break;
+    }
+    return result;
+  };
+
+  useEffect(() => {
+    if (chatRoomData && chatRoomData.messages) {
+      const dates = chatRoomData.messages.map((message) => {
+        return handleMessageTimestamp(message.timestamp, "date");
+      });
+      setMessagesDate([...dates]);
+    }
+  }, [chatRoomData]);
+
+  return (
+    <div className={style.chatRoomContainer}>
+      {!chatRoomUserData && (
+        <h3 className={style.chatRoomLoading}>Loading...</h3>
+      )}
+      {chatRoomUserData && (
+        <div className={style.chatRoomTopBar}>
+          <img
+            src={
+              chatRoomGroupData === undefined
+                ? chatRoomUserData[0].profileImage.url
+                : chatRoomGroupData.groupChatImage.url
+            }
+            className={style.chatUserImg}
+          />
+          <h3>
+            {chatRoomGroupData === undefined
+              ? `${
+                  chatRoomUserData[0].firstName.charAt(0).toUpperCase() +
+                  chatRoomUserData[0].firstName.slice(1)
+                } ${
+                  chatRoomUserData[0].lastName.charAt(0).toUpperCase() +
+                  chatRoomUserData[0].lastName.slice(1)
+                }`
+              : chatRoomGroupData.groupChatName.charAt(0).toUpperCase() +
+                chatRoomGroupData.groupChatName.slice(1)}
+          </h3>
+        </div>
+      )}
+
+      <div className={style.chatRoomMessagesContainer}>
         {error && <p>{error}</p>}
+
+        {!chatRoomData && (
+          <h3 className={style.chatRoomLoading}>Loading messages...</h3>
+        )}
+
         {chatRoomData &&
-          chatRoomData.messages.map((message) => (
-            <div key={message._id || message.timestamp}>
-              <p>{message.userName}</p>
-              {message.text && <p>{message.text}</p>}
-              {message.image && (
-                <div>
-                  <img src={message.image.url} className={style.chatRoomImg} />
+          chatRoomData.messages.map((message, index) => (
+            <>
+              {index !== 1 &&
+                messagesDate[index - 1] !== messagesDate[index] && (
+                  <div className={style.messagesDate}>
+                    {messagesDate[index]}
+                  </div>
+                )}
+
+              <div
+                key={message._id || message.timestamp}
+                className={style.messagesContainer}
+                style={{
+                  borderRadius: "5px",
+                  ...(message.userName ===
+                  `${userData.firstName} ${userData.lastName}`
+                    ? { alignSelf: "flex-end", backgroundColor: "#d9fdd3" }
+                    : { alignSelf: "flex-start", backgroundColor: "#ffffff" }),
+                }}
+              >
+                <div className={style.messageContainer}>
+
+                  {chatRoomGroupData ? <h3 className={style.messageAuthor}>{message.userName ===
+                  `${userData.firstName} ${userData.lastName}`? "" : message.userName}</h3> : ""}
+
+                  {message.text && (
+                    <p
+                      style={
+                        message.userName ===
+                        `${userData.firstName} ${userData.lastName}`
+                          ? { alignSelf: "flex-end" }
+                          : { alignSelf: "flex-start" }
+                      }
+                    >
+                      {message.text}
+                    </p>
+                  )}
+
+                  {message.image && (
+                    <img
+                      src={message.image.url}
+                      className={style.chatRoomImg}
+                    />
+                  )}
+
+                  <p className={style.messageHours}>
+                    {handleMessageTimestamp(message.timestamp, "hours")}
+                  </p>
                 </div>
-              )}
-              <p>{new Date(message.timestamp).toLocaleString()}</p>
-            </div>
+              </div>
+            </>
           ))}
       </div>
       <InputBar
