@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import style from "./ChatContainer.module.css";
 
 export default function ChatContainer({
@@ -10,6 +10,17 @@ export default function ChatContainer({
 }) {
   const [messageUserName, setMessageUserName] = useState([]);
   const [messagesDate, setMessagesDate] = useState([]);
+  const messagesEndRef = useRef(null);
+
+  const scrollToBottom = () => {
+    setTimeout(() => {
+      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, 100);
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [chatRoomData]);
 
   const chatUserProfileImage = (messageUserName) => {
     const user = chatRoomUserData.find((user) => {
@@ -193,6 +204,7 @@ export default function ChatContainer({
             </div>
           </React.Fragment>
         ))}
+      <div ref={messagesEndRef} />
     </div>
   );
 }

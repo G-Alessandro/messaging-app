@@ -78,7 +78,7 @@
 .messageUserTriangleBubble {
   position: absolute;
   transform: rotate(80deg);
-  top: -18px;
+  top: -8px;
   right: -25px;
   width: 0;
   height: 0;
