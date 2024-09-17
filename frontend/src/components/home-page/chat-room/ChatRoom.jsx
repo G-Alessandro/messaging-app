@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
+import TopBar from "./top-bar/TopBar";
 import InputBar from "./input-bar/InputBar";
 import style from "./ChatRoom.module.css";
 
@@ -8,6 +9,7 @@ export default function ChatRoom({ chatUserId, socket }) {
   const [userData, setUserData] = useState(null);
   const [chatRoomUserData, setChatRoomUserData] = useState(null);
   const [chatRoomGroupData, setChatRoomGroupData] = useState(null);
+  const [messageUserName, setMessageUserName] = useState([]);
   const [messagesDate, setMessagesDate] = useState([]);
 
   useEffect(() => {
@@ -34,11 +36,6 @@ export default function ChatRoom({ chatUserId, socket }) {
           setUserData(data.userData);
           setChatRoomUserData(data.chatRoomUserData);
           setChatRoomGroupData(data.chatRoomGroupData);
-
-          console.log("userData", data.userData);
-          console.log("chatData", data.chatData);
-          console.log("chatRoomUserData", data.chatRoomUserData);
-          console.log("chatRoomGroupData", data.chatRoomGroupData);
 
           socket.emit("join_room", {
             userId: data.userData._id,
@@ -127,42 +124,38 @@ export default function ChatRoom({ chatUserId, socket }) {
       const dates = chatRoomData.messages.map((message) => {
         return handleMessageTimestamp(message.timestamp, "date");
       });
+      const messageAuthor = chatRoomData.messages.map((message) => {
+        return message.userName;
+      });
       setMessagesDate([...dates]);
+      setMessageUserName([...messageAuthor]);
     }
   }, [chatRoomData]);
 
+  const chatUserProfileImage = (messageUserName) => {
+    const user = chatRoomUserData.find((user) => {
+      const userName = user.firstName + " " + user.lastName;
+      return userName === messageUserName;
+    });
+
+    if (user && user.profileImage) {
+      console.log("result", user.profileImage.url);
+      return user.profileImage.url;
+    }
+
+    return null;
+  };
+
   return (
     <div className={style.chatRoomContainer}>
-      {!chatRoomUserData && (
-        <h3 className={style.chatRoomLoading}>Loading...</h3>
-      )}
-      {chatRoomUserData && (
-        <div className={style.chatRoomTopBar}>
-          <img
-            src={
-              chatRoomGroupData === undefined
-                ? chatRoomUserData[0].profileImage.url
-                : chatRoomGroupData.groupChatImage.url
-            }
-            className={style.chatUserImg}
-          />
-          <h3>
-            {chatRoomGroupData === undefined
-              ? `${
-                  chatRoomUserData[0].firstName.charAt(0).toUpperCase() +
-                  chatRoomUserData[0].firstName.slice(1)
-                } ${
-                  chatRoomUserData[0].lastName.charAt(0).toUpperCase() +
-                  chatRoomUserData[0].lastName.slice(1)
-                }`
-              : chatRoomGroupData.groupChatName.charAt(0).toUpperCase() +
-                chatRoomGroupData.groupChatName.slice(1)}
-          </h3>
-        </div>
-      )}
+      
+      <TopBar
+        chatRoomUserData={chatRoomUserData}
+        chatRoomGroupData={chatRoomGroupData}
+      />
 
       <div className={style.chatRoomMessagesContainer}>
-        {error && <p>{error}</p>}
+        {error && <p className={style.chatRoomError}>{error}</p>}
 
         {!chatRoomData && (
           <h3 className={style.chatRoomLoading}>Loading messages...</h3>
@@ -170,7 +163,7 @@ export default function ChatRoom({ chatUserId, socket }) {
 
         {chatRoomData &&
           chatRoomData.messages.map((message, index) => (
-            <>
+            <React.Fragment key={message._id || message.timestamp}>
               {index !== 1 &&
                 messagesDate[index - 1] !== messagesDate[index] && (
                   <div className={style.messagesDate}>
@@ -179,10 +172,9 @@ export default function ChatRoom({ chatUserId, socket }) {
                 )}
 
               <div
-                key={message._id || message.timestamp}
-                className={style.messagesContainer}
+                className={style.container}
                 style={{
-                  borderRadius: "5px",
+                  borderRadius: "4px",
                   ...(message.userName ===
                   `${userData.firstName} ${userData.lastName}`
                     ? { alignSelf: "flex-end", backgroundColor: "#d9fdd3" }
@@ -190,21 +182,69 @@ export default function ChatRoom({ chatUserId, socket }) {
                 }}
               >
                 <div className={style.messageContainer}>
+                  {message.userName !==
+                    `${userData.firstName} ${userData.lastName}` &&
+                    index !== 1 &&
+                    message.userName !== messageUserName[index - 1] && (
+                      <img
+                        className={style.messageAuthorImg}
+                        src={chatUserProfileImage(message.userName)}
+                      />
+                    )}
 
-                  {chatRoomGroupData ? <h3 className={style.messageAuthor}>{message.userName ===
-                  `${userData.firstName} ${userData.lastName}`? "" : message.userName}</h3> : ""}
+                  {message.userName !== messageUserName[index - 1] &&
+                    message.userName !==
+                      `${userData.firstName} ${userData.lastName}` && (
+                      <div
+                        className={style.messageTriangleBubble}
+                        style={
+                          message.userName ===
+                          `${userData.firstName} ${userData.lastName}`
+                            ? { borderBottomColor: "#d9fdd3" }
+                            : {}
+                        }
+                      ></div>
+                    )}
+
+                  {chatRoomGroupData && (
+                    <h3 className={style.messageAuthor}>
+                      {message.userName !==
+                        `${userData.firstName} ${userData.lastName}` &&
+                      index !== 1 &&
+                      message.userName !== messageUserName[index - 1]
+                        ? message.userName
+                        : ""}
+                    </h3>
+                  )}
 
                   {message.text && (
-                    <p
+                    <div
+                      className={style.messageTextContainer}
                       style={
                         message.userName ===
                         `${userData.firstName} ${userData.lastName}`
-                          ? { alignSelf: "flex-end" }
-                          : { alignSelf: "flex-start" }
+                          ? { flexDirection: "row-reverse" }
+                          : {}
                       }
                     >
-                      {message.text}
-                    </p>
+                      <p
+                        style={
+                          message.userName ===
+                          `${userData.firstName} ${userData.lastName}`
+                            ? { alignSelf: "flex-end" }
+                            : { alignSelf: "flex-start" }
+                        }
+                      >
+                        {message.text}
+                      </p>
+                      {message.userName !== messageUserName[index - 1] &&
+                        message.userName ===
+                          `${userData.firstName} ${userData.lastName}` && (
+                          <div
+                            className={style.messageUserTriangleBubble}
+                          ></div>
+                        )}
+                    </div>
                   )}
 
                   {message.image && (
@@ -219,7 +259,7 @@ export default function ChatRoom({ chatUserId, socket }) {
                   </p>
                 </div>
               </div>
-            </>
+            </React.Fragment>
           ))}
       </div>
       <InputBar
