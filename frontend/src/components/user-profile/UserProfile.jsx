@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Sidebar from "../sidebar/Sidebar";
 import CameraSvg from "/assets/svg/camera.svg";
 import EditSvg from "/assets/svg/edit.svg";
@@ -12,6 +12,9 @@ export default function UserProfile() {
   const [showFileForm, setShowFileForm] = useState(false);
   const [showInfoForm, setShowInfoForm] = useState(false);
   const [isDemoAccount, setIsDemoAccount] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showLoader, setShowLoader] = useState(false);
+  const fileInputRef = useRef(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -46,11 +49,19 @@ export default function UserProfile() {
       const imageUrl = URL.createObjectURL(image);
       setPreviewUserImage(imageUrl);
     }
-    event.target.value = "";
   };
 
   const handleSubmit = async (event, type) => {
     event.preventDefault();
+    setIsSubmitting(true);
+    if (type === "image" && !event.target["user-image"].files[0]) {
+      setError("Please select an image file.");
+      setTimeout(() => {
+        setError(null);
+      }, 2000);
+      return;
+    }
+
     const input = type;
     let formData;
     let headers = {};
@@ -79,6 +90,10 @@ export default function UserProfile() {
       if (!response.ok) {
         setError(data.error);
       } else {
+        fileInputRef.current.value = null;
+        setIsSubmitting(false);
+        setShowLoader(false);
+        setPreviewUserImage(null);
         setActionResult(data.message);
         setTimeout(() => setActionResult(null), 2000);
         input === "image" ? setShowFileForm(false) : setShowInfoForm(false);
@@ -127,20 +142,28 @@ export default function UserProfile() {
                 type="file"
                 name="user-image"
                 id="user-image"
+                ref={fileInputRef}
                 onChange={handleFileChange}
-                required
               />
 
               {showFileForm &&
                 previewUserImage !== userProfileData.profileImage.url && (
                   <div className={style.userProfileImageBtnContainer}>
+                    {showLoader && <div className={style.loader}></div>}
                     <button
+                      type="button"
                       onClick={() => setShowFileForm(false)}
                       className={style.infoCancelBtn}
+                      disabled={isSubmitting}
                     >
                       Cancel
                     </button>
-                    <button type="submit" className={style.infoSaveBtn}>
+                    <button
+                      type="submit"
+                      className={style.infoSaveBtn}
+                      onClick={() => setShowLoader(true)}
+                      disabled={isSubmitting}
+                    >
                       Save
                     </button>
                   </div>

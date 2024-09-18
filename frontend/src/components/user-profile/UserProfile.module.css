@@ -19,6 +19,7 @@
   background-color: red;
   padding: 5px;
   border-radius: 0px 0px 5px 5px;
+  z-index: 1000;
 }
 
 .loadingScreen {
@@ -115,6 +116,7 @@
 }
 
 .userProfileImageBtnContainer {
+  position: relative;
   display: flex;
   justify-content: space-around;
   margin-top: 10px;
@@ -208,4 +210,35 @@
 .infoCancelBtn:hover {
   border: 2px solid rgb(190, 190, 190);
   background-color: rgb(219, 219, 219);
+}
+
+.loader {
+  position: absolute;
+  top: -50px;
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid #3498db;
+  width: 15px;
+  height: 15px;
+  -webkit-animation: spin 2s linear infinite; /* Safari */
+  animation: spin 2s linear infinite;
+}
+
+/* Safari */
+@-webkit-keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
