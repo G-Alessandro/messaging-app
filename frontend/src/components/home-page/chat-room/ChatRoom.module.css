@@ -2,4 +2,5 @@
   display: flex;
   width: 100vw;
   flex-direction: column;
+  background-color: rgb(240, 240, 240);
 }

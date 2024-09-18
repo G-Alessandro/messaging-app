@@ -1,4 +1,47 @@
-.chatRoomImg {
-  width: 150;
-  height: 150px;
+.inputBarContainer {
+  align-self: center;
+  padding: 20px 20px;
+}
+
+.inputBarContainer > form {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.inputBarContainer > form > button {
+  border: none;
+}
+
+.messageImageLabel > img,
+.inputBarContainer > form > button > img {
+  width: 50px;
+  height: 50px;
+  transition: transform 0.2s;
+  cursor: pointer;
+}
+
+.messageImageLabel > img:hover,
+.inputBarContainer > form > button > img:hover {
+  transform: scale(1.2);
+}
+
+.messageImageInputFile {
+  opacity: 0;
+  width: 0.1px;
+  height: 0.1px;
+}
+
+.messageImageInputText {
+  width: 800px;
+  height: 50px;
+  text-indent: 10px;
+  font-size: 20px;
+  border-radius: 15px;
+  border: none;
+  outline: none;
+}
+
+.inputBarContainer > form > button > img {
+  rotate: 45deg;
 }

@@ -1,4 +1,6 @@
 import { useState } from "react";
+import PictureSvg from "/assets/svg/picture.svg";
+import PaperPlane from "/assets/svg/paper-plane.svg";
 import style from "./InputBar.module.css";
 
 export default function InputBar({ setError, userData, socket, chatRoomData }) {
@@ -66,7 +68,7 @@ export default function InputBar({ setError, userData, socket, chatRoomData }) {
   };
 
   return (
-    <div>
+    <div className={style.inputBarContainer}>
       {previewUserImage && (
         <div>
           <button onClick={() => handleCancelPreview()}>X</button>
@@ -76,19 +78,30 @@ export default function InputBar({ setError, userData, socket, chatRoomData }) {
         </div>
       )}
       <form onSubmit={handleImageSubmit}>
+        <label
+          htmlFor="message-image"
+          className={style.messageImageLabel}
+          aria-label="attach or send an image along with the message"
+        >
+          <img src={PictureSvg} />
+        </label>
         <input
           type="file"
           name="message-image"
           id="message-image"
+          className={style.messageImageInputFile}
           onChange={handleFileChange}
         />
         <input
           type="text"
           onChange={(e) => setMessageInput(e.target.value)}
+          className={style.messageImageInputText}
           value={messageInput}
           placeholder="Type your message..."
         />
-        <button type="submit">Send</button>
+        <button type="submit" aria-label="send message">
+          <img src={PaperPlane} />
+        </button>
       </form>
     </div>
   );
