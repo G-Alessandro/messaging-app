@@ -212,10 +212,10 @@
   background-color: rgb(219, 219, 219);
 }
 
-.loader {
+.userProfileImageBtnContainer > .loader {
   position: absolute;
   top: -50px;
-  border: 16px solid #f3f3f3;
+  border: 16px solid #d4d4d4;
   border-radius: 50%;
   border-top: 16px solid #3498db;
   width: 15px;

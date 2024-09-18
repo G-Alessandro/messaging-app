@@ -7,6 +7,7 @@ import style from "./Sidebar.module.css";
 
 export default function Sidebar({ selectedPage, setSocket }) {
   const [selectedElement, setSelectedElement] = useState("chat");
+  const [showLoader, setShowLoader] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -37,6 +38,7 @@ export default function Sidebar({ selectedPage, setSocket }) {
   const handleLogout = async (event) => {
     event.preventDefault();
     setSelectedElement("logout");
+    setShowLoader(true);
     try {
       const response = await fetch("http://localhost:3000/logout", {
         method: "GET",
@@ -88,13 +90,16 @@ export default function Sidebar({ selectedPage, setSocket }) {
         >
           <img src={ProfileSvg} />
         </Link>
-        <button
-          onClick={handleLogout}
-          aria-label="Log out of the site"
-          style={elementClickedStyle(selectedElement, "logout")}
-        >
-          <img src={LogoutSvg} />
-        </button>
+        {showLoader && <div className={style.loader}></div>}
+        {showLoader === false && (
+          <button
+            onClick={handleLogout}
+            aria-label="Log out of the site"
+            style={elementClickedStyle(selectedElement, "logout")}
+          >
+            <img src={LogoutSvg} />
+          </button>
+        )}
       </div>
     </nav>
   );
