@@ -161,6 +161,12 @@ export default function ChatContainer({
                     index !== 1 &&
                     message.userName !== messageUserName[index - 1]
                       ? message.userName
+                          .split(" ")
+                          .map(
+                            (word) =>
+                              word.charAt(0).toUpperCase() + word.slice(1)
+                          )
+                          .join(" ")
                       : ""}
                   </h3>
                 )}
