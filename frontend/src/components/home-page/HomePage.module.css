@@ -4,6 +4,32 @@
 }
 
 .container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.actionResult,
+.actionResultError {
+  position: absolute;
+  align-self: center;
+  width: fit-content;
+  font-size: 22px;
+  font-weight: 700;
+  color: white;
+  background-color: rgb(14, 190, 14);
+  padding: 5px;
+  border-radius: 0px 0px 5px 5px;
+  z-index: 1000;
+}
+
+.actionResultError {
+  background-color: red;
+}
+
+.categoryUserListContainer {
   height: 100vh;
+  display: flex;
+  flex-direction: column;
   border-right: 2px solid #f1f1f1;
 }

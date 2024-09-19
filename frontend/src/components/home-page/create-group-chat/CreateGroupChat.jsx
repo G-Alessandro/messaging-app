@@ -1,12 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import DefaultUserSVG from "/assets/svg/default-user-image.svg";
 import DropdownSvg from "/assets/svg/dropdown-02.svg";
 import CameraSvg from "/assets/svg/camera.svg";
 import CancelSvg from "/assets/svg/cancel.svg";
 import style from "./CreateGroupChat.module.css";
+
 export default function CreateGroupChat({
   setError,
   setActionResult,
+  setActionResultError,
   showCategory,
   setShowCategory,
   showGroupChatButton,
@@ -14,9 +16,12 @@ export default function CreateGroupChat({
   statusChanged,
   setStatusChanged,
   groupChatUser,
+  setGroupChatUser,
 }) {
   const [previewGroupImage, setPreviewGroupImage] = useState(null);
   const [showDropdownMenu, setShowDropdownMenu] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const fileInputRef = useRef(null);
 
   useEffect(() => {
     const handleOutsideClick = (event) => {
@@ -33,13 +38,16 @@ export default function CreateGroupChat({
   const createGroupChat = async (event) => {
     event.preventDefault();
 
+    console.log(groupChatUser);
+
     if (groupChatUser.length < 1) {
-      setActionResult(
+      setActionResultError(
         "You must select at least one person to create a group chat!"
       );
-      setTimeout(() => setActionResult(null), 2000);
+      setTimeout(() => setActionResultError(null), 2000);
       return;
     }
+    setIsSubmitting(true);
 
     const imageData = event.target["group-image"].files[0];
 
@@ -63,6 +71,10 @@ export default function CreateGroupChat({
       if (!response.ok) {
         setActionResult(data.error);
       } else {
+        setShowCategory(true);
+        setIsSubmitting(false);
+        fileInputRef.current.value = null;
+        setGroupChatUser([]);
         setActionResult(data.message);
         setShowGroupChatButton(false);
         setStatusChanged(!statusChanged);
@@ -88,6 +100,9 @@ export default function CreateGroupChat({
   };
 
   const handleFormCancel = () => {
+    fileInputRef.current.value = null;
+    setGroupChatUser(null);
+    setPreviewGroupImage(null);
     setShowGroupChatButton(false);
     setShowCategory(true);
   };
@@ -130,6 +145,7 @@ export default function CreateGroupChat({
               type="file"
               name="group-image"
               id="group-image"
+              ref={fileInputRef}
               className={style.groupInputFile}
               onChange={handleFileChange}
             />
@@ -152,7 +168,7 @@ export default function CreateGroupChat({
             <button
               type="submit"
               className={style.doneBtn}
-              onClick={() => setShowCategory(true)}
+              disabled={isSubmitting}
             >
               Done
             </button>

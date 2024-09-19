@@ -10,11 +10,13 @@ export default function CategoryTopBar({
   setChosenCategory,
   setError,
   setActionResult,
+  setActionResultError,
   showGroupChatButton,
   setShowGroupChatButton,
   statusChanged,
   setStatusChanged,
   groupChatUser,
+  setGroupChatUser,
 }) {
   const [selectedElement, setSelectedElement] = useState("all");
   const [showCategory, setShowCategory] = useState(true);
@@ -37,32 +39,35 @@ export default function CategoryTopBar({
 
   return (
     <div className={style.categoryTopBarContainer}>
-      {showCategory && <div
-        className={style.categoryBtnContainer}
-        aria-label="bar to choose which category of users to display "
-      >
-        <button
-          onClick={() => handleCategorySet(allUsers, "all")}
-          style={handleElementClicked(selectedElement, "all")}
+      {showCategory && (
+        <div
+          className={style.categoryBtnContainer}
+          aria-label="bar to choose which category of users to display "
         >
-          All
-        </button>
-        <button
-          onClick={() => handleCategorySet(userFriends, "friends")}
-          style={handleElementClicked(selectedElement, "friends")}
-        >
-          Friends
-        </button>
-        <button
-          onClick={() => handleCategorySet(groupChat, "group")}
-          style={handleElementClicked(selectedElement, "group")}
-        >
-          Group
-        </button>
-      </div>}
+          <button
+            onClick={() => handleCategorySet(allUsers, "all")}
+            style={handleElementClicked(selectedElement, "all")}
+          >
+            All
+          </button>
+          <button
+            onClick={() => handleCategorySet(userFriends, "friends")}
+            style={handleElementClicked(selectedElement, "friends")}
+          >
+            Friends
+          </button>
+          <button
+            onClick={() => handleCategorySet(groupChat, "group")}
+            style={handleElementClicked(selectedElement, "group")}
+          >
+            Group
+          </button>
+        </div>
+      )}
       <CreateGroupChat
         setError={setError}
         setActionResult={setActionResult}
+        setActionResultError={setActionResultError}
         showCategory={showCategory}
         setShowCategory={setShowCategory}
         showGroupChatButton={showGroupChatButton}
@@ -70,6 +75,7 @@ export default function CategoryTopBar({
         statusChanged={statusChanged}
         setStatusChanged={setStatusChanged}
         groupChatUser={groupChatUser}
+        setGroupChatUser={setGroupChatUser}
       />
     </div>
   );

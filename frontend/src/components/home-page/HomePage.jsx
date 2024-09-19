@@ -15,6 +15,7 @@ export default function GeneralChat() {
   const [chosenCategory, setChosenCategory] = useState(null);
   const [error, setError] = useState(null);
   const [actionResult, setActionResult] = useState(null);
+  const [actionResultError, setActionResultError] = useState(null);
   const [statusChanged, setStatusChanged] = useState(false);
   const [showGroupChatButton, setShowGroupChatButton] = useState(false);
   const [groupChatUser, setGroupChatUser] = useState([]);
@@ -99,11 +100,15 @@ export default function GeneralChat() {
   return (
     <div className={style.homePageContainer}>
       <Sidebar selectedPage={"chat"} setSocket={setSocket} />
-      <div>
+      <div className={style.container}>
         {error && <p>{error}</p>}
+        {actionResult && <p className={style.actionResult}>{actionResult}</p>}
+        {actionResultError && (
+          <p className={style.actionResultError}>{actionResultError}</p>
+        )}
         {!allUsers && !error && <p>Loading...</p>}
         {allUsers && !error && (
-          <div className={style.container}>
+          <div className={style.categoryUserListContainer}>
             <CategoryTopBar
               userFriends={userFriends}
               groupChat={groupChat}
@@ -112,11 +117,13 @@ export default function GeneralChat() {
               setChosenCategory={setChosenCategory}
               setError={setError}
               setActionResult={setActionResult}
+              setActionResultError={setActionResultError}
               showGroupChatButton={showGroupChatButton}
               setShowGroupChatButton={setShowGroupChatButton}
               statusChanged={statusChanged}
               setStatusChanged={setStatusChanged}
               groupChatUser={groupChatUser}
+              setGroupChatUser={setGroupChatUser}
             />
 
             <UsersList
