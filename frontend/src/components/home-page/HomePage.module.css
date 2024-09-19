@@ -33,3 +33,42 @@
   flex-direction: column;
   border-right: 2px solid #f1f1f1;
 }
+
+.appWelcomeContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 40px;
+}
+
+.appIconSvg {
+  width: 200px;
+  height: 200px;
+}
+
+.appWelcomeContainer > h1 {
+  margin-bottom: 10px;
+}
+
+.welcomeContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background-color: #e4faf3;
+  font-size: 20px;
+  border-radius: 5px;
+}
+
+.appNameQuick {
+  color: #33cc99;
+}
+
+.appNameChat {
+  color: #ffb89a;
+}
+
+.pEnd {
+  margin-top: 10px;
+}

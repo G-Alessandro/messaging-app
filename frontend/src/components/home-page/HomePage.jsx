@@ -4,6 +4,7 @@ import Sidebar from "../sidebar/Sidebar";
 import CategoryTopBar from "./category-top-bar/CategoryTopBar";
 import UsersList from "./users-list/UsersList";
 import ChatRoom from "./chat-room/ChatRoom";
+import AppSvg from "/assets/svg/app-icon.svg";
 import style from "./HomePage.module.css";
 
 export default function GeneralChat() {
@@ -144,6 +145,21 @@ export default function GeneralChat() {
           </div>
         )}
       </div>
+      {!chatUserId && (
+        <div className={style.appWelcomeContainer}>
+          <img src={AppSvg} className={style.appIconSvg} />
+          <h1>Welcome!</h1>
+          <div className={style.welcomeContainer}>
+            <p>
+              Here you can talk in real time with all the people on{" "}
+              <span className={style.appNameQuick}>Quick</span>
+              <span className={style.appNameChat}>Chat</span>, make friends and
+              create groups!
+            </p>
+            <p className={style.pEnd}>Have fun!</p>
+          </div>
+        </div>
+      )}
       {chatUserId && <ChatRoom socket={socket} chatUserId={chatUserId} />}
     </div>
   );
