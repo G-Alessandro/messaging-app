@@ -72,3 +72,14 @@
 .pEnd {
   margin-top: 10px;
 }
+
+@media (max-width: 500px) {
+  .homePageContainer {
+    height: 100%;
+    flex-direction: column-reverse;
+  }
+
+  .appWelcomeContainer {
+    display: none;
+  }
+}

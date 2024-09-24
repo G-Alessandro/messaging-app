@@ -148,3 +148,29 @@
 .cancelBtn > img:hover {
   transform: scale(1.2);
 }
+
+@media (max-width: 500px) {
+
+  .createGroupForm {
+    padding: 5px 0px 0px 0px;
+  }
+
+  .createGroupBtnContainer {
+    top: 50px;
+    right: 20px;
+  }
+
+  .cancelBtn {
+    margin-left: 20px;
+  }
+
+  .groupChatImg {
+    width: 50px;
+    height: 50px;
+  }
+
+  .groupInputFileLabel > img {
+    top: 28px;
+    left: 38px;
+  }
+}

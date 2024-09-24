@@ -25,3 +25,17 @@
   color: #078646;
   background-color: #33cc9942;
 }
+
+@media (max-width: 500px) {
+  .categoryTopBarContainer {
+    width: 100%;
+    padding: 5px 0px;
+    margin: 0px;
+  }
+
+  .categoryBtnContainer {
+    justify-content: space-between;
+    margin-left: 5px;
+    gap: 20px;
+  }
+}

@@ -242,3 +242,31 @@
     transform: rotate(360deg);
   }
 }
+
+@media (max-width: 500px) {
+  .userProfileContainer {
+    justify-content: center;
+  }
+
+  .userProfileFormDataContainer {
+    padding: 0px;
+    margin-top: 10px;
+  }
+
+  .userProfileImg {
+    width: 150px;
+    height: 150px;
+  }
+
+  .userProfileFormDataContainer > h3 {
+    margin-top: 15px;
+  }
+
+  .infoContainer {
+    margin-top: 15px;
+  }
+
+  .userProfileImageBtnContainer {
+    margin-top: 20px;
+  }
+}

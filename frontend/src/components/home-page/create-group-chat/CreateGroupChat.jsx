@@ -38,8 +38,6 @@ export default function CreateGroupChat({
   const createGroupChat = async (event) => {
     event.preventDefault();
 
-    console.log(groupChatUser);
-
     if (groupChatUser.length < 1) {
       setActionResultError(
         "You must select at least one person to create a group chat!"

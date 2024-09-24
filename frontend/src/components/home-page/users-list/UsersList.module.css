@@ -102,3 +102,26 @@
 .addRemoveToGroupBtn > img:hover {
   transform: scale(1.2);
 }
+
+@media (max-width: 500px) {
+  .usersContainer {
+    width: 320px;
+    margin-bottom: 0px;
+    margin-bottom: 55px;
+    padding: 5px 0px;
+  }
+
+  .noUsersContainer {
+    width: 315px;
+  }
+
+  .userButton {
+    flex: 0.85;
+    gap: 10px;
+  }
+
+  .userChatImg {
+    width: 40px;
+    height: 40px;
+  }
+}
