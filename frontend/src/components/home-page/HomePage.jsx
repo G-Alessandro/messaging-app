@@ -1,4 +1,6 @@
-import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useState, useEffect, useContext } from "react";
+import { SocketContext } from "../../main.jsx";
 import io from "socket.io-client";
 import Sidebar from "../sidebar/Sidebar";
 import CategoryTopBar from "./category-top-bar/CategoryTopBar";
@@ -21,7 +23,10 @@ export default function GeneralChat() {
   const [showGroupChatButton, setShowGroupChatButton] = useState(false);
   const [groupChatUser, setGroupChatUser] = useState([]);
   const [chatUserId, setChatUserId] = useState(null);
-  const [socket, setSocket] = useState(null);
+  const [isMobile, setIsMobile] = useState(false);
+  const { socket, setSocket } = useContext(SocketContext);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -98,6 +103,29 @@ export default function GeneralChat() {
     });
   };
 
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 500px)");
+
+    const handleMediaQueryChange = (e) => {
+      setIsMobile(e.matches);
+    };
+
+    mediaQuery.addEventListener("change", handleMediaQueryChange);
+
+    handleMediaQueryChange(mediaQuery);
+
+    return () =>
+      mediaQuery.removeEventListener("change", handleMediaQueryChange);
+  }, []);
+
+  useEffect(() => {
+    if (isMobile && chatUserId) {
+      navigate("/chat-room-page", {
+        state: { chatUserId },
+      });
+    }
+  }, [isMobile, chatUserId]);
+
   return (
     <div className={style.homePageContainer}>
       <Sidebar selectedPage={"chat"} setSocket={setSocket} />
@@ -160,7 +188,9 @@ export default function GeneralChat() {
           </div>
         </div>
       )}
-      {chatUserId && <ChatRoom socket={socket} chatUserId={chatUserId} />}
+      {chatUserId && isMobile === false && (
+        <ChatRoom socket={socket} chatUserId={chatUserId} />
+      )}
     </div>
   );
 }
