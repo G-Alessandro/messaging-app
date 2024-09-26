@@ -1,14 +1,17 @@
 import { useState } from "react";
+import CancelSvg from "/assets/svg/cancel.svg";
 import PictureSvg from "/assets/svg/picture.svg";
-import PaperPlane from "/assets/svg/paper-plane.svg";
+import PaperPlaneSvg from "/assets/svg/paper-plane.svg";
 import style from "./InputBar.module.css";
 
 export default function InputBar({ setError, userData, socket, chatRoomData }) {
   const [messageInput, setMessageInput] = useState("");
   const [previewUserImage, setPreviewUserImage] = useState(null);
+  const [showLoader, setShowLoader] = useState(false);
 
   const handleImageSubmit = async (event) => {
     event.preventDefault();
+    setShowLoader(true)
     try {
       let image;
 
@@ -48,6 +51,9 @@ export default function InputBar({ setError, userData, socket, chatRoomData }) {
         setMessageInput("");
         setPreviewUserImage(null);
       }
+
+      setShowLoader(false);
+
     } catch (err) {
       setError(err);
     }
@@ -72,7 +78,9 @@ export default function InputBar({ setError, userData, socket, chatRoomData }) {
       {previewUserImage && (
         <div className={style.inputBarImagePreviewContainer}>
           <img className={style.chatRoomImg} src={previewUserImage} />
-          <button onClick={() => handleCancelPreview()}>X</button>
+          <button onClick={() => handleCancelPreview()}>
+            <img src={CancelSvg} />
+          </button>
         </div>
       )}
       <form onSubmit={handleImageSubmit}>
@@ -97,9 +105,15 @@ export default function InputBar({ setError, userData, socket, chatRoomData }) {
           value={messageInput}
           placeholder="Type your message..."
         />
-        <button type="submit" aria-label="send message">
-          <img src={PaperPlane} />
-        </button>
+        {showLoader && <div className={style.loader}></div>}
+        {showLoader === false && (
+          <button
+            type="submit"
+            aria-label="send message"
+          >
+            <img src={PaperPlaneSvg} />
+          </button>
+        )}
       </form>
     </div>
   );

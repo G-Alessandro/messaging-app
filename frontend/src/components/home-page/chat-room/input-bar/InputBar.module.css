@@ -1,15 +1,40 @@
 .inputBarContainer {
+  position: relative;
   align-self: center;
   padding: 20px;
 }
 
 .inputBarImagePreviewContainer {
+  position: absolute;
+  bottom: 90px;
   display: flex;
+  justify-content: center;
+  align-content: center;
+  padding: 10px;
+  background-color: #f1f1f1;
 }
 
-.inputBarImagePreviewContainer>img {
+.inputBarImagePreviewContainer > img {
   max-width: 300px;
   max-height: 300px;
+}
+
+.inputBarImagePreviewContainer > button {
+  width: fit-content;
+  height: fit-content;
+  border: none;
+  padding: 0px 5px 5px;
+  margin-left: 10px;
+  cursor: pointer;
+  transition: transform 0.1s;
+}
+
+.inputBarImagePreviewContainer > button:hover {
+  transform: scale(1.2);
+}
+
+.inputBarImagePreviewContainer > button > img {
+  width: 30px;
 }
 
 .inputBarContainer > form {
@@ -55,6 +80,36 @@
   rotate: 45deg;
 }
 
+.inputBarContainer > form > .loader {
+  border: 16px solid #d4d4d4;
+  border-radius: 50%;
+  border-top: 16px solid #3498db;
+  align-self: center;
+  width: 15px;
+  height: 15px;
+  -webkit-animation: spin 2s linear infinite; /* Safari */
+  animation: spin 2s linear infinite;
+}
+
+/* Safari */
+@-webkit-keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 @media (max-width: 500px) {
   .inputBarContainer {
     position: fixed;
@@ -65,15 +120,42 @@
     z-index: 1000;
   }
 
+  .inputBarImagePreviewContainer {
+    bottom: 60px;
+    padding-right: 5px;
+  }
+
+  .inputBarImagePreviewContainer > img {
+    max-width: 200px;
+    max-height: 200px;
+  }
+
+  .inputBarImagePreviewContainer > button {
+    margin-left: 10px;
+  }
+
+  .inputBarImagePreviewContainer > button > img {
+    width: 20px;
+  }
+
   .messageImageLabel > img,
   .inputBarContainer > form > button > img {
     width: 35px;
     height: 35px;
   }
 
+  .inputBarContainer > form > label > img {
+    padding-left: 5px;
+  }
+
   .messageImageInputText {
     width: 200px;
     height: 40px;
     font-size: 18px;
+  }
+
+  .inputBarContainer > form > .loader {
+    width: 8px;
+    height: 8px;
   }
 }
