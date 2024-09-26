@@ -19,3 +19,11 @@
   .chatRoomTopBar > h3 {
     font-weight: 500;
   }
+
+  @media (max-width: 500px) { 
+    .chatRoomTopBar {
+      position: fixed;
+      width: 100%;
+      z-index: 1000;
+    } 
+  }

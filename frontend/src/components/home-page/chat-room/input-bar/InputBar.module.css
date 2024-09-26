@@ -1,6 +1,15 @@
 .inputBarContainer {
   align-self: center;
-  padding: 20px 20px;
+  padding: 20px;
+}
+
+.inputBarImagePreviewContainer {
+  display: flex;
+}
+
+.inputBarImagePreviewContainer>img {
+  max-width: 300px;
+  max-height: 300px;
 }
 
 .inputBarContainer > form {
@@ -44,4 +53,27 @@
 
 .inputBarContainer > form > button > img {
   rotate: 45deg;
+}
+
+@media (max-width: 500px) {
+  .inputBarContainer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    padding: 15px 5px;
+    background-color: #f1f1f1;
+    z-index: 1000;
+  }
+
+  .messageImageLabel > img,
+  .inputBarContainer > form > button > img {
+    width: 35px;
+    height: 35px;
+  }
+
+  .messageImageInputText {
+    width: 200px;
+    height: 40px;
+    font-size: 18px;
+  }
 }

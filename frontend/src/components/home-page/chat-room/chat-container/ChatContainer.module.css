@@ -19,6 +19,7 @@
   padding: 5px;
   border-radius: 0px 0px 5px 5px;
   margin-top: -10px;
+  z-index: 1000;
 }
 
 .messagesDate {
@@ -101,4 +102,43 @@
   align-self: flex-end;
   color: gray;
   font-size: 12px;
+}
+
+@media (max-width: 500px) {
+  .chatRoomMessagesContainer {
+    height: auto;
+    padding: 10px 20px 10px 60px;
+    gap: 10px;
+    overflow-x: hidden;
+    margin-top: 60px;
+    margin-bottom: 55px;
+  }
+
+  .messagesDate {
+    padding: 5px 8px;
+  }
+
+  .messageContainer {
+    gap: 1px;
+    padding: 2px 6px;
+  }
+
+  .messageAuthorImg {
+    left: -55px;  
+    width: 40px;
+    height: 40px;
+  }
+
+  .messageTextContainer > p {
+    max-width: 280px;
+  }
+
+  .messageAuthor {
+    margin-bottom: 2px;
+  }
+
+  .chatRoomImg {
+    max-width: 230px;
+    max-height: 230px;
+  }
 }

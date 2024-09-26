@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect, useContext } from "react";
+import { UserIdContext } from "../../main.jsx";
 import { SocketContext } from "../../main.jsx";
-import io from "socket.io-client";
 import Sidebar from "../sidebar/Sidebar";
 import CategoryTopBar from "./category-top-bar/CategoryTopBar";
 import UsersList from "./users-list/UsersList";
@@ -10,7 +10,8 @@ import AppSvg from "/assets/svg/app-icon.svg";
 import style from "./HomePage.module.css";
 
 export default function GeneralChat() {
-  const [userId, setUserId] = useState(null);
+  const { setUserId } = useContext(UserIdContext);
+  const { socket, setSocket } = useContext(SocketContext);
   const [userFriends, setUserFriends] = useState([]);
   const [groupChat, setGroupChat] = useState([]);
   const [allUsers, setAllUsers] = useState(null);
@@ -24,8 +25,6 @@ export default function GeneralChat() {
   const [groupChatUser, setGroupChatUser] = useState([]);
   const [chatUserId, setChatUserId] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
-  const { socket, setSocket } = useContext(SocketContext);
-
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -67,27 +66,6 @@ export default function GeneralChat() {
 
     fetchData();
   }, [statusChanged]);
-
-  useEffect(() => {
-    if (userId) {
-      const newSocket = io("http://localhost:4000");
-      setSocket(newSocket);
-
-      newSocket.emit("user_connected", { userId });
-
-      const handleDisconnect = () => {
-        newSocket.emit("user_disconnected", { userId });
-      };
-
-      window.addEventListener("beforeunload", handleDisconnect);
-
-      return () => {
-        handleDisconnect();
-        window.removeEventListener("beforeunload", handleDisconnect);
-        newSocket.disconnect();
-      };
-    }
-  }, [userId]);
 
   const addUserGroupChat = (id) => {
     setGroupChatUser((prev) => {

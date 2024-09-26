@@ -1,17 +1,43 @@
-import React, { useState, createContext } from "react";
+import React, { useState, useEffect, createContext } from "react";
 import ReactDOM from "react-dom/client";
+import io from "socket.io-client";
 import Router from "./Router";
 
+export const UserIdContext = createContext();
 export const SocketContext = createContext();
 
 function App() {
+  const [userId, setUserId] = useState(null);
   const [socket, setSocket] = useState(null);
+
+  useEffect(() => {
+    if (userId) {
+      const newSocket = io("http://localhost:4000");
+      setSocket(newSocket);
+
+      newSocket.emit("user_connected", { userId });
+
+      const handleDisconnect = () => {
+        newSocket.emit("user_disconnected", { userId });
+      };
+
+      window.addEventListener("beforeunload", handleDisconnect);
+
+      return () => {
+        handleDisconnect();
+        window.removeEventListener("beforeunload", handleDisconnect);
+        newSocket.disconnect();
+      };
+    }
+  }, [userId]);
 
   return (
     //<React.StrictMode>
-    <SocketContext.Provider value={{ socket, setSocket }}>
-      <Router />
-    </SocketContext.Provider>
+    <UserIdContext.Provider value={{ setUserId }}>
+      <SocketContext.Provider value={{ socket, setSocket }}>
+        <Router />
+      </SocketContext.Provider>
+    </UserIdContext.Provider>
     //</React.StrictMode>
   );
 }

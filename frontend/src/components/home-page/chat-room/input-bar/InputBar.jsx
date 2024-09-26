@@ -70,11 +70,9 @@ export default function InputBar({ setError, userData, socket, chatRoomData }) {
   return (
     <div className={style.inputBarContainer}>
       {previewUserImage && (
-        <div>
+        <div className={style.inputBarImagePreviewContainer}>
+          <img className={style.chatRoomImg} src={previewUserImage} />
           <button onClick={() => handleCancelPreview()}>X</button>
-          <div>
-            <img className={style.chatRoomImg} src={previewUserImage} />
-          </div>
         </div>
       )}
       <form onSubmit={handleImageSubmit}>
