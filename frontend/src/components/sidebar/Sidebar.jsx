@@ -50,7 +50,8 @@ export default function Sidebar({ selectedPage, setSocket }) {
 
       if (response.ok) {
         setSocket(null);
-        setTimeout(() => navigate("/authentication-page"), 2000);
+        setShowLoader(false);
+        navigate("/authentication-page");
       } else {
         console.error("Logout error:", data);
       }
