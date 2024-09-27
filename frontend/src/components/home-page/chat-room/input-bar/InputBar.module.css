@@ -111,6 +111,7 @@
 }
 
 @media (max-width: 500px) {
+  
   .inputBarContainer {
     position: fixed;
     bottom: 0;

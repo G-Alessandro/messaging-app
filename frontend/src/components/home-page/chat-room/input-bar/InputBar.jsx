@@ -11,7 +11,7 @@ export default function InputBar({ setError, userData, socket, chatRoomData }) {
 
   const handleImageSubmit = async (event) => {
     event.preventDefault();
-    setShowLoader(true)
+    setShowLoader(true);
     try {
       let image;
 
@@ -37,7 +37,10 @@ export default function InputBar({ setError, userData, socket, chatRoomData }) {
         }
       }
 
-      if (messageInput.trim() !== "") {
+      if (
+        messageInput.trim() !== "" ||
+        event.target["message-image"].files[0]
+      ) {
         const message = {
           userId: userData._id,
           userName: `${userData.firstName} ${userData.lastName}`,
@@ -53,7 +56,6 @@ export default function InputBar({ setError, userData, socket, chatRoomData }) {
       }
 
       setShowLoader(false);
-
     } catch (err) {
       setError(err);
     }
@@ -107,10 +109,7 @@ export default function InputBar({ setError, userData, socket, chatRoomData }) {
         />
         {showLoader && <div className={style.loader}></div>}
         {showLoader === false && (
-          <button
-            type="submit"
-            aria-label="send message"
-          >
+          <button type="submit" aria-label="send message">
             <img src={PaperPlaneSvg} />
           </button>
         )}
