@@ -14,7 +14,6 @@ const MessageSchema = new Schema({
   },
   text: {
     type: String,
-    minLength: 1,
     trim: true,
   },
   image: {
