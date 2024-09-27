@@ -15,7 +15,7 @@ export default function ChatContainer({
   const scrollToBottom = () => {
     setTimeout(() => {
       messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-    }, 900);
+    }, 600);
   };
 
   useEffect(() => {
