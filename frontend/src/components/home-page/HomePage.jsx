@@ -11,7 +11,7 @@ import style from "./HomePage.module.css";
 
 export default function GeneralChat() {
   const { setUserId } = useContext(UserIdContext);
-  const { socket, setSocket } = useContext(SocketContext);
+  const { socket } = useContext(SocketContext);
   const [userFriends, setUserFriends] = useState([]);
   const [groupChat, setGroupChat] = useState([]);
   const [allUsers, setAllUsers] = useState(null);
@@ -106,7 +106,7 @@ export default function GeneralChat() {
 
   return (
     <div className={style.homePageContainer}>
-      <Sidebar selectedPage={"chat"} setSocket={setSocket} />
+      <Sidebar selectedPage={"chat"} />
       <div className={style.container}>
         {error && <p>{error}</p>}
         {actionResult && <p className={style.actionResult}>{actionResult}</p>}

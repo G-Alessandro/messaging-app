@@ -1,11 +1,13 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { SocketContext } from "../../main.jsx";
 import ChatSvg from "/assets/svg/app-icon.svg";
 import ProfileSvg from "/assets/svg/profile-icon.svg";
 import LogoutSvg from "/assets/svg/logout.svg";
 import style from "./Sidebar.module.css";
 
-export default function Sidebar({ selectedPage, setSocket }) {
+export default function Sidebar({ selectedPage }) {
+  const { setSocket } = useContext(SocketContext);
   const [selectedElement, setSelectedElement] = useState("chat");
   const [showLoader, setShowLoader] = useState(false);
   const navigate = useNavigate();
