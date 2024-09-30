@@ -113,8 +113,8 @@ export default function GeneralChat() {
         {actionResultError && (
           <p className={style.actionResultError}>{actionResultError}</p>
         )}
-        {!allUsers && !error && <p>Loading...</p>}
-        {allUsers && !error && (
+        {!allUsers && !error && !socket && <p>Loading...</p>}
+        {allUsers && !error && socket && (
           <div className={style.categoryUserListContainer}>
             <CategoryTopBar
               userFriends={userFriends}
