@@ -60,6 +60,7 @@
   height: 55px;
   background-color: white;
   border-radius: 50%;
+  object-fit: cover;
 }
 
 .userNameStatusContainer {

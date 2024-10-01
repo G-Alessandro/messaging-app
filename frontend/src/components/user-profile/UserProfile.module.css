@@ -42,13 +42,6 @@
   flex-direction: column;
 }
 
-.userProfileImage {
-  width: 250px;
-  position: relative;
-  display: flex;
-  justify-content: center;
-}
-
 .groupInputFileLabel {
   position: absolute;
   bottom: 0px;
@@ -101,13 +94,21 @@
   padding: 4px;
 }
 
-.userProfileImageForm > div > img,
-.userProfileImg {
+.userProfileImage {
   width: 200px;
   height: 200px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.userProfileImage> img {
+  width: 100%;
+  height: 100%;
   border-radius: 50%;
   border: 2px solid #1bc977;
   padding: 5px;
+  object-fit: cover;
 }
 
 .userImagePreview {
