@@ -132,7 +132,7 @@ export default function ChatContainer({
               <div className={style.messageContainer}>
                 {message.userName !==
                   `${userData.firstName} ${userData.lastName}` &&
-                  index !== 1 &&
+                  chatRoomData.usersId.length !== 2 &&
                   message.userName !== messageUserName[index - 1] && (
                     <img
                       className={style.messageAuthorImg}
