@@ -73,6 +73,7 @@ export default function CreateGroupChat({
         setIsSubmitting(false);
         fileInputRef.current.value = null;
         setGroupChatUser([]);
+        setPreviewGroupImage(null);
         setActionResult(data.message);
         setShowGroupChatButton(false);
         setStatusChanged(!statusChanged);
@@ -99,7 +100,7 @@ export default function CreateGroupChat({
 
   const handleFormCancel = () => {
     fileInputRef.current.value = null;
-    setGroupChatUser(null);
+    setGroupChatUser([]);
     setPreviewGroupImage(null);
     setShowGroupChatButton(false);
     setShowCategory(true);
