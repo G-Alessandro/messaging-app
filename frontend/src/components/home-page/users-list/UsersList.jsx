@@ -168,7 +168,7 @@ export default function AllUsersList({
                   statusChanged={statusChanged}
                   setStatusChanged={setStatusChanged}
                 />
-                {showGroupChatButton && (
+                {showGroupChatButton && !user.groupChatName && (
                   <button
                     onClick={() => handleAddUserToGroup(user._id, index)}
                     className={style.addRemoveToGroupBtn}
