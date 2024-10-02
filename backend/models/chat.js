@@ -27,7 +27,8 @@ const MessageSchema = new Schema({
 });
 
 const ChatSchema = new Schema({
-  usersId: { type: [Schema.Types.ObjectId], ref: "user-account", default: []},
+  usersId: { type: [Schema.Types.ObjectId], ref: "user-account", default: [] },
+  groupChatId: { type: Schema.Types.ObjectId },
   messages: {
     type: [MessageSchema],
     default: [],

@@ -29,6 +29,7 @@ exports.chat_room_post = [
       const chatUserId = req.body.chatUserId;
       let chatUsers = [];
       let allChatUsers = [];
+      let groupChatId;
       let chatRoomGroupData;
 
       const userData = await UserAccount.findById(
@@ -43,6 +44,7 @@ exports.chat_room_post = [
       if (groupChat) {
         chatUsers = groupChat.groupChatUsers;
         chatRoomGroupData = groupChat;
+        groupChatId = groupChat._id;
       } else {
         chatUsers = [chatUserId];
       }
@@ -62,6 +64,7 @@ exports.chat_room_post = [
         if (!chat) {
           const newChat = new Chat({
             usersId: allChatUsers,
+            groupChatId: groupChatId || null,
             messages: [],
           });
 
