@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Login from "./log-in/Login";
 import CreateAccount from "./create-account/CreateAccount";
+import AppImages from "/assets/images/app-image.png";
 import AppSvg from "/assets/svg/app-icon.svg";
 import style from "./AuthenticationPage.module.css";
 
@@ -22,8 +23,7 @@ export default function LoginPage() {
       </div>
 
       <div className={style.authenticationImageContainer}>
-        {/* <img src="" alt="" /> */}
-        <div></div>
+        <img src={AppImages} />
       </div>
     </div>
   );

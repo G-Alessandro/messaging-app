@@ -1,7 +1,7 @@
 .authenticationPageContainer {
   display: grid;
   grid-template-columns: 1fr 1fr;
-	padding: 20px 50px;
+  padding: 20px 50px;
 }
 
 .authenticationContainer {
@@ -39,16 +39,17 @@
   margin-top: 30px;
 }
 
-.authenticationImageContainer>div {
-  height: 500px;
-  background-color: blue;
+.authenticationImageContainer > img {
+  width: 1000px;
+  background-color: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 @media (max-width: 500px) {
   .authenticationPageContainer {
     display: flex;
     padding: 0px 0px 10px;
-    justify-content: center
+    justify-content: center;
   }
 
   .imageNameContainer {
