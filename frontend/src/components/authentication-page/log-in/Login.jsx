@@ -6,7 +6,7 @@ import style from "./Login.module.css";
 
 export default function Login({ setCreateAccount }) {
   const [logInError, setLogInError] = useState(null);
-  const [authenticated, setAuthenticated] = useState(true);
+  const [authenticated, setAuthenticated] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (event, type) => {
