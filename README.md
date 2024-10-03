@@ -29,7 +29,7 @@
     <li>Express</li>
     <li>MongoDB</li>
     <li>Mongoose</li>
-    <li>cloudinary</li>
+    <li>Cloudinary</li>
     <li>Socket.io</li>
     <li>Passport.js</li>
 </ul>
