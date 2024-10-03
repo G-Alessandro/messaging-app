@@ -35,7 +35,7 @@ export default function Login({ setCreateAccount }) {
       const data = await response.json();
       if (response.ok) {
         setAuthenticated(true);
-        setTimeout(() => navigate("/"), 2000);
+        navigate("/");
       } else {
         if (data.error) {
           setLogInError(data.error);
