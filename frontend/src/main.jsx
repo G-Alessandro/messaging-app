@@ -32,13 +32,13 @@ function App() {
   }, [userId]);
 
   return (
-    //<React.StrictMode>
-    <UserIdContext.Provider value={{ setUserId }}>
-      <SocketContext.Provider value={{ socket, setSocket }}>
-        <Router />
-      </SocketContext.Provider>
-    </UserIdContext.Provider>
-    //</React.StrictMode>
+    <React.StrictMode>
+      <UserIdContext.Provider value={{ setUserId }}>
+        <SocketContext.Provider value={{ socket, setSocket }}>
+          <Router />
+        </SocketContext.Provider>
+      </UserIdContext.Provider>
+    </React.StrictMode>
   );
 }
 
