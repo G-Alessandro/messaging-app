@@ -14,27 +14,27 @@ export default function Sidebar({ selectedPage }) {
 
   useEffect(() => {
     setSelectedElement(selectedPage);
-    // const authenticationCheck = async () => {
-    //   try {
-    //     const response = await fetch(
-    //       "https://backend-messaging-app.fly.dev/authentication-check",
-    //       {
-    //         method: "GET",
-    //         credentials: "include",
-    //         mode: "cors",
-    //       }
-    //     );
+    const authenticationCheck = async () => {
+      try {
+        const response = await fetch(
+          "https://backend-messaging-app.fly.dev/authentication-check",
+          {
+            method: "GET",
+            credentials: "include",
+            mode: "cors",
+          }
+        );
 
-    //     const data = await response.json();
-    //     if (!data.authenticated) {
-    //       navigate("/authentication-page");
-    //     }
-    //   } catch (error) {
-    //     console.log("Error checking authentication:", error);
-    //     navigate("/authentication-page");
-    //   }
-    // };
-    // authenticationCheck();
+        const data = await response.json();
+        if (!data.authenticated) {
+          navigate("/authentication-page");
+        }
+      } catch (error) {
+        console.log("Error checking authentication:", error);
+        navigate("/authentication-page");
+      }
+    };
+    authenticationCheck();
   }, []);
 
   const handleLogout = async (event) => {
