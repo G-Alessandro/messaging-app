@@ -158,7 +158,6 @@ export default function ChatContainer({
                   <h3 className={style.messageAuthor}>
                     {message.userName !==
                       `${userData.firstName} ${userData.lastName}` &&
-                    index !== 1 &&
                     message.userName !== messageUserName[index - 1]
                       ? message.userName
                           .split(" ")
