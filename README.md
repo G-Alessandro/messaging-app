@@ -3,7 +3,7 @@
 <p>Real-time messaging app to put into practice everything I learned during <a href="https://www.theodinproject.com/" target="_blank">The Odin Project course</a></p>
 
 <img src="./frontend/public/assets/images/app-image.png" alt="App image">
-<a href="" target="_blank">Link to the app website</a>
+<a href="https://frontend-messaging-app.netlify.app/authentication-page" target="_blank">Link to the app website</a>
 
 <h2>Features:</h2>
 
