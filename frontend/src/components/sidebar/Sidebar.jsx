@@ -17,7 +17,7 @@ export default function Sidebar({ selectedPage }) {
     const authenticationCheck = async () => {
       try {
         const response = await fetch(
-          "http://localhost:3000/authentication-check",
+          "https://backend-messaging-app.fly.dev/authentication-check",
           {
             method: "GET",
             credentials: "include",
@@ -42,7 +42,7 @@ export default function Sidebar({ selectedPage }) {
     setSelectedElement("logout");
     setShowLoader(true);
     try {
-      const response = await fetch("http://localhost:3000/logout", {
+      const response = await fetch("https://backend-messaging-app.fly.dev/logout", {
         method: "GET",
         credentials: "include",
         mode: "cors",

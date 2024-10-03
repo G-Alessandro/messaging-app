@@ -58,7 +58,7 @@ export default function CreateGroupChat({
     }
 
     try {
-      const response = await fetch("http://localhost:3000/create-group-chat", {
+      const response = await fetch("https://backend-messaging-app.fly.dev/create-group-chat", {
         method: "POST",
         credentials: "include",
         mode: "cors",

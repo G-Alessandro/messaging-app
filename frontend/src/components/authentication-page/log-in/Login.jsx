@@ -22,7 +22,7 @@ export default function Login({ setCreateAccount }) {
         : undefined;
 
     try {
-      const response = await fetch(`http://localhost:3000/${route}`, {
+      const response = await fetch(`https://backend-messaging-app.fly.dev/${route}`, {
         method: method,
         headers: {
           "Content-Type": "application/json",

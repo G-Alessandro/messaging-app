@@ -18,7 +18,7 @@ export default function ChatRoom({ chatUserId, socket }) {
       };
 
       try {
-        const response = await fetch("http://localhost:3000/chat-room", {
+        const response = await fetch("https://backend-messaging-app.fly.dev/chat-room", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

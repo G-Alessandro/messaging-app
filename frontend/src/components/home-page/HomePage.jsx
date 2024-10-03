@@ -30,7 +30,7 @@ export default function GeneralChat() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:3000/general-chat", {
+        const response = await fetch("https://backend-messaging-app.fly.dev/general-chat", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

@@ -35,7 +35,7 @@ export default function DropdownMenu({
 
   const addFriend = async (userId) => {
     try {
-      const response = await fetch("http://localhost:3000/add-friend", {
+      const response = await fetch("https://backend-messaging-app.fly.dev/add-friend", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -60,7 +60,7 @@ export default function DropdownMenu({
 
   const removeFriend = async (userId) => {
     try {
-      const response = await fetch("http://localhost:3000/remove-friend", {
+      const response = await fetch("https://backend-messaging-app.fly.dev/remove-friend", {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -85,7 +85,7 @@ export default function DropdownMenu({
 
   const deleteGroup = async (userId, founder) => {
     try {
-      const response = await fetch("http://localhost:3000/delete-group", {
+      const response = await fetch("https://backend-messaging-app.fly.dev/delete-group", {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",

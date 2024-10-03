@@ -19,7 +19,7 @@ export default function UserProfile() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:3000/user-profile", {
+        const response = await fetch("https://backend-messaging-app.fly.dev/user-profile", {
           method: "GET",
           headers: { "Content-Type": "application/json" },
           credentials: "include",
@@ -77,7 +77,7 @@ export default function UserProfile() {
     }
     try {
       const response = await fetch(
-        `http://localhost:3000/user-profile-${input}`,
+        `https://backend-messaging-app.fly.dev/user-profile-${input}`,
         {
           method: "POST",
           headers,

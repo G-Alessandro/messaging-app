@@ -22,7 +22,7 @@ export default function InputBar({ setError, userData, socket, chatRoomData }) {
           event.target["message-image"].files[0]
         );
 
-        const response = await fetch(`http://localhost:3000/chat-room-image`, {
+        const response = await fetch(`https://backend-messaging-app.fly.dev/chat-room-image`, {
           method: "POST",
           credentials: "include",
           mode: "cors",

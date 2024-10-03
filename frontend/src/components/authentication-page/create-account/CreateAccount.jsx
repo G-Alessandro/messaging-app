@@ -20,7 +20,7 @@ export default function CreateAccount({ setCreateAccount }) {
     };
 
     try {
-      const response = await fetch("http://localhost:3000/sign-up", {
+      const response = await fetch("https://backend-messaging-app.fly.dev/sign-up", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

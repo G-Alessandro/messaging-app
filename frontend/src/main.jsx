@@ -12,7 +12,7 @@ function App() {
 
   useEffect(() => {
     if (userId) {
-      const newSocket = io("http://localhost:4000");
+      const newSocket = io("https://backend-messaging-app.fly.dev");
       setSocket(newSocket);
 
       newSocket.emit("user_connected", { userId });
