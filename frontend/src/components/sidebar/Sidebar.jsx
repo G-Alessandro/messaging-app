@@ -1,5 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { UserIdContext } from "../../main.jsx";
 import { SocketContext } from "../../main.jsx";
 import ChatSvg from "/assets/svg/app-icon.svg";
 import ProfileSvg from "/assets/svg/profile-icon.svg";
@@ -7,6 +8,7 @@ import LogoutSvg from "/assets/svg/logout.svg";
 import style from "./Sidebar.module.css";
 
 export default function Sidebar({ selectedPage }) {
+  const { setUserId } = useContext(UserIdContext);
   const { setSocket } = useContext(SocketContext);
   const [selectedElement, setSelectedElement] = useState("chat");
   const [showLoader, setShowLoader] = useState(false);
@@ -42,17 +44,21 @@ export default function Sidebar({ selectedPage }) {
     setSelectedElement("logout");
     setShowLoader(true);
     try {
-      const response = await fetch("https://backend-messaging-app.fly.dev/logout", {
-        method: "GET",
-        credentials: "include",
-        mode: "cors",
-      });
+      const response = await fetch(
+        "https://backend-messaging-app.fly.dev/logout",
+        {
+          method: "GET",
+          credentials: "include",
+          mode: "cors",
+        }
+      );
 
       const data = await response.json();
 
       if (response.ok) {
         setSocket(null);
         setShowLoader(false);
+        setUserId(null);
         navigate("/authentication-page");
       } else {
         console.error("Logout error:", data);

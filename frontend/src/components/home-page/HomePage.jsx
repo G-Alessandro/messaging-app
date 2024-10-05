@@ -30,14 +30,17 @@ export default function GeneralChat() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("https://backend-messaging-app.fly.dev/general-chat", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-          mode: "cors",
-        });
+        const response = await fetch(
+          "https://backend-messaging-app.fly.dev/general-chat",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            credentials: "include",
+            mode: "cors",
+          }
+        );
 
         const data = await response.json();
         if (!response.ok) {
