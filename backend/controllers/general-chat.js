@@ -4,7 +4,6 @@ const { body, validationResult } = require("express-validator");
 const fs = require("fs");
 const cloudinary = require("../utils/cloudinary/cloudinary-config");
 const multer = require("../utils/multer/multer");
-
 const UserAccount = require("../models/user-account");
 
 exports.general_chat_get = asyncHandler(async (req, res) => {

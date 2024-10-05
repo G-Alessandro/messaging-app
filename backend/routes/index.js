@@ -1,5 +1,4 @@
 const express = require("express");
-
 const router = express.Router();
 const authentication_controllers = require("../controllers/authentication");
 const general_chat_controllers = require("../controllers/general-chat");

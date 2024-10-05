@@ -6,12 +6,11 @@ const logger = require("morgan");
 const mongoose = require("mongoose");
 const passport = require("passport");
 const session = require("express-session");
+const MongoDBStore = require("connect-mongodb-session")(session);
 const cors = require("cors");
 const http = require("http");
 const { Server } = require("socket.io");
-
 const socketHandler = require("./utils/socket/socket");
-
 require("dotenv").config();
 
 const indexRouter = require("./routes/index");
@@ -21,6 +20,8 @@ const allowedOrigin = process.env.ALLOWED_ORIGIN;
 const sessionSecret = process.env.SESSION_SECRET;
 
 const app = express();
+
+app.set("trust proxy", 1);
 
 main().catch((err) => console.log(err));
 async function main() {
@@ -44,8 +45,10 @@ const io = new Server(server, {
 });
 socketHandler(io);
 
-server.listen(4000, () => {
-  console.log("Server is running on port 3000");
+const PORT = process.env.PORT || 4000;
+
+server.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
 
 // view engine setup
@@ -59,9 +62,20 @@ app.use(
     secret: sessionSecret,
     resave: false,
     saveUninitialized: true,
+    cookie: {
+      secure: process.env.NODE_ENV === "production",
+      httpOnly: true,
+      maxAge: 1000 * 60 * 5,
+      sameSite: "none",
+    },
+    // store: new MongoDBStore({
+    //   uri: mongoDB,
+    //   collectionName: "sessions",
+    // }),
   })
 );
 
+app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
