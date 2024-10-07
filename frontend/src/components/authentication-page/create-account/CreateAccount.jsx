@@ -6,11 +6,13 @@ export default function CreateAccount({ setCreateAccount }) {
   const [registrationCompleted, setRegistrationCompleted] = useState(false);
   const [emailError, setEmailError] = useState(false);
   const [confirmPasswordError, setConfirmPasswordError] = useState(false);
+  const [showLoader, setShowLoader] = useState(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     setEmailError(false);
     setConfirmPasswordError(false);
+    setShowLoader(true);
     const formData = {
       firstName: event.target["first-name"].value,
       lastName: event.target["last-name"].value,
@@ -20,19 +22,23 @@ export default function CreateAccount({ setCreateAccount }) {
     };
 
     try {
-      const response = await fetch("https://backend-messaging-app.fly.dev/sign-up", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          mode: "cors",
-        },
-        body: JSON.stringify(formData),
-      });
+      const response = await fetch(
+        "https://backend-messaging-app.fly.dev/sign-up",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            mode: "cors",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
 
       const data = await response.json();
       if (response.ok && !data.error) {
         setRegistrationCompleted(true);
-        setTimeout(() => setCreateAccount((prev) => !prev), 2000);
+        setCreateAccount((prev) => !prev);
+        setShowLoader(false);
       } else {
         if (data.error) {
           data.error.forEach((error) => {
@@ -43,6 +49,7 @@ export default function CreateAccount({ setCreateAccount }) {
             }
           });
         }
+        setShowLoader(false);
       }
     } catch (error) {
       console.log("Error requesting registration:", error);
@@ -124,8 +131,9 @@ export default function CreateAccount({ setCreateAccount }) {
             {confirmPasswordError && (
               <p className={style.passwordError}>Passwords must match</p>
             )}
+            {showLoader && <div className={style.loader}></div>}
 
-            <button type="submit">Sign up</button>
+            {showLoader === false && <button type="submit">Sign up</button>}
           </form>
         </div>
       )}

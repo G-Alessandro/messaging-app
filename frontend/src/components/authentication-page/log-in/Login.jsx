@@ -7,10 +7,12 @@ import style from "./Login.module.css";
 export default function Login({ setCreateAccount }) {
   const [logInError, setLogInError] = useState(null);
   const [authenticated, setAuthenticated] = useState(false);
+  const [showLoader, setShowLoader] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (event, type) => {
     event.preventDefault();
+    setShowLoader(true);
     const route = type === "sign-in" ? "sign-in" : "demo-account";
     const method = type === "sign-in" ? "POST" : "GET";
     const body =
@@ -22,23 +24,28 @@ export default function Login({ setCreateAccount }) {
         : undefined;
 
     try {
-      const response = await fetch(`https://backend-messaging-app.fly.dev/${route}`, {
-        method: method,
-        headers: {
-          "Content-Type": "application/json",
-        },
-        mode: "cors",
-        credentials: "include",
-        body: body,
-      });
+      const response = await fetch(
+        `https://backend-messaging-app.fly.dev/${route}`,
+        {
+          method: method,
+          headers: {
+            "Content-Type": "application/json",
+          },
+          mode: "cors",
+          credentials: "include",
+          body: body,
+        }
+      );
 
       const data = await response.json();
       if (response.ok) {
         setAuthenticated(true);
+        setShowLoader(false);
         navigate("/");
       } else {
         if (data.error) {
           setLogInError(data.error);
+          setShowLoader(false);
         }
       }
     } catch (error) {
@@ -87,18 +94,24 @@ export default function Login({ setCreateAccount }) {
 
             {logInError && <p className={style.logInError}>{logInError}</p>}
 
-            <button type="submit" className={style.submitButton}>
-              Log in
-            </button>
-            <button
-              onClick={(event) => handleSubmit(event, "demo-account")}
-              className={style.demoAccountButton}
-            >
-              <div>
-                <img src={ProfileSvg} />
-              </div>
-              Try a demo account
-            </button>
+            {showLoader && <div className={style.loader}></div>}
+
+            {showLoader === false && (
+              <>
+                <button type="submit" className={style.submitButton}>
+                  Log in
+                </button>
+                <button
+                  onClick={(event) => handleSubmit(event, "demo-account")}
+                  className={style.demoAccountButton}
+                >
+                  <div>
+                    <img src={ProfileSvg} />
+                  </div>
+                  Try a demo account
+                </button>
+              </>
+            )}
           </form>
         </div>
       )}
