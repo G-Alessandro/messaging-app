@@ -111,7 +111,6 @@
 }
 
 @media (max-width: 500px) {
-  
   .inputBarContainer {
     position: fixed;
     bottom: 0;
@@ -139,6 +138,14 @@
     width: 20px;
   }
 
+  .inputBarContainer > form > .messageImageLabel {
+    padding-left: 15px;
+  }
+
+  .inputBarContainer > form > button[type="submit"] {
+    padding-right: 15px;
+  }
+
   .messageImageLabel > img,
   .inputBarContainer > form > button > img {
     width: 35px;
@@ -150,7 +157,7 @@
   }
 
   .messageImageInputText {
-    width: 200px;
+    max-width: 500px;
     height: 40px;
     font-size: 18px;
   }
