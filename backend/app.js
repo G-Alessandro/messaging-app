@@ -75,6 +75,9 @@ app.use(
   })
 );
 
+//Sistemare rimozione immaggini dalle chat di gruppo
+//Sistemare coockie on database
+
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.urlencoded({ extended: false }));

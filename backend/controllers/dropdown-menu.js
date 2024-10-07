@@ -121,8 +121,23 @@ exports.delete_group_delete = [
           });
         }
 
+        const groupChat = await Chat.findOne({ groupChatId: groupToDeleteId });
+
+        if (groupChat) {
+          const destroyPromises = groupChat.messages.map(async (message) => {
+            const messageImagePublicId = message?.image?.public_id;
+            if (messageImagePublicId) {
+              return cloudinary.uploader.destroy(messageImagePublicId);
+            }
+          });
+          await Promise.all(destroyPromises);
+        }
+
         await Chat.findOneAndDelete({ groupChatId: groupToDeleteId });
-        await cloudinary.uploader.destroy(groupToDeleteImagePublicId);
+
+        if (groupToDeleteImagePublicId !== process.env.DEFAULT_PROFILE_IMAGE_PUBLIC_ID) {
+          await cloudinary.uploader.destroy(groupToDeleteImagePublicId);
+        }
 
         messageResult = "Group deleted!";
       } else {
