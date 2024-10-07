@@ -65,18 +65,15 @@ app.use(
     cookie: {
       secure: process.env.NODE_ENV === "production",
       httpOnly: true,
-      maxAge: 1000 * 60 * 5,
+      maxAge: 1000 * 60 * 60,
       sameSite: "none",
     },
-    // store: new MongoDBStore({
-    //   uri: mongoDB,
-    //   collectionName: "sessions",
-    // }),
+    store: new MongoDBStore({
+      uri: mongoDB,
+      collectionName: "sessions",
+    }),
   })
 );
-
-//Sistemare rimozione immaggini dalle chat di gruppo
-//Sistemare coockie on database
 
 app.use(passport.initialize());
 app.use(passport.session());
