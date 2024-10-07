@@ -138,8 +138,12 @@
     width: 20px;
   }
 
+  .inputBarContainer > form {
+    justify-content: center;
+  }
+  
   .inputBarContainer > form > .messageImageLabel {
-    padding-left: 15px;
+    padding-left: 10px;
   }
 
   .inputBarContainer > form > button[type="submit"] {
