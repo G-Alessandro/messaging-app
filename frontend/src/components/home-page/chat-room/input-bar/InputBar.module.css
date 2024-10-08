@@ -165,7 +165,7 @@
   }
 
   .messageImageInputText {
-    max-width: 500px;
+    max-width: 400px;
     height: 40px;
     font-size: 18px;
   }
@@ -173,7 +173,9 @@
   .inputBarContainer > form > .loader {
     width: auto;
     height: auto;
-    margin: 0px 2px;
+    border: 10px solid #d4d4d4;
+    border-top: 10px solid #3498db;  
+    margin: 0px 10px;
     padding: 5px;
   }
 }
