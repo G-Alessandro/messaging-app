@@ -106,10 +106,14 @@
 
 @media (max-width: 500px) {
   .usersContainer {
-    width: 320px;
     margin-bottom: 0px;
     margin-bottom: 55px;
     padding: 5px 0px;
+  }
+
+  .userContainer {
+    justify-content: space-around;
+    width: auto;
   }
 
   .noUsersContainer {
